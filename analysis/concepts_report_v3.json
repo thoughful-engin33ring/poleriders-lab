@@ -1,0 +1,1902 @@
+{
+ "matches": 128,
+ "horizon_s": 10.0,
+ "concepts": [
+  [
+   "good_side",
+   "state",
+   "you-ball-goal: my body is behind the ball (ball x > my x in my attack frame). strategy.md \"Frame\"."
+  ],
+  [
+   "near_ball",
+   "state",
+   "Body within half a pole (3 m) of the ball along x: where farm1 \"gets bad\" and the tip starts to decide the side (strategy.md round 2 + round 3)."
+  ],
+  [
+   "tip_behind_ball",
+   "state",
+   "Near the ball with the pole tip behind it (tip x < ball x): hooked to PUSH the ball on, good even with the body slightly past (strategy.md round 3; the user's \"0-89 deg\" was stated attacking left, i.e. back-up in the attack frame \u2014 see the data note there)."
+  ],
+  [
+   "tip_past_ball",
+   "state",
+   "Near the ball with the tip beyond it (tip x >= ball x): can only pull the ball back = effectively the dreaded situation (strategy.md round 3)."
+  ],
+  [
+   "sit_right_far",
+   "state",
+   "Good side with room: more than half a pole behind the ball \u2014 can vault straight into it."
+  ],
+  [
+   "sit_right_close",
+   "state",
+   "Good side but within half a pole of the ball: time to back up (strategy.md round 2)."
+  ],
+  [
+   "sit_A",
+   "state",
+   "Situation A, you-opp-ball: past the ball with the opponent between me and it, on his good side."
+  ],
+  [
+   "sit_B",
+   "state",
+   "Situation B, opp-you-ball (\"you're fucked\"): past the ball, between it and the opponent."
+  ],
+  [
+   "sit_both_wrong",
+   "state",
+   "Both riders past the ball (from my side's view)."
+  ],
+  [
+   "opp_out",
+   "state",
+   "Kill window: I'm in play, the opponent is not (killed and waiting 3 s to respawn, or his 0.3 s spawn ghost). \"Kill: very often guarantees a goal\" (strategy.md round 2)."
+  ],
+  [
+   "opp_wrong_side",
+   "state",
+   "The opponent is past the ball from his point of view (he attacks -x: ball x > his x) \u2014 what tip peeking and the throw aim for (\"GG\")."
+  ],
+  [
+   "airborne",
+   "state",
+   "Feet off everything (the game's foot sensor: not on the ground or on a pole). Riders pogo on the pole, so this is true most of the time (farm2 ~72%)."
+  ],
+  [
+   "pole_planted",
+   "state",
+   "Pole tip on the floor (tip less than PLANTED_H = 0.35 m above it): the slingshot is loading."
+  ],
+  [
+   "in_pit",
+   "state",
+   "Body in a pit (|x| > 16.3 m and below plateau level, as h2h_breakdown.py)."
+  ],
+  [
+   "pole_fwd_down",
+   "state",
+   "Pole quadrant -90..0 deg (attack frame): forward and down \u2014 the normal low carry / planting."
+  ],
+  [
+   "pole_fwd_up",
+   "state",
+   "Pole quadrant 0..90 deg: forward and up."
+  ],
+  [
+   "pole_back_up",
+   "state",
+   "Pole quadrant 90..180 deg: back and up (near the ball: the hooked-to-push pole)."
+  ],
+  [
+   "pole_back_down",
+   "state",
+   "Pole quadrant 180..270 deg: back and down."
+  ],
+  [
+   "backswing_in_flight",
+   "state",
+   "Airborne, tip off the floor, pole rotating backward (counter-clockwise in the attack frame, > 1 rad/s): the user's trick that prolongs a jump and fine-tunes its height (strategy.md \"Normal play\")."
+  ],
+  [
+   "pole_on_opp",
+   "state",
+   "My pole (outer 80%, straight body->tip line) within 1 m of the opponent's body centre: contact / pressing proxy (strategy.md situation B \"keep your pole on him\")."
+  ],
+  [
+   "opp_pole_on_me",
+   "state",
+   "The opponent's pole within 1 m of my body: he presses me (situation B \"the opponent presses you down\")."
+  ],
+  [
+   "pole_over_opp_head",
+   "state",
+   "My pole passes over the opponent: at his x (between 25% and 105% of my pole's length out) the pole line is 0.6-2.5 m above his body centre. Situation A option 2: \"put your pole over his head: threatens a kill and limits his movement\" (kills are stomps: the upper rider wins)."
+  ],
+  [
+   "opp_on_my_pole",
+   "state",
+   "The opponent stands on my pole: his foot sensor is down (on_ground), he is more than 1 m above the floor, his body is within 1.5 m of my pole line and above it. The setup of the throw (strategy.md \"From above \u2014 the throw\"). (On_ground at height is ~90% someone's pole: checked against full snapshots.)"
+  ],
+  [
+   "on_opp_pole",
+   "state",
+   "I stand on the opponent's pole (mirror of opp_on_my_pole): he can throw me."
+  ],
+  [
+   "tip_peek",
+   "state",
+   "Tip peeking: the opponent and I are on opposite sides of the ball and my tip is past the ball on his side, between the ball and him and at most half a pole past the ball \u2014 the order \"opp-(our tip)-ball-us\" (strategy.md \"Ball handling\")."
+  ],
+  [
+   "rhythmic_pressing",
+   "state",
+   "Situation B defence: in B now, my pole on the opponent in >= half of the last 2 s, and my pole's rotation reversed >= 4 times in them (|w| > 0.5 rad/s; >= 1 Hz push/pull; the user eyeballed 2-3 Hz) \u2014 \"alternate pressing and releasing\" (strategy.md situation B + round 2 timing)."
+  ],
+  [
+   "goal_for",
+   "event",
+   "My side scored (my score went up)."
+  ],
+  [
+   "goal_against",
+   "event",
+   "The opponent scored."
+  ],
+  [
+   "kill",
+   "event",
+   "I killed the opponent: he drops out of play with the 3 s death timer (respawn_in > 0.5). In 1v1 only rider contacts set it (deleter falls and post-goal respawns give <= 0.1); matches the game's kill stats 186/186 in farm2 self-play. \"Kill: very often guarantees a goal\"."
+  ],
+  [
+   "death",
+   "event",
+   "I was killed (my 3 s death timer started)."
+  ],
+  [
+   "back_pass",
+   "event",
+   "Backward swing over the top: the pole passes vertical going backward (angle crosses 90 deg upward, counter-clockwise in the attack frame), as analysis/pole_rotation.py. The rotation all agents struggle with (HANDOFF farm3)."
+  ],
+  [
+   "fwd_pass",
+   "event",
+   "Forward swing over the top (angle crosses 90 deg downward): every normal vault stride does one."
+  ],
+  [
+   "vault",
+   "event",
+   "A slingshot launch: the tip leaves the floor after a planted phase (>= 2 steps) in which the body rose at >= 6 m/s, and the body is airborne at release (strategy.md \"Vaulting = a slingshot\"). Marked at the release; length = the planted phase. (farm2 vaults reach 10-15 m/s.)"
+  ],
+  [
+   "pogo_vault",
+   "event",
+   "Landing on the pole to store energy: a vault (see `vault`) whose planted phase began while airborne and falling at >= 3 m/s and in which the body never touched down \u2014 the fall was caught by the pole and turned into the next jump (strategy.md \"Landing: store kinetic + gravitational energy ... -> bigger next jump\"). The robust proxy we have: the pole's bend is not in the observation."
+  ],
+  [
+   "jump_over_ball",
+   "event",
+   "Situation A option 1, the long jump over the ball: I was in A within the last 2 s, and now, airborne and moving backward (vx < -1 m/s, so I moved, not the ball), I cross to the good side and stay there for 0.5 s. Marked when confirmed (crossing + 0.5 s); length from the last A moment."
+  ],
+  [
+   "pushed_opp_wrong_side",
+   "event",
+   "I pushed the opponent to the wrong side: he had been on his good side for >= 0.5 s, crosses past the ball (from his view) while my pole touched him or he stood on it in the last 1 s, and stays wrong (or dies) for 1 s. \"makes him miss and land on the wrong side ... GG\" (strategy.md \"Ball handling\"). Marked when confirmed; length from the first contact step considered."
+  ],
+  [
+   "tip_got_behind_ball",
+   "event",
+   "Near the ball my tip went from past the ball to behind it and stays 0.33 s: re-hooked to push (strategy.md round 3; also the goal of the B defence for the opponent's tip). Marked when confirmed."
+  ],
+  [
+   "catapult",
+   "event",
+   "The throw: the opponent stood on my pole for >= 0.2 s, and within 0.5 s of leaving it he flies, airborne, at >= 8 m/s and >= 4 m/s faster than while on it (I flung him; riders also just bounce off a pole) \u2014 strategy.md \"From above \u2014 the throw: when the opponent steps on our pole we fling it and he flies\". Marked at the first step the launch speed is reached; length from when he left the pole."
+  ],
+  [
+   "peek_touch",
+   "event",
+   "Tip peeking from below pays off: while peeking (my tip between the ball and the opponent), my tip touches him (tip within 1 m of his body) as he is airborne going at the ball \u2014 \"a slight touch on the opponent as he vaults at the ball makes him miss\" (strategy.md \"Ball handling\"). Marked at the touch."
+  ],
+  [
+   "committed",
+   "state",
+   "Committed (no agency): airborne, pole tip off the floor, and touching nothing that matters \u2014 not the ball this step, my pole not on the opponent, his pole not on me, not standing on each other's poles. \"In the air you can barely affect the outcome until you touch something (a pole swing only bends the trajectory a little)\" (strategy.md 2026-10-02 \"Agency\"). Without touch rows the ball part is the ball > 1 m from my body and tip."
+  ],
+  [
+   "at_mercy",
+   "state",
+   "At his mercy: committed (above) while the opponent can act \u2014 on the ground / a pole or with his tip planted \u2014 and is within reach (REACH = 5.5 m, a pole) of the ball or of me: he can move the ball so I miss, kill me, or hit the ball right after me (strategy.md 2026-10-02 \"Agency\")."
+  ],
+  [
+   "high_energy",
+   "state",
+   "Total energy (Frames.energy = 0.5 v^2 + G * height above standing, J/kg; the pole's bend not included) at least E_HIGH: \"high total energy is generally good (rough guide)\" (strategy.md 2026-10-02 \"Energy\")."
+  ],
+  [
+   "takeoff",
+   "event",
+   "Every jump: the feet leave the ground / a pole (the game's foot sensor). Its speed is the body speed one step later (Frames.speed); analysis/concept_report.py bins the value by it (\"if you jump, faster is better\")."
+  ],
+  [
+   "fast_takeoff",
+   "event",
+   "A jump launched at >= V_FAST m/s (takeoff_speed): \"if you jump, faster is better\" (2026-10-02 \"Energy\")."
+  ],
+  [
+   "lunge_at_opp",
+   "event",
+   "Jumping at the opponent from in front of the ball: a take-off toward him (vx >= 4 m/s in my attack direction) while he is 0.5-8 m ahead of me and the ball is behind me or about over me (ball x < my x + 1 m) \u2014 the user's [ball, you, opp] (attacking ->) and the deep-defence version (in my hole with the ball above me, he waits in front of it). \"Hoping they catch you with their pole\" (strategy.md 2026-10-02 \"No action is an action\"). The commitment; whether it backfires is `overcommit`."
+  ],
+  [
+   "lunge_from_pit",
+   "event",
+   "lunge_at_opp from my own hole (body in the pit in front of the goal I defend, x < -16.3 m)."
+  ],
+  [
+   "overcommit",
+   "event",
+   "The lunge backfired: within 1.5 s of `lunge_at_opp` I am past the opponent with him between me and the ball (situation A) \u2014 he didn't need to catch me: \"the situation becomes [ball, opp, you far] \u2014 so much tempo it's basically worth a goal\" (strategy.md 2026-10-02 \"No action is an action\"). Marked at the flip."
+  ],
+  [
+   "overcommit_opp_still",
+   "event",
+   "`overcommit` while the opponent \"did nothing\": for >= 80% of my flight his body speed was < 2 m/s and his pole turned at < 1.5 rad/s. For a human, not touching the controller."
+  ],
+  [
+   "got_flung",
+   "event",
+   "I was thrown off the opponent's pole: the mirror of `catapult` (I stood on his pole >= 0.2 s and within 0.5 s of leaving it I fly at >= 8 m/s, >= 4 m/s faster than on it). \"When you land on the opponent's pole they can fling you\" (strategy.md 2026-10-02 \"Agency\")."
+  ],
+  [
+   "flung_own_goal",
+   "event",
+   "The worst case of being flung: `got_flung`, then I touch the ball within 1.5 s, then within 3 s of that touch the opponent's team scores with the game crediting the ball to me (an own goal: PlayState::lastTouch = me) \u2014 \"being flung into the ball and auto-scoring\". Marked at the goal; needs touch rows."
+  ],
+  [
+   "second_touch",
+   "event",
+   "I hit the ball second: my touch begins while the opponent touched it within the last SECOND_W = 0.5 s, before me (his touch older than mine). \"Hitting the ball second very often guarantees the best outcome\" (strategy.md 2026-10-02). Needs touch rows."
+  ],
+  [
+   "second_kick",
+   "event",
+   "I KICK the ball second (the game's kick impulse, from my body / pole handle) within 0.6 s of the opponent's kick: his kick turned off his ball collisions for 0.6 s (the ball glitches through him and his pole), mine sends it my way; I am pushed back by it (strategy.md 2026-10-02). Needs touch rows."
+  ],
+  [
+   "impale_plant",
+   "event",
+   "Impaling the pole to brake (the attempt): flying backward (toward my own goal, vx <= -6 m/s in my attack frame \u2014 the way the second kicker is pushed) when the tip goes into the floor in the lower-back quadrant (pole angle 180-270 deg). \"When flying the wrong way you can impale the pole into the ground (lower back quadrant) to shed energy quickly\" (strategy.md 2026-10-02). `impale_brake` = it worked."
+  ],
+  [
+   "impale_brake",
+   "event",
+   "`impale_plant` that sheds speed: within 0.33 s of the plant my speed drops by >= 3 m/s and >= 30%. Marked when the drop is reached; length from the plant."
+  ],
+  [
+   "mutual_pole_contact",
+   "state",
+   "Each rider's pole touches the other rider: (my pole on him | he stands on my pole) & (his pole on me | I stand on his pole) \u2014 the moment-to-moment part of `pole_interlock` (pole_on_opp / opp_pole_on_me: straight body->tip line within 1 m of the body centre; checked against the real polylines in analysis/t20_vs_user_report)."
+  ],
+  [
+   "interlocked",
+   "state",
+   "Interlocked: mutual_pole_contact has held for >= 1 s (INTERLOCK_MIN; gaps <= 1/3 s bridged), up to 1/3 s after the last contact. User 2026-10-03: \"we're interlocked with poles and stay like that for 5-10 seconds ... troll: you don't know what will happen, so the winning player is gambling their position; for the losing player it can be a hail mary\". In the real logs the long ones are mostly one rider standing on the other's upright pole with his own pole pointing down onto him (`stacked` in analysis/t20_vs_user.py) or both pressing each other on the ground."
+  ],
+  [
+   "pole_interlock",
+   "event",
+   "An interlock (see `interlocked`) ended: marked INTERLOCK_GAP + 1 steps after the last mutual contact (no lookahead); length = from the first contact to the mark (the contact span is length - INTERLOCK_GAP - 1 steps). Who was winning at its start and what followed: interlock_episodes() / analysis/t20_vs_user.py."
+  ],
+  [
+   "interlock_let_go",
+   "state",
+   "Interlocked with my pole servo off (servo_off: the right stick near the centre, the pole hangs free). Needs act rows (Frames(act=...)); all false without them."
+  ],
+  [
+   "let_go_escape",
+   "event",
+   "Letting go to escape an interlock: the interlock ended (pole_interlock) with my pole servo off \u2014 released at its last contact or the step after, in a release of >= 2 steps that began during the interlock and at most 0.5 s (LETGO_W) before the last contact (a rider limp all along does not count). User 2026-10-03: \"just letting go can give the attacking player (usually the one in the air in this configuration) a clean tempo to kick the ball before the enemy can recover, because he gets flung kind of randomly while I gracefully fall into an immediate jump\". Marked with pole_interlock (same length). Needs act rows."
+  ],
+  [
+   "open_goal",
+   "state",
+   "Open goal: I'm in play on the good side of the ball and the opponent can't defend \u2014 he is out of play (dead / respawning, opp_out) or on his wrong side of the ball by more than OPEN_DX = 5.5 m (a pole's reach: his tip can't get to it); not in the 2 s after a goal. User 2026-10-03: \"his finishing (when I'm dead or terribly out of position and he just needs to score) is pretty bad\". Conversion: `open_goal_conversion`."
+  ],
+  [
+   "open_goal_conversion",
+   "event",
+   "I scored from an open goal: a goal for me while `open_goal` held at the previous step or at most 1 s earlier (OPEN_GRACE); length = steps from the start of that open-goal window to the goal (time to convert). Conversion rate = these / open_goal entries (runs_of(open_goal(F), F.same))."
+  ],
+  [
+   "aim_back_pass",
+   "event",
+   "My stick sweeps the pole aim backward over the top: the aimed angle (Frames.aim, attack frame) crosses 90 deg going up (counter-clockwise in the attack frame = backward), the servo on at both steps. The servo always turns the pole the SHORT way to the aimed angle (player.cpp: error wrapped to +-180 deg), so a full backward rotation needs the stick swept round backward ahead of the pole. User 2026-10-03 on t20 in [bot, user, ball]: \"he doesn't want to move his pole clockwise\" (screen clockwise for the rider attacking left = backward). Needs act rows."
+  ]
+ ],
+ "runs": {
+  "t20_300M self-play": {
+   "steps": {
+    "t20_300M": 300005376
+   },
+   "t20_300M": {
+    "rider_minutes": 1147.4666666666667,
+    "goals_per_min": 1.1250871485010459,
+    "baseline_10s": 0.022395781390246335,
+    "states": {
+     "good_side": {
+      "share": 0.79597517982866,
+      "entries_per_min": 8.69480594933767,
+      "value": 0.06895542752023402,
+      "n": 766558
+     },
+     "near_ball": {
+      "share": 0.34521017313472246,
+      "entries_per_min": 26.040843597490124,
+      "value": -0.04383474361583484,
+      "n": 332712
+     },
+     "tip_behind_ball": {
+      "share": 0.20807831391163178,
+      "entries_per_min": 24.94277248431327,
+      "value": 0.06327880261337947,
+      "n": 200783
+     },
+     "tip_past_ball": {
+      "share": 0.13713185922309068,
+      "entries_per_min": 15.230072042760865,
+      "value": -0.20685105657614178,
+      "n": 131929
+     },
+     "sit_right_far": {
+      "share": 0.5121945181912135,
+      "entries_per_min": 23.493492911921916,
+      "value": 0.07334609602706832,
+      "n": 493316
+     },
+     "sit_right_close": {
+      "share": 0.2424814395369322,
+      "entries_per_min": 27.94416686033,
+      "value": -0.00851669713599041,
+      "n": 233733
+     },
+     "sit_A": {
+      "share": 0.05880453908785045,
+      "entries_per_min": 2.9682779456193353,
+      "value": -0.3788696688975219,
+      "n": 56697
+     },
+     "sit_B": {
+      "share": 0.12599351853570892,
+      "entries_per_min": 8.188473158261678,
+      "value": -0.27286338049642855,
+      "n": 120830
+     },
+     "sit_both_wrong": {
+      "share": 0.007970839599230145,
+      "entries_per_min": 1.0457820125493842,
+      "value": -0.022395781390246335,
+      "n": 7594
+     },
+     "opp_out": {
+      "share": 0.052555145049064805,
+      "entries_per_min": 1.128573088542877,
+      "value": 0.4051556842398358,
+      "n": 50422
+     },
+     "opp_wrong_side": {
+      "share": 0.19276477152941515,
+      "entries_per_min": 6.926562863118754,
+      "value": 0.2502642120193271,
+      "n": 185117
+     },
+     "airborne": {
+      "share": 0.5714797005571749,
+      "entries_per_min": 31.835347432024168,
+      "value": 0.010276462105018567,
+      "n": 550253
+     },
+     "pole_planted": {
+      "share": 0.20241992544872073,
+      "entries_per_min": 30.22832907273995,
+      "value": -0.03301827813793899,
+      "n": 195246
+     },
+     "in_pit": {
+      "share": 0.014010854699267895,
+      "entries_per_min": 1.4370787822449453,
+      "value": -0.2087839116035777,
+      "n": 13547
+     },
+     "pole_fwd_down": {
+      "share": 0.3354394998009353,
+      "entries_per_min": 29.62003253544039,
+      "value": -0.016182735232207007,
+      "n": 322869
+     },
+     "pole_fwd_up": {
+      "share": 0.32556877840282034,
+      "entries_per_min": 35.542644666511734,
+      "value": -0.010230961512086408,
+      "n": 312705
+     },
+     "pole_back_up": {
+      "share": 0.22958349062539324,
+      "entries_per_min": 30.945561236346734,
+      "value": 0.011817180527629912,
+      "n": 221495
+     },
+     "pole_back_down": {
+      "share": 0.10940823117085115,
+      "entries_per_min": 23.21200325354404,
+      "value": 0.05502809776406126,
+      "n": 105523
+     },
+     "backswing_in_flight": {
+      "share": 0.06935599989273197,
+      "entries_per_min": 21.27556356030676,
+      "value": -0.006936464201966374,
+      "n": 66109
+     },
+     "pole_on_opp": {
+      "share": 0.17809174304356526,
+      "entries_per_min": 11.978561468742738,
+      "value": -0.01813841603089186,
+      "n": 170528
+     },
+     "opp_pole_on_me": {
+      "share": 0.17809174304356526,
+      "entries_per_min": 11.978561468742738,
+      "value": -0.02665314674960081,
+      "n": 170528
+     },
+     "pole_over_opp_head": {
+      "share": 0.06384716781464085,
+      "entries_per_min": 6.209330699511968,
+      "value": 0.03413970068446828,
+      "n": 61059
+     },
+     "opp_on_my_pole": {
+      "share": 0.04548989514550289,
+      "entries_per_min": 4.655472925865675,
+      "value": -0.13869654353334723,
+      "n": 43955
+     },
+     "on_opp_pole": {
+      "share": 0.04548989514550289,
+      "entries_per_min": 4.655472925865675,
+      "value": 0.09390498075285456,
+      "n": 43955
+     },
+     "tip_peek": {
+      "share": 0.08759362745401399,
+      "entries_per_min": 13.731989309783872,
+      "value": -0.06173005125381452,
+      "n": 83998
+     },
+     "rhythmic_pressing": {
+      "share": 0.0138808953579761,
+      "entries_per_min": 1.1651754589821055,
+      "value": -0.18719878326641895,
+      "n": 13325
+     },
+     "committed": {
+      "share": 0.32468588002071097,
+      "entries_per_min": 52.02242621426911,
+      "value": 0.019892139634791386,
+      "n": 312808
+     },
+     "at_mercy": {
+      "share": 0.060969496686036795,
+      "entries_per_min": 17.28677666744132,
+      "value": 0.08631909717292123,
+      "n": 58796
+     },
+     "high_energy": {
+      "share": 0.20645691641551508,
+      "entries_per_min": 37.83900766906809,
+      "value": 0.036016042257048256,
+      "n": 199600
+     },
+     "mutual_pole_contact": {
+      "share": 0.13731545257824893,
+      "entries_per_min": 4.672902626074832,
+      "value": -0.022395781390246335,
+      "n": 131312
+     },
+     "interlocked": {
+      "share": 0.12244542223377416,
+      "entries_per_min": 0.8889147106669765,
+      "value": -0.02235302112992187,
+      "n": 116931
+     },
+     "interlock_let_go": {
+      "share": 8.251386748685451e-05,
+      "entries_per_min": 0.06623286079479433,
+      "value": 0.230768775571779,
+      "n": 79
+     },
+     "open_goal": {
+      "share": 0.08060676572456459,
+      "entries_per_min": 2.471531489658378,
+      "value": 0.4713387171748564,
+      "n": 77009
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 1.1250871485010459,
+      "n": 1291,
+      "value": -0.02783901622694929,
+      "se": 0.0067325458018688816
+     },
+     "goal_against": {
+      "per_min": 1.1250871485010459,
+      "n": 1291,
+      "value": -0.01695254655354338,
+      "se": 0.0067325458018688816
+     },
+     "kill": {
+      "per_min": 1.1268301185219614,
+      "n": 1293,
+      "value": 0.42480918755385305,
+      "se": 0.016404049234134823
+     },
+     "death": {
+      "per_min": 1.1268301185219614,
+      "n": 1293,
+      "value": -0.46960075033434573,
+      "se": 0.016404049234134823
+     },
+     "back_pass": {
+      "per_min": 10.578956541947479,
+      "n": 12139,
+      "value": -0.006790133632010021,
+      "se": 0.005646243372089649
+     },
+     "fwd_pass": {
+      "per_min": 30.325935393911223,
+      "n": 34798,
+      "value": 0.027964345374374814,
+      "se": 0.003394217418479507
+     },
+     "vault": {
+      "per_min": 20.3491749941901,
+      "n": 23350,
+      "value": 0.03642522243097217,
+      "se": 0.00407349570225763
+     },
+     "pogo_vault": {
+      "per_min": 0.3459795491517546,
+      "n": 397,
+      "value": -0.07025472345573752,
+      "se": 0.029599997712946455
+     },
+     "jump_over_ball": {
+      "per_min": 0.38345340460144084,
+      "n": 440,
+      "value": -0.2428503268447918,
+      "se": 0.03337242182840065
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.7276899837322798,
+      "n": 835,
+      "value": 0.3294784628661019,
+      "se": 0.022834313423008814
+     },
+     "tip_got_behind_ball": {
+      "per_min": 4.432372763188473,
+      "n": 5086,
+      "value": -0.016478621626932727,
+      "se": 0.00897776662271078
+     },
+     "catapult": {
+      "per_min": 0.8610271903323262,
+      "n": 988,
+      "value": -0.1775681951833498,
+      "se": 0.023243936456446925
+     },
+     "peek_touch": {
+      "per_min": 1.1486172437834068,
+      "n": 1318,
+      "value": -0.03688853501343474,
+      "se": 0.017136596100420634
+     },
+     "takeoff": {
+      "per_min": 28.869683941436207,
+      "n": 33127,
+      "value": 0.008427484422573479,
+      "se": 0.00359873638215894
+     },
+     "fast_takeoff": {
+      "per_min": 8.765396235184754,
+      "n": 10058,
+      "value": 0.10328945732200323,
+      "se": 0.006338729129030155
+     },
+     "lunge_at_opp": {
+      "per_min": 0.28759005345108063,
+      "n": 330,
+      "value": -0.23276163504878292,
+      "se": 0.03689966067293499
+     },
+     "lunge_from_pit": {
+      "per_min": 0.047060190564722285,
+      "n": 54,
+      "value": -0.24461800361246855,
+      "se": 0.056575008579701734
+     },
+     "overcommit": {
+      "per_min": 0.10980711131768534,
+      "n": 126,
+      "value": -0.41922117821564314,
+      "se": 0.05731825492911097
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0,
+      "n": 0,
+      "value": null,
+      "se": null
+     },
+     "got_flung": {
+      "per_min": 0.8706135254473623,
+      "n": 999,
+      "value": 0.13607964488859017,
+      "se": 0.023111924226408637
+     },
+     "flung_own_goal": {
+      "per_min": 0.008714850104578202,
+      "n": 10,
+      "value": -0.022395781390246335,
+      "se": 0.0
+     },
+     "second_touch": {
+      "per_min": 12.541540785498489,
+      "n": 14391,
+      "value": -0.014590903341465847,
+      "se": 0.0051742457576820595
+     },
+     "second_kick": {
+      "per_min": 2.587438996049268,
+      "n": 2969,
+      "value": -0.0011407206615013966,
+      "se": 0.009647358652502108
+     },
+     "impale_plant": {
+      "per_min": 0.03660237043922845,
+      "n": 42,
+      "value": 0.049032790038325086,
+      "se": 0.08513599327063827
+     },
+     "impale_brake": {
+      "per_min": 0.016558215198698583,
+      "n": 19,
+      "value": 0.13549895545185892,
+      "se": 0.08365467518305539
+     },
+     "pole_interlock": {
+      "per_min": 0.7337903788054845,
+      "n": 842,
+      "value": -0.022395781390246335,
+      "se": 0.023763136555962395
+     },
+     "let_go_escape": {
+      "per_min": 0.0008714850104578201,
+      "n": 1,
+      "value": -0.022395781390246335,
+      "se": null
+     },
+     "open_goal_conversion": {
+      "per_min": 0.8409830350917964,
+      "n": 965,
+      "value": -0.027593286587751533,
+      "se": 0.007846271489714911
+     },
+     "aim_back_pass": {
+      "per_min": 19.27376249128515,
+      "n": 22116,
+      "value": 0.0023773583556701804,
+      "se": 0.004315469745743194
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 5.807400226593018,
+     "other": 5.636499881744385
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.0810935474219607,
+     "p_goal_for_5s_baseline": 0.10028444034440344,
+     "lunge": {
+      "n": 330,
+      "overcommit_per_lunge": 0.38181818181818183,
+      "p_goal_against_5s": 0.25914634146341464,
+      "p_goal_against_5s_after_overcommit": 0.4126984126984127,
+      "p_goal_against_5s_after_overcommit_opp_still": null,
+      "opp_still_share_of_overcommits": 0.0,
+      "n_from_pit": 54,
+      "opp_speed_at_overcommit": 4.33486270904541
+     },
+     "energy_bins": {
+      "edges": [
+       12.200618743896484,
+       80.73406219482422,
+       147.26112747192383
+      ],
+      "value": [
+       -0.025807403344303714,
+       -0.037293058741398225,
+       0.026447342176124464,
+       0.03665311990957748
+      ],
+      "n": [
+       240648,
+       240648,
+       240648,
+       240648
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -80.88500785827637,
+       0.0,
+       80.88500785827637
+      ],
+      "value": [
+       -0.08539267232748186,
+       -0.05146593831801267,
+       0.009563085895068147,
+       0.040601109546989186
+      ],
+      "n": [
+       228043,
+       238836,
+       217248,
+       228043
+      ]
+     },
+     "energy_median": 80.73406219482422,
+     "takeoff_speed_bins": {
+      "edges": [
+       7.4647581577301025,
+       11.284676551818848,
+       14.70307445526123
+      ],
+      "value": [
+       -0.019004719261143756,
+       -0.05969746481037472,
+       -0.004348300770091296,
+       0.1167588752647131
+      ],
+      "n": [
+       8257,
+       8257,
+       8256,
+       8257
+      ]
+     },
+     "second_touch": {
+      "n": 14350,
+      "p_ball_my_way_0.5s": 0.5378397212543554,
+      "p_goal_for_5s": 0.0713588850174216,
+      "p_goal_against_5s": 0.07275261324041812,
+      "speed_at": 9.433780670166016,
+      "max_speed_next_0.5s": 14.18648624420166,
+      "p_past_ball_1s": 0.13790940766550522,
+      "dx_1s": -2.8043694496154785
+     },
+     "second_kick": {
+      "n": 2964,
+      "p_ball_my_way_0.5s": 0.9564777327935222,
+      "p_goal_for_5s": 0.03340080971659919,
+      "p_goal_against_5s": 0.025978407557354925,
+      "speed_at": 21.387733459472656,
+      "max_speed_next_0.5s": 22.918907165527344,
+      "p_past_ball_1s": 0.016869095816464237,
+      "dx_1s": -7.232260227203369
+     },
+     "got_flung": {
+      "n": 999,
+      "own_goals_after": 10
+     },
+     "impale_brake": {
+      "n_plants": 42,
+      "n": 19
+     },
+     "interlock": {
+      "n": 421,
+      "per_min": 0.7337903788054845,
+      "long_n": 231,
+      "long_per_min": 0.4026260748315129,
+      "share_of_time": 0.12056898288016113,
+      "dur_median_s": 3.533333333333333,
+      "dur_p90_s": 17.0,
+      "dur_max_s": 233.33333333333334,
+      "stacked_share": 0.7505938242280285,
+      "attacker_at_start": {
+       "me": 209,
+       "opp": 212,
+       "none": 0
+      },
+      "top": {
+       "me": 160,
+       "opp": 156,
+       "none": 105
+      },
+      "let_go": {
+       "me": 1,
+       "opp": 0
+      },
+      "attacker_still_good_2s": 0.8954869358669834,
+      "by_role": {
+       "attacker": {
+        "n": 421,
+        "kick_first": 0.28978622327790976,
+        "gf5": 0.27078384798099764,
+        "ga5": 0.019002375296912115,
+        "gf10": 0.37054631828978624,
+        "ga10": 0.09263657957244656
+       },
+       "defender": {
+        "n": 421,
+        "kick_first": 0.3254156769596199,
+        "gf5": 0.019002375296912115,
+        "ga5": 0.27078384798099764,
+        "gf10": 0.09263657957244656,
+        "ga10": 0.37054631828978624
+       },
+       "neutral": {
+        "n": 0,
+        "kick_first": null,
+        "gf5": null,
+        "ga5": null,
+        "gf10": null,
+        "ga10": null
+       }
+      },
+      "let_go_vs_not": {
+       "released": {
+        "n": 1,
+        "kick_first": 0.0,
+        "gf5": 1.0,
+        "ga5": 0.0,
+        "gf10": 1.0,
+        "ga10": 0.0
+       },
+       "released_attacker": {
+        "n": 1,
+        "kick_first": 0.0,
+        "gf5": 1.0,
+        "ga5": 0.0,
+        "gf10": 1.0,
+        "ga10": 0.0
+       },
+       "released_top": {
+        "n": 1,
+        "kick_first": 0.0,
+        "gf5": 1.0,
+        "ga5": 0.0,
+        "gf10": 1.0,
+        "ga10": 0.0
+       },
+       "nobody_released": {
+        "n": 840,
+        "kick_first": 0.30833333333333335,
+        "gf5": 0.14404761904761904,
+        "ga5": 0.14404761904761904,
+        "gf10": 0.23095238095238096,
+        "ga10": 0.23095238095238096
+       },
+       "nobody_released_attacker": {
+        "n": 420,
+        "kick_first": 0.2904761904761905,
+        "gf5": 0.26904761904761904,
+        "ga5": 0.01904761904761905,
+        "gf10": 0.36904761904761907,
+        "ga10": 0.09285714285714286
+       },
+       "nobody_released_top": {
+        "n": 315,
+        "kick_first": 0.25396825396825395,
+        "gf5": 0.22857142857142856,
+        "ga5": 0.044444444444444446,
+        "gf10": 0.34285714285714286,
+        "ga10": 0.12698412698412698
+       },
+       "other_released": {
+        "n": 1,
+        "kick_first": 0.0,
+        "gf5": 0.0,
+        "ga5": 1.0,
+        "gf10": 0.0,
+        "ga10": 1.0
+       }
+      },
+      "by_who": {
+       "me": {
+        "let_go": 1,
+        "kick_first": 0.32779097387173395,
+        "gf5": 0.13539192399049882,
+        "ga5": 0.1543942992874109
+       },
+       "opp": {
+        "let_go": 0,
+        "kick_first": 0.28741092636579574,
+        "gf5": 0.1543942992874109,
+        "ga5": 0.13539192399049882
+       }
+      }
+     },
+     "open_goal": {
+      "per_min": 1.6837090402045085,
+      "all": {
+       "n": 1932,
+       "converted": 0.42080745341614906,
+       "gf5": 0.4880952380952381,
+       "gf10": 0.6180124223602484,
+       "ga10": 0.024844720496894408,
+       "time_to_goal_median_s": 2.3333333333333335,
+       "dur_median_s": 2.0
+      },
+      "dead": {
+       "n": 789,
+       "converted": 0.37135614702154623,
+       "gf5": 0.42585551330798477,
+       "gf10": 0.5703422053231939,
+       "ga10": 0.025348542458808618,
+       "time_to_goal_median_s": 2.533333333333333,
+       "dur_median_s": 2.3333333333333335
+      },
+      "out_of_position": {
+       "n": 1143,
+       "converted": 0.4549431321084864,
+       "gf5": 0.531058617672791,
+       "gf10": 0.6509186351706037,
+       "ga10": 0.024496937882764653,
+       "time_to_goal_median_s": 2.1333333333333333,
+       "dur_median_s": 1.6666666666666667
+      },
+      "by_ball_to_goal": {
+       "<10 m": {
+        "n": 661,
+        "converted": 0.6202723146747352,
+        "gf5": 0.6853252647503782,
+        "gf10": 0.75642965204236,
+        "ga10": 0.015128593040847202,
+        "time_to_goal_median_s": 1.6666666666666667,
+        "dur_median_s": 1.5333333333333334
+       },
+       "10-20 m (middle)": {
+        "n": 680,
+        "converted": 0.4632352941176471,
+        "gf5": 0.5529411764705883,
+        "gf10": 0.6676470588235294,
+        "ga10": 0.01911764705882353,
+        "time_to_goal_median_s": 2.7333333333333334,
+        "dur_median_s": 2.2
+       },
+       ">=20 m (my half)": {
+        "n": 591,
+        "converted": 0.14890016920473773,
+        "gf5": 0.19289340101522842,
+        "gf10": 0.40609137055837563,
+        "ga10": 0.04230118443316413,
+        "time_to_goal_median_s": 4.133333333333334,
+        "dur_median_s": 2.2
+       }
+      }
+     },
+     "sit_A": {
+      "entries_per_min": 1.6497211247966534,
+      "all": {
+       "n": 1893,
+       "dur_median_s": 1.0,
+       "time_s": 3749.6,
+       "gd10": -0.48758584257791865,
+       "gf10": 0.04067617538298996,
+       "ga10": 0.5245641838351822,
+       "escaped_3s": 0.4849445324881141,
+       "escaped_5s": 0.728473322768093,
+       "ga10_before_escape": 0.0919175911251981,
+       "jump_over": 0.11251980982567353,
+       "interlocked_share": 0.228207535421749,
+       "back_rot_share": 0.24321648184429553,
+       "fwd_rot_share": 0.38143737246179565,
+       "exit": {
+        "right_far": 0,
+        "right_close": 12,
+        "B": 1170,
+        "both_wrong": 176,
+        "opp_out": 56,
+        "me_out": 457,
+        "end": 22
+       }
+      },
+      "close": {
+       "n": 1848,
+       "dur_median_s": 1.0,
+       "time_s": 3661.266666666667,
+       "gd10": -0.479978354978355,
+       "gf10": 0.041666666666666664,
+       "ga10": 0.5178571428571429,
+       "escaped_3s": 0.4875541125541126,
+       "escaped_5s": 0.7272727272727273,
+       "ga10_before_escape": 0.08982683982683982,
+       "jump_over": 0.11417748917748918,
+       "interlocked_share": 0.2337645370959799,
+       "back_rot_share": 0.2437515001018076,
+       "fwd_rot_share": 0.3824831296755101,
+       "exit": {
+        "right_far": 0,
+        "right_close": 11,
+        "B": 1147,
+        "both_wrong": 171,
+        "opp_out": 54,
+        "me_out": 443,
+        "end": 22
+       }
+      },
+      "far": {
+       "n": 45,
+       "dur_median_s": 1.5333333333333334,
+       "time_s": 88.33333333333333,
+       "gd10": -0.8,
+       "gf10": 0.0,
+       "ga10": 0.8,
+       "escaped_3s": 0.37777777777777777,
+       "escaped_5s": 0.7777777777777778,
+       "ga10_before_escape": 0.17777777777777778,
+       "jump_over": 0.044444444444444446,
+       "interlocked_share": 0.0,
+       "back_rot_share": 0.22124506540246602,
+       "fwd_rot_share": 0.3384916095519202,
+       "exit": {
+        "right_far": 0,
+        "right_close": 1,
+        "B": 23,
+        "both_wrong": 5,
+        "opp_out": 2,
+        "me_out": 14,
+        "end": 0
+       }
+      }
+     },
+     "rotation_A": {
+      "n_steps": 57013,
+      "minutes": 63.34777777777778,
+      "w_back_share": 0.2066546226299265,
+      "w_fwd_share": 0.2658691877291144,
+      "w_median": 0.12549999356269836,
+      "back_pass_per_min": 5.840773156999281,
+      "fwd_pass_per_min": 11.444758213039131,
+      "servo_off_share": 0.015856032834616667,
+      "aim_drives_back_share": 0.10294248694505338,
+      "aim_drives_fwd_share": 0.7623019479940829,
+      "aim_holds_share": 0.13475556506086367,
+      "aim_offset_p10_p50_p90": [
+       -144.5740173339844,
+       -114.19368743896484,
+       32.54714660644535
+      ],
+      "aim_back_pass_per_min": 12.028835528739059,
+      "aim_fwd_pass_per_min": 15.880588637679125,
+      "aim_back_half_share": 0.08667058760626638
+     },
+     "rotation_all": {
+      "n_steps": 969534,
+      "minutes": 1077.26,
+      "w_back_share": 0.1719300199889844,
+      "w_fwd_share": 0.5598153339645644,
+      "w_median": -1.8408000469207764,
+      "back_pass_per_min": 11.268403171007927,
+      "fwd_pass_per_min": 32.302322559085084,
+      "servo_off_share": 0.013762281673463746,
+      "aim_drives_back_share": 0.17864945392709197,
+      "aim_drives_fwd_share": 0.7196543368427437,
+      "aim_holds_share": 0.10169620923016427,
+      "aim_offset_p10_p50_p90": [
+       -166.2247314453125,
+       -108.79947662353516,
+       162.52813720703125
+      ],
+      "aim_back_pass_per_min": 20.529862800066837,
+      "aim_fwd_pass_per_min": 37.52019011195069,
+      "aim_back_half_share": 0.5286286944763128
+     }
+    },
+    "act_rows": true,
+    "touch_rows": true
+   }
+  },
+  "farm2 self-play": {
+   "steps": {
+    "farm2": 427374080
+   },
+   "farm2": {
+    "rider_minutes": 1191.9066666666665,
+    "goals_per_min": 1.0579687447563009,
+    "baseline_10s": 0.03064560740101636,
+    "states": {
+     "good_side": {
+      "share": 0.8331929812324795,
+      "entries_per_min": 7.379772465405569,
+      "value": 0.06513591353036832,
+      "n": 807400
+     },
+     "near_ball": {
+      "share": 0.3002095537213479,
+      "entries_per_min": 25.710066783752644,
+      "value": -0.041964921432012914,
+      "n": 290742
+     },
+     "tip_behind_ball": {
+      "share": 0.15780226047230106,
+      "entries_per_min": 25.59931985725952,
+      "value": 0.07451405602534508,
+      "n": 153072
+     },
+     "tip_past_ball": {
+      "share": 0.14240729324904686,
+      "entries_per_min": 16.586030226080343,
+      "value": -0.17147512726736341,
+      "n": 137670
+     },
+     "sit_right_far": {
+      "share": 0.5509437097470687,
+      "entries_per_min": 23.05046256418288,
+      "value": 0.06310526996928725,
+      "n": 534267
+     },
+     "sit_right_close": {
+      "share": 0.2169245145031074,
+      "entries_per_min": 25.171434004899716,
+      "value": -0.03266293548802791,
+      "n": 210179
+     },
+     "sit_A": {
+      "share": 0.04019779901921063,
+      "entries_per_min": 2.1461411967379997,
+      "value": -0.5778469655654366,
+      "n": 38876
+     },
+     "sit_B": {
+      "share": 0.09096559852050765,
+      "entries_per_min": 5.6061436577808115,
+      "value": -0.3532779399540289,
+      "n": 87998
+     },
+     "sit_both_wrong": {
+      "share": 0.013129161200456648,
+      "entries_per_min": 1.209826272750663,
+      "value": -0.03064560740101636,
+      "n": 12754
+     },
+     "opp_out": {
+      "share": 0.0878392170096489,
+      "entries_per_min": 1.645263051916817,
+      "value": 0.31921418476148333,
+      "n": 84874
+     },
+     "opp_wrong_side": {
+      "share": 0.14429255874017494,
+      "entries_per_min": 5.284809772577272,
+      "value": 0.32504236349307364,
+      "n": 139628
+     },
+     "airborne": {
+      "share": 0.7217551226807285,
+      "entries_per_min": 30.8446970120703,
+      "value": 0.03262505591423093,
+      "n": 699803
+     },
+     "pole_planted": {
+      "share": 0.23830555866119482,
+      "entries_per_min": 31.93622543152149,
+      "value": 0.010229541683732916,
+      "n": 231412
+     },
+     "in_pit": {
+      "share": 0.027862541785094095,
+      "entries_per_min": 2.6352734554159727,
+      "value": -0.2871444190468868,
+      "n": 26928
+     },
+     "pole_fwd_down": {
+      "share": 0.33156055466603207,
+      "entries_per_min": 31.199590571968727,
+      "value": 0.008357882565330394,
+      "n": 320920
+     },
+     "pole_fwd_up": {
+      "share": 0.3872415324603125,
+      "entries_per_min": 32.11576969113913,
+      "value": -0.0542529878052118,
+      "n": 375264
+     },
+     "pole_back_up": {
+      "share": 0.16404784348398704,
+      "entries_per_min": 27.868792858501227,
+      "value": 0.05690385068306081,
+      "n": 158973
+     },
+     "pole_back_down": {
+      "share": 0.11715006938966838,
+      "entries_per_min": 25.15297618381753,
+      "value": 0.075847876266409,
+      "n": 113791
+     },
+     "backswing_in_flight": {
+      "share": 0.04480531402799588,
+      "entries_per_min": 17.109561151320577,
+      "value": -0.03315944503939274,
+      "n": 43360
+     },
+     "pole_on_opp": {
+      "share": 0.04951334917722214,
+      "entries_per_min": 7.273220498249304,
+      "value": -0.04900822203679317,
+      "n": 47869
+     },
+     "opp_pole_on_me": {
+      "share": 0.04951334917722214,
+      "entries_per_min": 7.273220498249304,
+      "value": -0.012282992765239552,
+      "n": 47869
+     },
+     "pole_over_opp_head": {
+      "share": 0.022082633709736812,
+      "entries_per_min": 3.9298379067712244,
+      "value": 0.10470821141007759,
+      "n": 21381
+     },
+     "opp_on_my_pole": {
+      "share": 0.014978526641427221,
+      "entries_per_min": 2.83579251171792,
+      "value": -0.1996451247422561,
+      "n": 14503
+     },
+     "on_opp_pole": {
+      "share": 0.014978526641427221,
+      "entries_per_min": 2.83579251171792,
+      "value": 0.1383539099402234,
+      "n": 14503
+     },
+     "tip_peek": {
+      "share": 0.1028915951828287,
+      "entries_per_min": 17.34112290671529,
+      "value": -0.0990250262312388,
+      "n": 99489
+     },
+     "rhythmic_pressing": {
+      "share": 0.0028668754340059636,
+      "entries_per_min": 0.2793842918349312,
+      "value": -0.34978693119350296,
+      "n": 2795
+     },
+     "committed": {
+      "share": 0.4520462515731915,
+      "entries_per_min": 60.238777085454124,
+      "value": 0.033968230915908046,
+      "n": 437770
+     },
+     "at_mercy": {
+      "share": 0.0545711533865543,
+      "entries_per_min": 16.1472374794447,
+      "value": 0.10217236944583559,
+      "n": 52779
+     },
+     "high_energy": {
+      "share": 0.25215066943336384,
+      "entries_per_min": 36.676529482174224,
+      "value": 0.034652915330906545,
+      "n": 244370
+     },
+     "mutual_pole_contact": {
+      "share": 0.023790450381514963,
+      "entries_per_min": 2.644502365957066,
+      "value": -0.03064560740101636,
+      "n": 23004
+     },
+     "interlocked": {
+      "share": 0.015853462149551405,
+      "entries_per_min": 0.43124181982929316,
+      "value": -0.03064560740101636,
+      "n": 15314
+     },
+     "interlock_let_go": {
+      "share": 6.256865884592622e-05,
+      "entries_per_min": 0.042788585235980454,
+      "value": -0.21097347625347537,
+      "n": 61
+     },
+     "open_goal": {
+      "share": 0.10598207664352993,
+      "entries_per_min": 3.368552347499245,
+      "value": 0.5149573168156415,
+      "n": 102318
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 1.0579687447563009,
+      "n": 1261,
+      "value": -0.03382525763949013,
+      "se": 0.005272091264548338
+     },
+     "goal_against": {
+      "per_min": 1.0579687447563009,
+      "n": 1261,
+      "value": -0.027465957162542593,
+      "se": 0.005272091264548338
+     },
+     "kill": {
+      "per_min": 1.6310001901714901,
+      "n": 1944,
+      "value": 0.3141997534237259,
+      "se": 0.012481237418336842
+     },
+     "death": {
+      "per_min": 1.6310001901714901,
+      "n": 1944,
+      "value": -0.3754909682257586,
+      "se": 0.012481237418336842
+     },
+     "back_pass": {
+      "per_min": 3.647097647466804,
+      "n": 4347,
+      "value": -0.061067363566031346,
+      "se": 0.009902032666302686
+     },
+     "fwd_pass": {
+      "per_min": 26.68078037430224,
+      "n": 31801,
+      "value": 0.051336062467649185,
+      "se": 0.0033271083133207236
+     },
+     "vault": {
+      "per_min": 23.838275927645345,
+      "n": 28413,
+      "value": 0.04208230629848303,
+      "se": 0.003427203693134124
+     },
+     "pogo_vault": {
+      "per_min": 2.039589229581735,
+      "n": 2431,
+      "value": 0.03464364879733074,
+      "se": 0.011314199733990496
+     },
+     "jump_over_ball": {
+      "per_min": 0.1879341782913651,
+      "n": 224,
+      "value": -0.16010989311530208,
+      "se": 0.047507538278523234
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.4085890394102447,
+      "n": 487,
+      "value": 0.23218806816366538,
+      "se": 0.031300349697976765
+     },
+     "tip_got_behind_ball": {
+      "per_min": 2.8987169017708325,
+      "n": 3455,
+      "value": -0.02745720160391491,
+      "se": 0.009695922647540099
+     },
+     "catapult": {
+      "per_min": 0.5143020146991376,
+      "n": 613,
+      "value": -0.17607044400232355,
+      "se": 0.026851988325774182
+     },
+     "peek_touch": {
+      "per_min": 0.4790643562695066,
+      "n": 571,
+      "value": -0.06392056361817923,
+      "se": 0.025760849602768858
+     },
+     "takeoff": {
+      "per_min": 27.352812860067345,
+      "n": 32602,
+      "value": 0.015005831878882877,
+      "se": 0.0033190310666172318
+     },
+     "fast_takeoff": {
+      "per_min": 6.911615003411901,
+      "n": 8238,
+      "value": 0.0409566294090979,
+      "se": 0.0065271039795180815
+     },
+     "lunge_at_opp": {
+      "per_min": 0.18038325148501563,
+      "n": 215,
+      "value": -0.25855258414520244,
+      "se": 0.03996552276712305
+     },
+     "lunge_from_pit": {
+      "per_min": 0.04614455270546911,
+      "n": 55,
+      "value": -0.39428197103738,
+      "se": 0.07436179754844292
+     },
+     "overcommit": {
+      "per_min": 0.07215330059400625,
+      "n": 86,
+      "value": -0.3097153748428768,
+      "se": 0.0629437471323012
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0,
+      "n": 0,
+      "value": null,
+      "se": null
+     },
+     "got_flung": {
+      "per_min": 0.5201749577707427,
+      "n": 620,
+      "value": 0.11636570116118074,
+      "se": 0.026625133809003623
+     },
+     "flung_own_goal": {
+      "per_min": 0.005033951204232994,
+      "n": 6,
+      "value": -0.03064560740101636,
+      "se": 0.0
+     },
+     "second_touch": {
+      "per_min": 10.750841788506932,
+      "n": 12814,
+      "value": -0.027440479195888157,
+      "se": 0.004877490375294303
+     },
+     "second_kick": {
+      "per_min": 2.931437584598347,
+      "n": 3494,
+      "value": 0.019540799252267264,
+      "se": 0.008623518065879073
+     },
+     "impale_plant": {
+      "per_min": 0.04446656897072478,
+      "n": 53,
+      "value": -0.1249852300425258,
+      "se": 0.07670757417289621
+     },
+     "impale_brake": {
+      "per_min": 0.0293647153580258,
+      "n": 35,
+      "value": -0.03064560740101636,
+      "se": 0.09897433186107871
+     },
+     "pole_interlock": {
+      "per_min": 0.33056279574463326,
+      "n": 394,
+      "value": -0.03064560740101636,
+      "se": 0.03644880315394575
+     },
+     "let_go_escape": {
+      "per_min": 0.0008389918673721657,
+      "n": 1,
+      "value": -0.03064560740101636,
+      "se": null
+     },
+     "open_goal_conversion": {
+      "per_min": 0.7701945342476482,
+      "n": 918,
+      "value": -0.03829588062506008,
+      "se": 0.006460712664323225
+     },
+     "aim_back_pass": {
+      "per_min": 6.398990972447508,
+      "n": 7627,
+      "value": -0.10753835188051163,
+      "se": 0.007391143724757688
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 5.842700004577637,
+     "other": 5.820400238037109
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.07539104265657187,
+     "p_goal_for_5s_baseline": 0.097073320756119,
+     "lunge": {
+      "n": 215,
+      "overcommit_per_lunge": 0.4,
+      "p_goal_against_5s": 0.21395348837209302,
+      "p_goal_against_5s_after_overcommit": 0.26744186046511625,
+      "p_goal_against_5s_after_overcommit_opp_still": null,
+      "opp_still_share_of_overcommits": 0.0,
+      "n_from_pit": 55,
+      "opp_speed_at_overcommit": 13.921687126159668
+     },
+     "energy_bins": {
+      "edges": [
+       36.49544143676758,
+       100.63169479370117,
+       165.8879623413086
+      ],
+      "value": [
+       -0.08579820588927373,
+       0.005872348154906146,
+       0.04539149675730793,
+       0.034534360977059655
+      ],
+      "n": [
+       242237,
+       242237,
+       242237,
+       242237
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -68.09317779541016,
+       0.0,
+       68.09317779541016
+      ],
+      "value": [
+       -0.13617047177919198,
+       -0.06239989976266806,
+       0.0033838432349561597,
+       0.07487925697715926
+      ],
+      "n": [
+       221019,
+       228662,
+       213374,
+       221019
+      ]
+     },
+     "energy_median": 100.63169860839844,
+     "takeoff_speed_bins": {
+      "edges": [
+       8.764470100402832,
+       11.653898239135742,
+       14.025305271148682
+      ],
+      "value": [
+       -0.017988934999935015,
+       -0.017988934999935015,
+       0.05562697463167382,
+       0.04037921442252751
+      ],
+      "n": [
+       8138,
+       8138,
+       8137,
+       8138
+      ]
+     },
+     "second_touch": {
+      "n": 12792,
+      "p_ball_my_way_0.5s": 0.5986554096310194,
+      "p_goal_for_5s": 0.05386178861788618,
+      "p_goal_against_5s": 0.05323639774859287,
+      "speed_at": 11.149825096130371,
+      "max_speed_next_0.5s": 15.750862121582031,
+      "p_past_ball_1s": 0.11866791744840526,
+      "dx_1s": -3.955716371536255
+     },
+     "second_kick": {
+      "n": 3487,
+      "p_ball_my_way_0.5s": 0.9644393461428161,
+      "p_goal_for_5s": 0.049039288786922854,
+      "p_goal_against_5s": 0.027530828792658446,
+      "speed_at": 19.61166000366211,
+      "max_speed_next_0.5s": 21.5895938873291,
+      "p_past_ball_1s": 0.014052193862919416,
+      "dx_1s": -7.9630584716796875
+     },
+     "got_flung": {
+      "n": 620,
+      "own_goals_after": 6
+     },
+     "impale_brake": {
+      "n_plants": 53,
+      "n": 35
+     },
+     "interlock": {
+      "n": 197,
+      "per_min": 0.33056279574463326,
+      "long_n": 55,
+      "long_per_min": 0.09228910541093822,
+      "share_of_time": 0.01772137266527208,
+      "dur_median_s": 2.0,
+      "dur_p90_s": 6.053333333333335,
+      "dur_max_s": 69.8,
+      "stacked_share": 0.6954314720812182,
+      "attacker_at_start": {
+       "me": 101,
+       "opp": 96,
+       "none": 0
+      },
+      "top": {
+       "me": 96,
+       "opp": 41,
+       "none": 60
+      },
+      "let_go": {
+       "me": 1,
+       "opp": 0
+      },
+      "attacker_still_good_2s": 0.751269035532995,
+      "by_role": {
+       "attacker": {
+        "n": 197,
+        "kick_first": 0.2639593908629442,
+        "gf5": 0.3401015228426396,
+        "ga5": 0.030456852791878174,
+        "gf10": 0.43147208121827413,
+        "ga10": 0.1116751269035533
+       },
+       "defender": {
+        "n": 197,
+        "kick_first": 0.2182741116751269,
+        "gf5": 0.030456852791878174,
+        "ga5": 0.3401015228426396,
+        "gf10": 0.1116751269035533,
+        "ga10": 0.43147208121827413
+       },
+       "neutral": {
+        "n": 0,
+        "kick_first": null,
+        "gf5": null,
+        "ga5": null,
+        "gf10": null,
+        "ga10": null
+       }
+      },
+      "let_go_vs_not": {
+       "released": {
+        "n": 1,
+        "kick_first": 0.0,
+        "gf5": 0.0,
+        "ga5": 0.0,
+        "gf10": 0.0,
+        "ga10": 0.0
+       },
+       "released_attacker": {
+        "n": 0,
+        "kick_first": null,
+        "gf5": null,
+        "ga5": null,
+        "gf10": null,
+        "ga10": null
+       },
+       "released_top": {
+        "n": 0,
+        "kick_first": null,
+        "gf5": null,
+        "ga5": null,
+        "gf10": null,
+        "ga10": null
+       },
+       "nobody_released": {
+        "n": 392,
+        "kick_first": 0.2423469387755102,
+        "gf5": 0.18622448979591838,
+        "ga5": 0.18622448979591838,
+        "gf10": 0.2729591836734694,
+        "ga10": 0.2729591836734694
+       },
+       "nobody_released_attacker": {
+        "n": 196,
+        "kick_first": 0.2653061224489796,
+        "gf5": 0.34183673469387754,
+        "ga5": 0.030612244897959183,
+        "gf10": 0.4336734693877551,
+        "ga10": 0.11224489795918367
+       },
+       "nobody_released_top": {
+        "n": 137,
+        "kick_first": 0.2846715328467153,
+        "gf5": 0.31386861313868614,
+        "ga5": 0.072992700729927,
+        "gf10": 0.39416058394160586,
+        "ga10": 0.16058394160583941
+       },
+       "other_released": {
+        "n": 1,
+        "kick_first": 0.0,
+        "gf5": 0.0,
+        "ga5": 0.0,
+        "gf10": 0.0,
+        "ga10": 0.0
+       }
+      },
+      "by_who": {
+       "me": {
+        "let_go": 1,
+        "kick_first": 0.23857868020304568,
+        "gf5": 0.20304568527918782,
+        "ga5": 0.16751269035532995
+       },
+       "opp": {
+        "let_go": 0,
+        "kick_first": 0.2436548223350254,
+        "gf5": 0.16751269035532995,
+        "ga5": 0.20304568527918782
+       }
+      }
+     },
+     "open_goal": {
+      "per_min": 2.467475081941539,
+      "all": {
+       "n": 2941,
+       "converted": 0.2726963617817069,
+       "gf5": 0.3117987079224753,
+       "gf10": 0.49098945936756205,
+       "ga10": 0.02550153009180551,
+       "time_to_goal_median_s": 2.933333333333333,
+       "dur_median_s": 2.2
+      },
+      "dead": {
+       "n": 1300,
+       "converted": 0.16615384615384615,
+       "gf5": 0.20076923076923076,
+       "gf10": 0.3707692307692308,
+       "ga10": 0.026153846153846153,
+       "time_to_goal_median_s": 2.7333333333333334,
+       "dur_median_s": 2.466666666666667
+      },
+      "out_of_position": {
+       "n": 1641,
+       "converted": 0.3570993296770262,
+       "gf5": 0.39975624619134675,
+       "gf10": 0.5862279098110909,
+       "ga10": 0.024984765386959172,
+       "time_to_goal_median_s": 3.066666666666667,
+       "dur_median_s": 1.9333333333333333
+      },
+      "by_ball_to_goal": {
+       "<10 m": {
+        "n": 938,
+        "converted": 0.5106609808102346,
+        "gf5": 0.6119402985074627,
+        "gf10": 0.732409381663113,
+        "ga10": 0.005330490405117271,
+        "time_to_goal_median_s": 2.2666666666666666,
+        "dur_median_s": 1.9333333333333333
+       },
+       "10-20 m (middle)": {
+        "n": 908,
+        "converted": 0.2643171806167401,
+        "gf5": 0.31387665198237885,
+        "gf10": 0.551762114537445,
+        "ga10": 0.013215859030837005,
+        "time_to_goal_median_s": 3.466666666666667,
+        "dur_median_s": 2.6
+       },
+       ">=20 m (my half)": {
+        "n": 1095,
+        "converted": 0.07579908675799087,
+        "gf5": 0.052968036529680365,
+        "gf10": 0.23378995433789954,
+        "ga10": 0.052968036529680365,
+        "time_to_goal_median_s": 5.133333333333334,
+        "dur_median_s": 2.066666666666667
+       }
+      }
+     },
+     "sit_A": {
+      "entries_per_min": 1.372590695020863,
+      "all": {
+       "n": 1636,
+       "dur_median_s": 1.0666666666666667,
+       "time_s": 2547.0666666666666,
+       "gd10": -0.53239608801956,
+       "gf10": 0.05134474327628362,
+       "ga10": 0.5819070904645477,
+       "escaped_3s": 0.495721271393643,
+       "escaped_5s": 0.7671149144254279,
+       "ga10_before_escape": 0.15770171149144255,
+       "jump_over": 0.044009779951100246,
+       "interlocked_share": 0.08158259003039336,
+       "back_rot_share": 0.29572590252907394,
+       "fwd_rot_share": 0.49097336192191626,
+       "exit": {
+        "right_far": 0,
+        "right_close": 10,
+        "B": 761,
+        "both_wrong": 325,
+        "opp_out": 65,
+        "me_out": 453,
+        "end": 22
+       }
+      },
+      "close": {
+       "n": 1499,
+       "dur_median_s": 1.0,
+       "time_s": 2254.3333333333335,
+       "gd10": -0.5210140093395597,
+       "gf10": 0.050700466977985324,
+       "ga10": 0.5697131420947298,
+       "escaped_3s": 0.5150100066711141,
+       "escaped_5s": 0.7791861240827218,
+       "ga10_before_escape": 0.1467645096731154,
+       "jump_over": 0.044029352901934625,
+       "interlocked_share": 0.08903877070695368,
+       "back_rot_share": 0.29684868427700845,
+       "fwd_rot_share": 0.488487675285644,
+       "exit": {
+        "right_far": 0,
+        "right_close": 10,
+        "B": 712,
+        "both_wrong": 285,
+        "opp_out": 57,
+        "me_out": 417,
+        "end": 18
+       }
+      },
+      "far": {
+       "n": 137,
+       "dur_median_s": 1.8,
+       "time_s": 292.73333333333335,
+       "gd10": -0.656934306569343,
+       "gf10": 0.058394160583941604,
+       "ga10": 0.7153284671532847,
+       "escaped_3s": 0.2846715328467153,
+       "escaped_5s": 0.635036496350365,
+       "ga10_before_escape": 0.2773722627737226,
+       "jump_over": 0.043795620437956206,
+       "interlocked_share": 0.0,
+       "back_rot_share": 0.28344086719948397,
+       "fwd_rot_share": 0.518170765336311,
+       "exit": {
+        "right_far": 0,
+        "right_close": 0,
+        "B": 49,
+        "both_wrong": 40,
+        "opp_out": 8,
+        "me_out": 36,
+        "end": 4
+       }
+      }
+     },
+     "rotation_A": {
+      "n_steps": 39190,
+      "minutes": 43.544444444444444,
+      "w_back_share": 0.2958407757080888,
+      "w_fwd_share": 0.49303393722888494,
+      "w_median": -0.9154499769210815,
+      "back_pass_per_min": 10.12758356723654,
+      "fwd_pass_per_min": 22.23016075529472,
+      "servo_off_share": 0.04075019137535085,
+      "aim_drives_back_share": 0.21961535392227277,
+      "aim_drives_fwd_share": 0.5511398398638044,
+      "aim_holds_share": 0.2292448062139228,
+      "aim_offset_p10_p50_p90": [
+       -134.3886962890625,
+       -39.43792724609375,
+       109.22217407226564
+      ],
+      "aim_back_pass_per_min": 18.9231946925236,
+      "aim_fwd_pass_per_min": 30.199030364889,
+      "aim_back_half_share": 0.23554917138829037
+     },
+     "rotation_all": {
+      "n_steps": 974929,
+      "minutes": 1083.2544444444443,
+      "w_back_share": 0.12863603400863038,
+      "w_fwd_share": 0.6843544504266464,
+      "w_median": -2.876699924468994,
+      "back_pass_per_min": 4.012907606605199,
+      "fwd_pass_per_min": 29.35690701579295,
+      "servo_off_share": 0.013482007407718922,
+      "aim_drives_back_share": 0.10171088133002698,
+      "aim_drives_fwd_share": 0.8248392312211149,
+      "aim_holds_share": 0.07344988744885811,
+      "aim_offset_p10_p50_p90": [
+       -160.1544677734375,
+       -111.64559936523438,
+       33.51041870117168
+      ],
+      "aim_back_pass_per_min": 7.040820408460514,
+      "aim_fwd_pass_per_min": 33.102102819795086,
+      "aim_back_half_share": 0.5176603918755232
+     }
+    },
+    "act_rows": true,
+    "touch_rows": true
+   }
+  }
+ }
+}

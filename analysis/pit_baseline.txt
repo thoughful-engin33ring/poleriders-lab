@@ -1,0 +1,7 @@
+Baseline before the pit-drop curriculum (farm1 ckpt at ~update 4100, 2026-09-30; saved as runs/farm1/ckpt_before_pit.pt)
+analysis/pit_stats.py, 64 matches x 12000 steps, native sim, self-play:
+share of live agent-time in enemy pit 1.1%
+visits 1556: escaped 86%, died in pit 14%
+  visit duration p25 0.2 s, p50 0.3 s, p75 0.6 s, p90 1.9 s, p99 5.5 s
+  visits > 5 s: 1% of visits, 17% of pit time
+during visits: goals conceded 88, scored 24 (per minute in pit: conceded 4.63, scored 1.26)

@@ -1,0 +1,3 @@
+# Developer overlay: draws every Box2D collision shape.
+[modes]
+physics_debug = true

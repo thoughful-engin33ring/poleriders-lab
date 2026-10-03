@@ -1,0 +1,5 @@
+# Low gravity, floaty poles, huge kicks.
+[gameplay]
+gravity = 7.0
+kick_ball_strength = 2200
+kick_player_strength = 1200

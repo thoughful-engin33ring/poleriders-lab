@@ -1,0 +1,5 @@
+control: real vs real    256 matches: 118-24-114  goal diff +0.09 ± 0.20/match  kills 7.82 deaths 7.88  4.7 min  (161 s)
+thinks 6-6, 15 s left    256 matches: 58-24-174  goal diff -1.86 ± 0.18/match  kills 7.32 deaths 7.45  4.7 min  (148 s)
+thinks 0-0, 300 s left   256 matches: 90-40-126  goal diff -0.54 ± 0.17/match  kills 7.54 deaths 7.64  4.9 min  (147 s)
+thinks 6-6, 300 s left   256 matches: 64-22-170  goal diff -1.59 ± 0.18/match  kills 7.32 deaths 7.39  4.8 min  (143 s)
+thinks 0-0, 15 s left    256 matches: 101-30-125  goal diff -0.22 ± 0.19/match  kills 8.08 deaths 7.49  4.7 min  (146 s)

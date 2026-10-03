@@ -1,0 +1,359 @@
+Concept report (2026-10-02 17:18): 128 matches per line-up, native sim, 7 goals / 5 min, no sudden death. Value = own goal diff over the next 10 s minus the policy's baseline (correlational). Rates per minute of one rider's play. Definitions: concepts.py.
+
+== farm2 self-play  (farm2 427M steps)
+  farm2: 1201 rider-min, 1.02 goals/min, baseline goal diff next 10 s +0.030; vault apex median: pogo 5.85 m, other 5.83 m
+  state                             farm2: share entries/min value
+  good_side                                  83.8%    7.32  +0.060
+  near_ball                                  29.7%   25.82  -0.042
+  tip_behind_ball                            15.6%   25.70  +0.068
+  tip_past_ball                              14.2%   16.50  -0.163
+  sit_right_far                              55.7%   23.29  +0.056
+  sit_right_close                            21.6%   25.37  -0.034
+  sit_A                                       3.8%    2.13  -0.544
+  sit_B                                       9.0%    5.61  -0.342
+  sit_both_wrong                              1.3%    1.16  -0.030
+  opp_out                                     8.7%    1.63  +0.318
+  opp_wrong_side                             14.0%    5.26  +0.307
+  airborne                                   72.6%   30.82  +0.029
+  pole_planted                               24.1%   32.19  +0.009
+  in_pit                                      2.8%    2.67  -0.279
+  pole_fwd_down                              33.1%   31.35  +0.003
+  pole_fwd_up                                38.8%   32.25  -0.049
+  pole_back_up                               16.4%   27.96  +0.059
+  pole_back_down                             11.6%   25.31  +0.069
+  backswing_in_flight                         4.5%   16.93  -0.039
+  pole_on_opp                                 4.5%    6.97  -0.046
+  opp_pole_on_me                              4.5%    6.97  -0.015
+  pole_over_opp_head                          2.2%    3.60  +0.072
+  opp_on_my_pole                              1.4%    2.71  -0.200
+  on_opp_pole                                 1.4%    2.71  +0.140
+  tip_peek                                   10.4%   17.34  -0.101
+  rhythmic_pressing                           0.3%    0.26  -0.284
+  committed                                  45.7%   60.24  +0.031
+  at_mercy                                    5.5%   16.20  +0.098
+  high_energy                                25.3%   36.80  +0.033
+  event                                 farm2: per min value +- se
+  goal_for                                   1.02  -0.030 +- 0.006
+  goal_against                               1.02  -0.031 +- 0.006
+  kill                                       1.61  +0.308 +- 0.012
+  death                                      1.61  -0.369 +- 0.012
+  back_pass                                  3.58  -0.026 +- 0.010
+  fwd_pass                                  26.78  +0.054 +- 0.003
+  vault                                     24.06  +0.042 +- 0.003
+  pogo_vault                                 2.07  +0.035 +- 0.011
+  jump_over_ball                             0.22  -0.161 +- 0.044
+  pushed_opp_wrong_side                      0.42  +0.195 +- 0.031
+  tip_got_behind_ball                        2.93  -0.030 +- 0.010
+  catapult                                   0.48  -0.142 +- 0.028
+  peek_touch                                 0.47  -0.075 +- 0.026
+  takeoff                                   27.39  +0.013 +- 0.003
+  fast_takeoff                               7.16  +0.040 +- 0.006
+  lunge_at_opp                               0.21  -0.180 +- 0.040
+  lunge_from_pit                             0.04  -0.214 +- 0.075
+  overcommit                                 0.09  -0.351 +- 0.065
+  overcommit_opp_still                       0.00              n/a
+  got_flung                                  0.48  +0.082 +- 0.028
+  flung_own_goal                             0.00  -0.030 +- 0.000
+  second_touch                              10.69  -0.025 +- 0.005
+  second_kick                                2.99  +0.042 +- 0.008
+  impale_plant                               0.05  -0.015 +- 0.077
+  impale_brake                               0.04  +0.038 +- 0.099
+  -- outcomes (2026-10-02 concepts; goal diff values relative to the baseline, p = probability)
+  farm2: P(goal against within 5 s) baseline 0.072, P(goal for within 5 s) 0.093
+    lunge at opp: n=254 (49 from the pit), overcommit per lunge 0.41, P(goal against 5 s) after lunge 0.181, after overcommit 0.291, after overcommit with the opponent still n/a; opponent still in 0% of overcommits (his median speed at the flip 14.0 m/s)
+    value by energy (J/kg) quartile: <37 -0.077 (n=244785), 37-101 +0.005 (n=244784), 101-166 +0.040 (n=244784), >166 +0.032 (n=244785)
+    value by energy lead me-opp quartile: <-69 -0.129 (n=223483), -69-0 -0.064 (n=231197), 0-69 +0.006 (n=215769), >69 +0.068 (n=223483)
+    value by take-off speed (m/s) quartile: <8.9 -0.016 (n=8216), 8.9-11.8 -0.010 (n=8216), 11.8-14.1 +0.036 (n=8215), >14.1 +0.040 (n=8216)
+    second_touch: n=12822, P(ball moving my way 0.5 s later) 0.60, P(goal for / against within 5 s) 0.054 / 0.052, my speed 11.3 -> max 15.8 m/s in 0.5 s, P(past the ball 1 s later) 0.12, dx 1 s later -4.1 m
+    second_kick: n=3589, P(ball moving my way 0.5 s later) 0.96, P(goal for / against within 5 s) 0.053 / 0.020, my speed 19.6 -> max 21.5 m/s in 0.5 s, P(past the ball 1 s later) 0.01, dx 1 s later -8.2 m
+    got flung: n=580, own goals after (flung_own_goal) 4; impale plants n=65, of which brakes (speed drop) n=44
+
+== farm3 self-play  (farm3 684M steps)
+  farm3: 1174 rider-min, 1.11 goals/min, baseline goal diff next 10 s +0.040; vault apex median: pogo 6.67 m, other 6.10 m
+  state                             farm3: share entries/min value
+  good_side                                  77.6%    8.18  +0.076
+  near_ball                                  32.3%   21.22  -0.041
+  tip_behind_ball                            20.7%   20.35  +0.077
+  tip_past_ball                              11.7%   11.53  -0.248
+  sit_right_far                              49.4%   18.36  +0.061
+  sit_right_close                            20.2%   21.06  -0.030
+  sit_A                                       5.2%    2.65  -0.452
+  sit_B                                      12.2%    6.49  -0.289
+  sit_both_wrong                              2.7%    1.54  -0.040
+  opp_out                                    10.2%    1.78  +0.355
+  opp_wrong_side                             20.2%    5.95  +0.217
+  airborne                                   66.1%   28.40  +0.010
+  pole_planted                               19.4%   29.17  +0.005
+  in_pit                                      3.1%    2.91  -0.296
+  pole_fwd_down                              28.4%   26.73  -0.006
+  pole_fwd_up                                29.8%   29.19  -0.042
+  pole_back_up                               19.3%   29.86  +0.053
+  pole_back_down                             22.5%   25.80  +0.018
+  backswing_in_flight                        11.7%   29.25  +0.008
+  pole_on_opp                                 6.8%    8.86  -0.044
+  opp_pole_on_me                              6.8%    8.86  -0.037
+  pole_over_opp_head                          2.8%    5.71  -0.012
+  opp_on_my_pole                              2.2%    3.80  -0.140
+  on_opp_pole                                 2.2%    3.80  +0.059
+  tip_peek                                    6.2%   11.88  -0.133
+  rhythmic_pressing                           0.5%    0.36  -0.222
+  committed                                  43.5%   55.17  +0.012
+  at_mercy                                    5.8%   15.12  +0.056
+  high_energy                                25.0%   32.38  +0.012
+  event                                 farm3: per min value +- se
+  goal_for                                   1.11  -0.062 +- 0.009
+  goal_against                               1.11  -0.019 +- 0.009
+  kill                                       1.77  +0.333 +- 0.012
+  death                                      1.77  -0.413 +- 0.012
+  back_pass                                  8.50  -0.025 +- 0.006
+  fwd_pass                                  22.59  +0.040 +- 0.004
+  vault                                     18.40  +0.043 +- 0.004
+  pogo_vault                                 1.04  -0.185 +- 0.017
+  jump_over_ball                             0.41  -0.061 +- 0.031
+  pushed_opp_wrong_side                      0.48  +0.100 +- 0.029
+  tip_got_behind_ball                        3.07  -0.025 +- 0.009
+  catapult                                   0.59  -0.174 +- 0.024
+  peek_touch                                 0.36  -0.252 +- 0.031
+  takeoff                                   24.57  +0.021 +- 0.004
+  fast_takeoff                               5.35  -0.001 +- 0.007
+  lunge_at_opp                               0.21  -0.084 +- 0.041
+  lunge_from_pit                             0.05  -0.151 +- 0.068
+  overcommit                                 0.08  -0.123 +- 0.072
+  overcommit_opp_still                       0.00  +0.960 +- 0.000
+  got_flung                                  0.60  +0.100 +- 0.024
+  flung_own_goal                             0.01  -0.040 +- 0.000
+  second_touch                               9.93  -0.037 +- 0.005
+  second_kick                                2.63  -0.009 +- 0.009
+  impale_plant                               0.55  -0.262 +- 0.023
+  impale_brake                               0.33  -0.242 +- 0.031
+  -- outcomes (2026-10-02 concepts; goal diff values relative to the baseline, p = probability)
+  farm3: P(goal against within 5 s) baseline 0.072, P(goal for within 5 s) 0.103
+    lunge at opp: n=252 (54 from the pit), overcommit per lunge 0.38, P(goal against 5 s) after lunge 0.135, after overcommit 0.186, after overcommit with the opponent still 0.000; opponent still in 2% of overcommits (his median speed at the flip 5.7 m/s)
+    value by energy (J/kg) quartile: <17 -0.033 (n=235858), 17-97 -0.026 (n=235857), 97-165 +0.047 (n=235857), >165 +0.012 (n=235858)
+    value by energy lead me-opp quartile: <-81 -0.112 (n=211843), -81-0 -0.060 (n=218236), 0-81 -0.020 (n=205450), >81 +0.031 (n=211843)
+    value by take-off speed (m/s) quartile: <7.5 -0.027 (n=7206), 7.5-10.6 +0.049 (n=7205), 10.6-13.5 +0.056 (n=7205), >13.5 +0.004 (n=7205)
+    second_touch: n=11646, P(ball moving my way 0.5 s later) 0.61, P(goal for / against within 5 s) 0.062 / 0.058, my speed 8.9 -> max 12.9 m/s in 0.5 s, P(past the ball 1 s later) 0.18, dx 1 s later -3.4 m
+    second_kick: n=3084, P(ball moving my way 0.5 s later) 0.90, P(goal for / against within 5 s) 0.041 / 0.022, my speed 17.5 -> max 20.0 m/s in 0.5 s, P(past the ball 1 s later) 0.02, dx 1 s later -7.2 m
+    got flung: n=700, own goals after (flung_own_goal) 12; impale plants n=645, of which brakes (speed drop) n=386
+
+== cand_search1_t2_10M self-play  (cand_search1_t2_10M 10M steps)
+  cand_search1_t2_10M: 1264 rider-min, 0.70 goals/min, baseline goal diff next 10 s +0.021; vault apex median: pogo 5.59 m, other 5.70 m
+  state                 cand_search1_t2_10M: share entries/min value
+  good_side                                  74.2%    5.59  +0.047
+  near_ball                                  26.8%   18.47  -0.027
+  tip_behind_ball                            15.1%   17.08  +0.049
+  tip_past_ball                              11.7%    8.80  -0.125
+  sit_right_far                              52.2%   16.38  +0.034
+  sit_right_close                            17.4%   18.19  -0.013
+  sit_A                                       4.6%    4.46  -0.281
+  sit_B                                      19.0%    7.61  -0.116
+  sit_both_wrong                              0.5%    0.55  -0.021
+  opp_out                                     6.3%    1.20  +0.312
+  opp_wrong_side                             24.1%    4.12  +0.104
+  airborne                                   55.4%   33.61  +0.016
+  pole_planted                               14.7%   21.56  +0.014
+  in_pit                                      3.6%    2.39  -0.115
+  pole_fwd_down                              34.9%   24.48  -0.003
+  pole_fwd_up                                28.8%   31.67  -0.028
+  pole_back_up                               27.7%   28.02  +0.024
+  pole_back_down                              8.7%   19.52  +0.029
+  backswing_in_flight                         5.4%   18.33  +0.012
+  pole_on_opp                                33.8%    4.75  -0.022
+  opp_pole_on_me                             33.8%    4.75  -0.020
+  pole_over_opp_head                          7.3%    7.29  -0.001
+  opp_on_my_pole                              9.6%    7.98  -0.041
+  on_opp_pole                                 9.6%    7.98  -0.000
+  tip_peek                                    4.5%    8.17  -0.104
+  rhythmic_pressing                           3.7%    2.22  -0.025
+  committed                                  31.7%   42.34  +0.020
+  at_mercy                                    3.7%   11.20  +0.073
+  high_energy                                17.5%   26.42  +0.019
+  event                   cand_search1_t2_10M: per min value +- se
+  goal_for                                   0.70  -0.012 +- 0.008
+  goal_against                               0.70  -0.030 +- 0.008
+  kill                                       1.19  +0.309 +- 0.015
+  death                                      1.19  -0.351 +- 0.015
+  back_pass                                 10.33  +0.002 +- 0.003
+  fwd_pass                                  26.06  +0.030 +- 0.003
+  vault                                     16.24  +0.045 +- 0.004
+  pogo_vault                                 0.34  -0.037 +- 0.026
+  jump_over_ball                             0.12  -0.106 +- 0.052
+  pushed_opp_wrong_side                      0.25  +0.224 +- 0.035
+  tip_got_behind_ball                        1.34  -0.038 +- 0.013
+  catapult                                   0.35  -0.108 +- 0.029
+  peek_touch                                 0.23  -0.086 +- 0.035
+  takeoff                                   31.23  +0.009 +- 0.002
+  fast_takeoff                               5.29  +0.066 +- 0.007
+  lunge_at_opp                               0.10  -0.300 +- 0.052
+  lunge_from_pit                             0.03  -0.446 +- 0.078
+  overcommit                                 0.04  -0.470 +- 0.077
+  overcommit_opp_still                       0.00              n/a
+  got_flung                                  0.35  +0.074 +- 0.029
+  flung_own_goal                             0.00  -0.021 +- 0.000
+  second_touch                               6.37  -0.019 +- 0.006
+  second_kick                                2.66  -0.004 +- 0.008
+  impale_plant                               0.02  +0.170 +- 0.128
+  impale_brake                               0.01  +0.167 +- 0.159
+  -- outcomes (2026-10-02 concepts; goal diff values relative to the baseline, p = probability)
+  cand_search1_t2_10M: P(goal against within 5 s) baseline 0.047, P(goal for within 5 s) 0.063
+    lunge at opp: n=122 (40 from the pit), overcommit per lunge 0.40, P(goal against 5 s) after lunge 0.295, after overcommit 0.408, after overcommit with the opponent still n/a; opponent still in 0% of overcommits (his median speed at the flip 11.4 m/s)
+    value by energy (J/kg) quartile: <11 -0.025 (n=261178), 11-89 -0.005 (n=261177), 89-135 +0.008 (n=261177), >135 +0.022 (n=261178)
+    value by energy lead me-opp quartile: <-92 -0.044 (n=244842), -92-0 -0.038 (n=251700), 0-92 -0.002 (n=237984), >92 +0.002 (n=244842)
+    value by take-off speed (m/s) quartile: <2.6 -0.008 (n=9801), 2.6-8.7 -0.003 (n=9800), 8.7-12.8 -0.009 (n=9800), >12.8 +0.057 (n=9801)
+    second_touch: n=8005, P(ball moving my way 0.5 s later) 0.69, P(goal for / against within 5 s) 0.062 / 0.062, my speed 13.0 -> max 16.5 m/s in 0.5 s, P(past the ball 1 s later) 0.12, dx 1 s later -4.9 m
+    second_kick: n=3341, P(ball moving my way 0.5 s later) 0.95, P(goal for / against within 5 s) 0.036 / 0.025, my speed 19.5 -> max 20.6 m/s in 0.5 s, P(past the ball 1 s later) 0.02, dx 1 s later -8.3 m
+    got flung: n=442, own goals after (flung_own_goal) 5; impale plants n=21, of which brakes (speed drop) n=16
+
+== farm3 vs farm2  (farm3 684M steps, farm2 427M steps)  farm3 W-D-L 34-22-72, goal diff -1.12/match
+  farm3: 612 rider-min, 0.85 goals/min, baseline goal diff next 10 s -0.016; vault apex median: pogo 6.82 m, other 6.13 m
+  farm2: 612 rider-min, 1.09 goals/min, baseline goal diff next 10 s +0.074; vault apex median: pogo 5.84 m, other 5.83 m
+  state                             farm3: share entries/min value            farm2: share entries/min value
+  good_side                                  77.5%    8.18  +0.064                     85.2%    7.07  +0.053
+  near_ball                                  33.4%   23.07  -0.030                     27.9%   24.40  -0.059
+  tip_behind_ball                            20.6%   21.78  +0.055                     14.3%   23.77  +0.072
+  tip_past_ball                              12.8%   13.17  -0.166                     13.6%   15.29  -0.198
+  sit_right_far                              48.7%   19.50  +0.056                     58.8%   22.65  +0.057
+  sit_right_close                            21.4%   22.85  -0.029                     20.6%   23.94  -0.044
+  sit_A                                       4.5%    2.60  -0.494                      3.9%    1.61  -0.448
+  sit_B                                      13.5%    7.69  -0.225                      8.2%    4.76  -0.330
+  sit_both_wrong                              1.0%    0.91  +0.050                      1.1%    0.91  -0.108
+  opp_out                                    10.9%    1.95  +0.281                      7.4%    1.40  +0.289
+  opp_wrong_side                             12.7%    4.44  +0.289                     19.8%    6.62  +0.215
+  airborne                                   67.4%   28.63  +0.001                     72.4%   29.89  +0.032
+  pole_planted                               20.7%   31.55  -0.008                     23.8%   30.62  +0.015
+  in_pit                                      2.8%    3.00  -0.196                      3.0%    2.53  -0.346
+  pole_fwd_down                              29.1%   29.34  +0.001                     33.3%   29.75  +0.004
+  pole_fwd_up                                29.2%   30.89  -0.024                     38.4%   30.11  -0.046
+  pole_back_up                               18.2%   30.63  +0.040                     17.2%   26.42  +0.054
+  pole_back_down                             23.6%   27.73  -0.003                     11.1%   24.37  +0.065
+  backswing_in_flight                        11.9%   29.99  +0.003                      4.3%   16.49  -0.051
+  pole_on_opp                                 5.3%    6.38  +0.001                      6.2%    8.12  -0.054
+  opp_pole_on_me                              6.0%    8.12  -0.004                      5.5%    6.38  -0.058
+  pole_over_opp_head                          2.2%    4.23  -0.008                      2.3%    3.85  +0.031
+  opp_on_my_pole                              1.1%    2.73  -0.119                      2.7%    3.15  -0.142
+  on_opp_pole                                 2.6%    3.15  +0.084                      1.1%    2.73  +0.061
+  tip_peek                                    7.0%   13.34  -0.128                      9.8%   16.09  -0.105
+  rhythmic_pressing                           0.3%    0.30  -0.145                      0.3%    0.32  -0.234
+  committed                                  44.5%   57.77  +0.002                     45.2%   58.11  +0.034
+  at_mercy                                    5.0%   15.30  +0.070                      6.9%   16.81  +0.066
+  high_energy                                24.0%   34.12  +0.009                     25.7%   36.09  +0.024
+  event                                 farm3: per min value +- se                farm2: per min value +- se
+  goal_for                                   0.85  -0.015 +- 0.012                     1.09  -0.071 +- 0.011
+  goal_against                               1.09  +0.013 +- 0.011                     0.85  -0.043 +- 0.012
+  kill                                       1.94  +0.269 +- 0.015                     1.38  +0.284 +- 0.019
+  death                                      1.38  -0.342 +- 0.019                     1.94  -0.327 +- 0.015
+  back_pass                                  7.87  +0.008 +- 0.008                     3.24  -0.003 +- 0.013
+  fwd_pass                                  23.56  +0.034 +- 0.005                    25.20  +0.061 +- 0.004
+  vault                                     19.95  +0.022 +- 0.005                    23.29  +0.047 +- 0.005
+  pogo_vault                                 1.12  -0.234 +- 0.023                     1.89  +0.030 +- 0.016
+  jump_over_ball                             0.39  -0.134 +- 0.041                     0.21  -0.216 +- 0.062
+  pushed_opp_wrong_side                      0.36  +0.270 +- 0.042                     0.35  +0.146 +- 0.045
+  tip_got_behind_ball                        3.32  -0.016 +- 0.012                     2.30  -0.024 +- 0.014
+  catapult                                   0.54  -0.133 +- 0.034                     0.57  -0.019 +- 0.033
+  peek_touch                                 0.44  -0.130 +- 0.035                     0.39  -0.133 +- 0.039
+  takeoff                                   25.55  +0.011 +- 0.004                    26.13  +0.014 +- 0.005
+  fast_takeoff                               5.27  +0.017 +- 0.010                     6.79  +0.019 +- 0.009
+  lunge_at_opp                               0.22  -0.075 +- 0.048                     0.16  -0.216 +- 0.059
+  lunge_from_pit                             0.05  -0.203 +- 0.096                     0.02  -0.304 +- 0.117
+  overcommit                                 0.09  -0.229 +- 0.084                     0.05  -0.292 +- 0.096
+  overcommit_opp_still                       0.00              n/a                     0.00              n/a
+  got_flung                                  0.58  -0.030 +- 0.033                     0.54  +0.078 +- 0.034
+  flung_own_goal                             0.01  +0.016 +- 0.000                     0.01  -0.074 +- 0.000
+  second_touch                              10.37  -0.034 +- 0.007                    10.57  -0.023 +- 0.007
+  second_kick                                2.35  +0.044 +- 0.012                     2.78  +0.022 +- 0.012
+  impale_plant                               0.65  -0.198 +- 0.031                     0.05  -0.142 +- 0.097
+  impale_brake                               0.42  -0.200 +- 0.039                     0.03  -0.129 +- 0.146
+  -- outcomes (2026-10-02 concepts; goal diff values relative to the baseline, p = probability)
+  farm3: P(goal against within 5 s) baseline 0.079, P(goal for within 5 s) 0.077
+    lunge at opp: n=132 (32 from the pit), overcommit per lunge 0.40, P(goal against 5 s) after lunge 0.152, after overcommit 0.226, after overcommit with the opponent still n/a; opponent still in 0% of overcommits (his median speed at the flip 9.3 m/s)
+    value by energy (J/kg) quartile: <22 -0.015 (n=126507), 22-98 -0.018 (n=126507), 98-161 +0.024 (n=126506), >161 +0.009 (n=126507)
+    value by energy lead me-opp quartile: <-81 -0.088 (n=112741), -81--6 -0.074 (n=112740), -6-73 -0.026 (n=112740), >73 +0.051 (n=112741)
+    value by take-off speed (m/s) quartile: <7.6 -0.025 (n=3903), 7.6-10.6 +0.009 (n=3903), 10.6-13.5 +0.039 (n=3903), >13.5 +0.023 (n=3903)
+    second_touch: n=6336, P(ball moving my way 0.5 s later) 0.62, P(goal for / against within 5 s) 0.045 / 0.066, my speed 8.9 -> max 13.3 m/s in 0.5 s, P(past the ball 1 s later) 0.19, dx 1 s later -3.2 m
+    second_kick: n=1437, P(ball moving my way 0.5 s later) 0.96, P(goal for / against within 5 s) 0.035 / 0.020, my speed 19.0 -> max 21.3 m/s in 0.5 s, P(past the ball 1 s later) 0.03, dx 1 s later -7.6 m
+    got flung: n=352, own goals after (flung_own_goal) 4; impale plants n=398, of which brakes (speed drop) n=255
+  farm2: P(goal against within 5 s) baseline 0.056, P(goal for within 5 s) 0.102
+    lunge at opp: n=98 (13 from the pit), overcommit per lunge 0.33, P(goal against 5 s) after lunge 0.194, after overcommit 0.250, after overcommit with the opponent still n/a; opponent still in 0% of overcommits (his median speed at the flip 6.7 m/s)
+    value by energy (J/kg) quartile: <33 -0.083 (n=121820), 33-102 +0.013 (n=121819), 102-168 +0.048 (n=121819), >168 +0.023 (n=121820)
+    value by energy lead me-opp quartile: <-73 -0.109 (n=112741), -73-6 -0.032 (n=112740), 6-81 +0.017 (n=112740), >81 +0.031 (n=112741)
+    value by take-off speed (m/s) quartile: <8.7 -0.003 (n=3991), 8.7-11.8 -0.001 (n=3990), 11.8-14.1 +0.042 (n=3990), >14.1 +0.018 (n=3991)
+    second_touch: n=6458, P(ball moving my way 0.5 s later) 0.58, P(goal for / against within 5 s) 0.067 / 0.040, my speed 11.2 -> max 15.3 m/s in 0.5 s, P(past the ball 1 s later) 0.11, dx 1 s later -3.8 m
+    second_kick: n=1700, P(ball moving my way 0.5 s later) 0.96, P(goal for / against within 5 s) 0.057 / 0.014, my speed 19.7 -> max 21.5 m/s in 0.5 s, P(past the ball 1 s later) 0.02, dx 1 s later -8.4 m
+    got flung: n=331, own goals after (flung_own_goal) 4; impale plants n=29, of which brakes (speed drop) n=18
+
+== cand_search1_t2_10M vs farm2  (cand_search1_t2_10M 10M steps, farm2 427M steps)  cand_search1_t2_10M W-D-L 16-14-98, goal diff -2.09/match
+  cand_search1_t2_10M: 620 rider-min, 0.65 goals/min, baseline goal diff next 10 s -0.043; vault apex median: pogo 5.61 m, other 5.68 m
+  farm2: 620 rider-min, 1.08 goals/min, baseline goal diff next 10 s +0.094; vault apex median: pogo 5.86 m, other 5.82 m
+  state                 cand_search1_t2_10M: share entries/min value            farm2: share entries/min value
+  good_side                                  65.4%    7.49  +0.061                     88.5%    5.80  +0.041
+  near_ball                                  33.3%   20.40  -0.026                     28.0%   21.93  -0.023
+  tip_behind_ball                            13.1%   17.14  +0.065                     13.2%   21.63  +0.079
+  tip_past_ball                              20.2%   10.46  -0.085                     14.8%   14.05  -0.114
+  sit_right_far                              44.2%   17.26  +0.057                     60.1%   19.86  +0.027
+  sit_right_close                            16.6%   20.24  -0.024                     21.6%   21.09  -0.025
+  sit_A                                       4.5%    2.97  -0.401                      2.7%    1.33  -0.662
+  sit_B                                      27.6%    7.32  -0.086                      5.9%    3.84  -0.316
+  sit_both_wrong                              0.8%    0.85  -0.057                      0.8%    0.85  +0.007
+  opp_out                                     6.3%    1.18  +0.330                      8.9%    1.70  +0.288
+  opp_wrong_side                              9.7%    3.80  +0.336                     32.0%    5.83  +0.077
+  airborne                                   55.3%   28.09  +0.017                     75.7%   29.25  +0.015
+  pole_planted                               17.1%   25.10  +0.004                     23.3%   33.33  +0.003
+  in_pit                                      3.8%    2.88  -0.108                      1.8%    1.87  -0.278
+  pole_fwd_down                              23.8%   27.74  -0.005                     46.0%   25.75  -0.022
+  pole_fwd_up                                44.8%   30.78  -0.028                     30.4%   25.97  -0.022
+  pole_back_up                               21.7%   24.88  +0.047                     13.8%   22.92  +0.065
+  pole_back_down                              9.7%   20.25  +0.036                      9.9%   21.33  +0.079
+  backswing_in_flight                         4.8%   15.24  +0.015                      5.4%   24.39  -0.030
+  pole_on_opp                                24.0%    5.61  +0.002                     23.8%    8.37  -0.053
+  opp_pole_on_me                             24.5%    8.37  +0.002                     23.3%    5.61  -0.052
+  pole_over_opp_head                         14.1%    7.50  +0.025                     19.6%    6.59  -0.047
+  opp_on_my_pole                              3.1%    3.92  -0.093                      1.1%    2.32  -0.162
+  on_opp_pole                                 1.1%    2.32  +0.112                      3.0%    3.92  +0.042
+  tip_peek                                    5.5%    9.93  -0.131                      7.5%   13.07  -0.077
+  rhythmic_pressing                          10.8%    3.39  +0.006                      0.2%    0.22  -0.388
+  committed                                  35.2%   47.45  +0.022                     37.4%   49.11  +0.036
+  at_mercy                                    3.7%   11.23  +0.060                      5.2%   15.21  +0.100
+  high_energy                                20.0%   29.03  +0.024                     20.8%   31.19  +0.036
+  event                   cand_search1_t2_10M: per min value +- se                farm2: per min value +- se
+  goal_for                                   0.65  +0.048 +- 0.012                     1.08  -0.089 +- 0.010
+  goal_against                               1.08  +0.039 +- 0.010                     0.65  -0.099 +- 0.012
+  kill                                       1.14  +0.329 +- 0.020                     1.67  +0.303 +- 0.018
+  death                                      1.67  -0.353 +- 0.018                     1.14  -0.380 +- 0.020
+  back_pass                                  5.53  +0.003 +- 0.009                     2.76  -0.003 +- 0.015
+  fwd_pass                                  23.04  +0.029 +- 0.005                    21.89  +0.069 +- 0.005
+  vault                                     17.78  +0.039 +- 0.005                    19.60  +0.050 +- 0.005
+  pogo_vault                                 0.45  +0.014 +- 0.034                     1.31  +0.026 +- 0.018
+  jump_over_ball                             0.19  -0.315 +- 0.061                     0.14  -0.048 +- 0.079
+  pushed_opp_wrong_side                      0.32  +0.302 +- 0.048                     0.40  +0.123 +- 0.039
+  tip_got_behind_ball                        1.28  -0.019 +- 0.021                     2.32  +0.030 +- 0.015
+  catapult                                   0.50  -0.248 +- 0.035                     0.45  -0.040 +- 0.041
+  peek_touch                                 0.28  -0.038 +- 0.050                     0.32  -0.155 +- 0.046
+  takeoff                                   25.05  +0.001 +- 0.005                    26.43  +0.028 +- 0.004
+  fast_takeoff                               6.26  +0.046 +- 0.010                     6.02  +0.037 +- 0.009
+  lunge_at_opp                               0.16  -0.257 +- 0.062                     0.13  -0.338 +- 0.068
+  lunge_from_pit                             0.05  -0.192 +- 0.094                     0.03  -0.316 +- 0.126
+  overcommit                                 0.08  -0.370 +- 0.085                     0.06  -0.515 +- 0.109
+  overcommit_opp_still                       0.00              n/a                     0.00              n/a
+  got_flung                                  0.46  +0.005 +- 0.041                     0.50  +0.203 +- 0.035
+  flung_own_goal                             0.00  +0.043 +- 0.000                     0.00  -0.094 +- 0.000
+  second_touch                               6.98  -0.010 +- 0.009                     8.00  +0.000 +- 0.008
+  second_kick                                2.63  +0.048 +- 0.013                     1.93  +0.040 +- 0.014
+  impale_plant                               0.01  +0.210 +- 0.152                     0.04  +0.066 +- 0.122
+  impale_brake                               0.01  +0.210 +- 0.152                     0.03  +0.156 +- 0.120
+  -- outcomes (2026-10-02 concepts; goal diff values relative to the baseline, p = probability)
+  cand_search1_t2_10M: P(goal against within 5 s) baseline 0.073, P(goal for within 5 s) 0.060
+    lunge at opp: n=101 (34 from the pit), overcommit per lunge 0.47, P(goal against 5 s) after lunge 0.230, after overcommit 0.326, after overcommit with the opponent still n/a; opponent still in 0% of overcommits (his median speed at the flip 14.4 m/s)
+    value by energy (J/kg) quartile: <2 -0.018 (n=125148), 2-70 -0.019 (n=125147), 70-146 +0.014 (n=125147), >146 +0.024 (n=125147)
+    value by energy lead me-opp quartile: <-79 -0.083 (n=117270), -79--36 -0.014 (n=117270), -36-44 -0.011 (n=117269), >44 +0.019 (n=117270)
+    value by take-off speed (m/s) quartile: <8.3 -0.013 (n=3869), 8.3-11.4 -0.019 (n=3869), 11.4-14.0 -0.011 (n=3868), >14.0 +0.046 (n=3869)
+    second_touch: n=4309, P(ball moving my way 0.5 s later) 0.69, P(goal for / against within 5 s) 0.057 / 0.078, my speed 12.7 -> max 16.4 m/s in 0.5 s, P(past the ball 1 s later) 0.16, dx 1 s later -4.3 m
+    second_kick: n=1623, P(ball moving my way 0.5 s later) 0.97, P(goal for / against within 5 s) 0.046 / 0.033, my speed 20.1 -> max 21.2 m/s in 0.5 s, P(past the ball 1 s later) 0.01, dx 1 s later -8.8 m
+    got flung: n=287, own goals after (flung_own_goal) 1; impale plants n=6, of which brakes (speed drop) n=6
+  farm2: P(goal against within 5 s) baseline 0.046, P(goal for within 5 s) 0.097
+    lunge at opp: n=82 (18 from the pit), overcommit per lunge 0.46, P(goal against 5 s) after lunge 0.220, after overcommit 0.421, after overcommit with the opponent still n/a; opponent still in 0% of overcommits (his median speed at the flip 13.3 m/s)
+    value by energy (J/kg) quartile: <50 -0.040 (n=128729), 50-87 -0.035 (n=128729), 87-148 +0.036 (n=128730), >148 +0.039 (n=128728)
+    value by energy lead me-opp quartile: <-44 -0.070 (n=117270), -44-36 -0.039 (n=117270), 36-79 -0.036 (n=117269), >79 +0.033 (n=117270)
+    value by take-off speed (m/s) quartile: <7.3 -0.008 (n=4081), 7.3-11.2 +0.029 (n=4081), 11.2-13.7 +0.055 (n=4080), >13.7 +0.037 (n=4081)
+    second_touch: n=4941, P(ball moving my way 0.5 s later) 0.56, P(goal for / against within 5 s) 0.072 / 0.041, my speed 11.7 -> max 15.9 m/s in 0.5 s, P(past the ball 1 s later) 0.07, dx 1 s later -4.6 m
+    second_kick: n=1193, P(ball moving my way 0.5 s later) 0.96, P(goal for / against within 5 s) 0.062 / 0.012, my speed 20.3 -> max 21.7 m/s in 0.5 s, P(past the ball 1 s later) 0.01, dx 1 s later -8.1 m
+    got flung: n=311, own goals after (flung_own_goal) 2; impale plants n=25, of which brakes (speed drop) n=20

@@ -1,0 +1,16 @@
+# training data, checkpoints, logs, recordings (tens of GB) — selected bots are in bots/
+runs/
+# local environment and build outputs (rebuild with `make -C sim env` and `make -C bridge`)
+.venv/
+__pycache__/
+*.pyc
+sim/build*/
+sim/traces/
+*.dylib
+*.dylib.tmp
+*.o
+last-run.log
+*.mp4
+.DS_Store
+*.lock
+re/dis.txt

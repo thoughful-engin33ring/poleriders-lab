@@ -1,0 +1,490 @@
+Concept report (2026-10-02 14:17): 128 matches per line-up, native sim, 7 goals / 5 min, no sudden death. Value = own goal diff over the next 10 s minus the policy's baseline (correlational). Rates per minute of one rider's play. Definitions: concepts.py.
+
+== farm2 self-play  (farm2 427M steps)
+  farm2: 1224 rider-min, 0.99 goals/min, baseline goal diff next 10 s +0.030; vault apex median: pogo 5.84 m, other 5.83 m
+  state                             farm2: share entries/min value
+  good_side                                  83.9%    7.25  +0.056
+  near_ball                                  29.6%   25.97  -0.038
+  tip_behind_ball                            15.5%   25.81  +0.065
+  tip_past_ball                              14.1%   16.62  -0.150
+  sit_right_far                              56.1%   23.44  +0.051
+  sit_right_close                            21.6%   25.45  -0.030
+  sit_A                                       3.6%    1.96  -0.554
+  sit_B                                       9.0%    5.53  -0.317
+  sit_both_wrong                              1.2%    1.06  -0.030
+  opp_out                                     8.6%    1.61  +0.316
+  opp_wrong_side                             13.8%    5.20  +0.294
+  airborne                                   72.3%   30.89  +0.027
+  pole_planted                               24.2%   32.21  +0.010
+  in_pit                                      2.8%    2.62  -0.270
+  pole_fwd_down                              33.2%   31.29  +0.004
+  pole_fwd_up                                38.8%   32.31  -0.045
+  pole_back_up                               16.4%   28.18  +0.055
+  pole_back_down                             11.6%   25.41  +0.061
+  backswing_in_flight                         4.4%   16.78  -0.037
+  pole_on_opp                                 4.8%    6.86  -0.040
+  opp_pole_on_me                              4.8%    6.86  -0.019
+  pole_over_opp_head                          2.4%    3.65  +0.042
+  opp_on_my_pole                              1.3%    2.61  -0.173
+  on_opp_pole                                 1.3%    2.61  +0.114
+  tip_peek                                   10.4%   17.44  -0.095
+  rhythmic_pressing                           0.3%    0.27  -0.227
+  event                                 farm2: per min value +- se
+  goal_for                                   0.99  -0.035 +- 0.006
+  goal_against                               0.99  -0.024 +- 0.006
+  kill                                       1.59  +0.298 +- 0.012
+  death                                      1.59  -0.358 +- 0.012
+  back_pass                                  3.67  -0.030 +- 0.009
+  fwd_pass                                  27.03  +0.048 +- 0.003
+  vault                                     24.18  +0.039 +- 0.003
+  pogo_vault                                 2.02  +0.026 +- 0.011
+  jump_over_ball                             0.19  -0.142 +- 0.045
+  pushed_opp_wrong_side                      0.40  +0.218 +- 0.030
+  tip_got_behind_ball                        2.89  -0.012 +- 0.009
+  catapult                                   0.45  -0.120 +- 0.028
+  peek_touch                                 0.46  -0.069 +- 0.027
+
+== farm3 self-play  (farm3 684M steps)
+  farm3: 1177 rider-min, 1.10 goals/min, baseline goal diff next 10 s +0.042; vault apex median: pogo 6.74 m, other 6.11 m
+  state                             farm3: share entries/min value
+  good_side                                  77.8%    8.03  +0.072
+  near_ball                                  31.7%   21.14  -0.041
+  tip_behind_ball                            20.4%   20.42  +0.072
+  tip_past_ball                              11.3%   11.42  -0.244
+  sit_right_far                              50.2%   18.46  +0.053
+  sit_right_close                            20.0%   20.95  -0.035
+  sit_A                                       5.2%    2.57  -0.411
+  sit_B                                      12.3%    6.45  -0.280
+  sit_both_wrong                              2.4%    1.45  -0.042
+  opp_out                                     9.9%    1.74  +0.380
+  opp_wrong_side                             19.9%    5.86  +0.203
+  airborne                                   65.8%   28.22  +0.008
+  pole_planted                               19.3%   28.96  +0.005
+  in_pit                                      3.1%    2.90  -0.289
+  pole_fwd_down                              28.5%   26.75  -0.006
+  pole_fwd_up                                29.9%   29.26  -0.038
+  pole_back_up                               19.4%   29.83  +0.050
+  pole_back_down                             22.3%   25.72  +0.015
+  backswing_in_flight                        11.7%   28.98  +0.004
+  pole_on_opp                                 7.6%    9.11  -0.039
+  opp_pole_on_me                              7.6%    9.11  -0.044
+  pole_over_opp_head                          3.6%    6.02  -0.024
+  opp_on_my_pole                              2.3%    3.65  -0.152
+  on_opp_pole                                 2.3%    3.65  +0.068
+  tip_peek                                    6.2%   11.97  -0.121
+  rhythmic_pressing                           0.6%    0.44  -0.199
+  event                                 farm3: per min value +- se
+  goal_for                                   1.10  -0.050 +- 0.009
+  goal_against                               1.10  -0.033 +- 0.009
+  kill                                       1.72  +0.346 +- 0.012
+  death                                      1.72  -0.429 +- 0.012
+  back_pass                                  8.59  -0.023 +- 0.006
+  fwd_pass                                  22.74  +0.037 +- 0.004
+  vault                                     18.32  +0.039 +- 0.004
+  pogo_vault                                 1.07  -0.177 +- 0.017
+  jump_over_ball                             0.38  -0.075 +- 0.032
+  pushed_opp_wrong_side                      0.50  +0.076 +- 0.029
+  tip_got_behind_ball                        3.14  -0.022 +- 0.009
+  catapult                                   0.57  -0.129 +- 0.025
+  peek_touch                                 0.33  -0.222 +- 0.033
+
+== pbt1_m0 self-play  (pbt1_m0 37M steps)
+  pbt1_m0: 1229 rider-min, 0.94 goals/min, baseline goal diff next 10 s +0.028; vault apex median: pogo 5.78 m, other 5.71 m
+  state                           pbt1_m0: share entries/min value
+  good_side                                  71.5%    6.31  +0.113
+  near_ball                                  23.6%   16.76  +0.017
+  tip_behind_ball                            12.5%   15.62  +0.157
+  tip_past_ball                              11.1%   10.51  -0.141
+  sit_right_far                              46.9%   15.24  +0.098
+  sit_right_close                            15.2%   15.29  +0.046
+  sit_A                                       7.2%    2.38  -0.626
+  sit_B                                      13.2%    4.84  -0.233
+  sit_both_wrong                              4.1%    1.00  -0.028
+  opp_out                                    13.5%    2.16  +0.178
+  opp_wrong_side                             24.5%    4.24  +0.258
+  airborne                                   67.8%   30.77  +0.006
+  pole_planted                               21.2%   23.67  -0.008
+  in_pit                                      3.1%    3.21  -0.154
+  pole_fwd_down                              31.9%   26.96  -0.018
+  pole_fwd_up                                38.6%   30.89  -0.000
+  pole_back_up                               18.8%   26.53  +0.019
+  pole_back_down                             10.7%   20.32  +0.021
+  backswing_in_flight                         5.8%   19.03  -0.050
+  pole_on_opp                                13.7%    6.47  -0.016
+  opp_pole_on_me                             13.7%    6.47  -0.040
+  pole_over_opp_head                          6.9%    4.76  -0.014
+  opp_on_my_pole                              2.1%    3.76  -0.031
+  on_opp_pole                                 2.1%    3.76  -0.025
+  tip_peek                                    5.3%    9.55  -0.082
+  rhythmic_pressing                           1.1%    0.71  -0.057
+  event                               pbt1_m0: per min value +- se
+  goal_for                                   0.94  -0.042 +- 0.009
+  goal_against                               0.94  -0.014 +- 0.009
+  kill                                       2.16  +0.186 +- 0.009
+  death                                      2.16  -0.242 +- 0.009
+  back_pass                                  8.17  -0.050 +- 0.006
+  fwd_pass                                  24.72  +0.019 +- 0.003
+  vault                                     19.54  +0.018 +- 0.004
+  pogo_vault                                 0.32  -0.144 +- 0.029
+  jump_over_ball                             0.13  -0.089 +- 0.048
+  pushed_opp_wrong_side                      0.32  +0.284 +- 0.027
+  tip_got_behind_ball                        1.52  +0.133 +- 0.014
+  catapult                                   0.33  +0.063 +- 0.029
+  peek_touch                                 0.23  -0.077 +- 0.036
+
+== pbt1_m1 self-play  (pbt1_m1 37M steps)
+  pbt1_m1: 1279 rider-min, 0.74 goals/min, baseline goal diff next 10 s +0.026; vault apex median: pogo 10.38 m, other 5.94 m
+  state                           pbt1_m1: share entries/min value
+  good_side                                  69.4%    6.78  +0.068
+  near_ball                                  31.0%   15.19  -0.017
+  tip_behind_ball                            17.1%   12.81  +0.078
+  tip_past_ball                              13.9%    8.29  -0.134
+  sit_right_far                              46.1%   12.54  +0.056
+  sit_right_close                            16.9%   14.61  -0.003
+  sit_A                                       4.6%    3.09  -0.424
+  sit_B                                      20.9%    5.99  -0.135
+  sit_both_wrong                              1.8%    1.23  -0.026
+  opp_out                                     9.7%    1.62  +0.237
+  opp_wrong_side                             27.3%    4.64  +0.126
+  airborne                                   54.8%   38.35  +0.018
+  pole_planted                               18.8%   22.48  +0.013
+  in_pit                                      2.6%    1.86  -0.210
+  pole_fwd_down                              40.7%   23.12  -0.007
+  pole_fwd_up                                25.9%   27.45  -0.042
+  pole_back_up                               18.1%   25.13  +0.045
+  pole_back_down                             15.3%   19.52  +0.037
+  backswing_in_flight                         7.8%   22.54  +0.008
+  pole_on_opp                                30.2%    6.41  -0.026
+  opp_pole_on_me                             30.2%    6.41  -0.025
+  pole_over_opp_head                          6.9%   16.74  -0.003
+  opp_on_my_pole                              5.1%   13.04  -0.058
+  on_opp_pole                                 5.1%   13.04  +0.007
+  tip_peek                                    4.8%    7.57  -0.113
+  rhythmic_pressing                           7.4%    2.72  -0.064
+  event                               pbt1_m1: per min value +- se
+  goal_for                                   0.74  -0.022 +- 0.008
+  goal_against                               0.74  -0.029 +- 0.008
+  kill                                       1.61  +0.220 +- 0.011
+  death                                      1.61  -0.271 +- 0.011
+  back_pass                                  9.50  -0.041 +- 0.003
+  fwd_pass                                  20.74  +0.014 +- 0.003
+  vault                                     12.44  +0.058 +- 0.004
+  pogo_vault                                 1.33  -0.010 +- 0.012
+  jump_over_ball                             0.30  -0.106 +- 0.031
+  pushed_opp_wrong_side                      0.48  +0.157 +- 0.023
+  tip_got_behind_ball                        1.57  -0.017 +- 0.012
+  catapult                                   0.55  -0.054 +- 0.023
+  peek_touch                                 0.40  -0.157 +- 0.025
+
+== pbt1_m2 self-play  (pbt1_m2 38M steps)
+  pbt1_m2: 1140 rider-min, 0.96 goals/min, baseline goal diff next 10 s +0.033; vault apex median: pogo 6.37 m, other 6.04 m
+  state                           pbt1_m2: share entries/min value
+  good_side                                  66.4%    6.22  +0.121
+  near_ball                                  27.1%   13.80  +0.008
+  tip_behind_ball                            13.8%   11.76  +0.104
+  tip_past_ball                              13.4%    7.99  -0.091
+  sit_right_far                              42.4%   12.00  +0.101
+  sit_right_close                            14.9%   12.73  +0.038
+  sit_A                                       7.3%    2.44  -0.577
+  sit_B                                      20.9%    4.15  -0.164
+  sit_both_wrong                              2.8%    1.40  -0.033
+  opp_out                                    11.7%    1.92  +0.245
+  opp_wrong_side                             31.0%    4.00  +0.185
+  airborne                                   59.2%   30.65  +0.033
+  pole_planted                               16.8%   21.25  +0.044
+  in_pit                                      2.3%    1.61  -0.127
+  pole_fwd_down                              40.5%   24.28  -0.003
+  pole_fwd_up                                34.5%   21.88  -0.005
+  pole_back_up                               11.4%   19.21  +0.021
+  pole_back_down                             13.6%   19.91  +0.003
+  backswing_in_flight                         7.6%   19.60  +0.004
+  pole_on_opp                                31.2%    6.48  -0.027
+  opp_pole_on_me                             31.2%    6.48  -0.039
+  pole_over_opp_head                          7.1%    7.06  -0.022
+  opp_on_my_pole                              3.3%    4.93  -0.007
+  on_opp_pole                                 3.3%    4.93  -0.058
+  tip_peek                                    3.9%    6.72  -0.098
+  rhythmic_pressing                           1.1%    0.62  -0.061
+  event                               pbt1_m2: per min value +- se
+  goal_for                                   0.96  -0.026 +- 0.008
+  goal_against                               0.96  -0.039 +- 0.008
+  kill                                       1.91  +0.238 +- 0.011
+  death                                      1.91  -0.303 +- 0.011
+  back_pass                                  3.63  -0.092 +- 0.007
+  fwd_pass                                  14.98  +0.072 +- 0.005
+  vault                                     14.21  +0.090 +- 0.005
+  pogo_vault                                 0.49  -0.172 +- 0.028
+  jump_over_ball                             0.13  -0.053 +- 0.056
+  pushed_opp_wrong_side                      0.39  +0.216 +- 0.030
+  tip_got_behind_ball                        0.97  +0.099 +- 0.020
+  catapult                                   0.45  -0.017 +- 0.030
+  peek_touch                                 0.28  -0.079 +- 0.032
+
+== pbt1_m3 self-play  (pbt1_m3 37M steps)
+  pbt1_m3: 2550 rider-min, 0.00 goals/min, baseline goal diff next 10 s +0.000; vault apex median: pogo 4.74 m, other 4.85 m
+  state                           pbt1_m3: share entries/min value
+  good_side                                 100.0%    0.10  +0.000
+  near_ball                                   0.0%    0.00  +0.000
+  tip_behind_ball                             0.0%    0.00  +0.000
+  tip_past_ball                               0.0%    0.00  +0.000
+  sit_right_far                             100.0%    0.10  +0.000
+  sit_right_close                             0.0%    0.00  +0.000
+  sit_A                                       0.0%    0.00     n/a
+  sit_B                                       0.0%    0.00  +0.000
+  sit_both_wrong                              0.0%    0.00     n/a
+  opp_out                                     0.0%    0.00     n/a
+  opp_wrong_side                              0.0%    0.00  +0.000
+  airborne                                   88.1%   24.69  +0.000
+  pole_planted                               33.1%   56.34  +0.000
+  in_pit                                      0.6%    1.75  +0.000
+  pole_fwd_down                              16.3%   51.82  +0.000
+  pole_fwd_up                                17.3%   52.73  +0.000
+  pole_back_up                               27.5%   53.00  +0.000
+  pole_back_down                             38.9%   52.05  +0.000
+  backswing_in_flight                        57.8%   66.39  +0.000
+  pole_on_opp                                 0.0%    0.00     n/a
+  opp_pole_on_me                              0.0%    0.00     n/a
+  pole_over_opp_head                          0.0%    0.00     n/a
+  opp_on_my_pole                              0.0%    0.00     n/a
+  on_opp_pole                                 0.0%    0.00     n/a
+  tip_peek                                    0.0%    0.00  +0.000
+  rhythmic_pressing                           0.0%    0.00     n/a
+  event                               pbt1_m3: per min value +- se
+  goal_for                                   0.00              n/a
+  goal_against                               0.00              n/a
+  kill                                       0.00              n/a
+  death                                      0.00              n/a
+  back_pass                                 52.66  +0.000 +- 0.000
+  fwd_pass                                   0.95  +0.000 +- 0.000
+  vault                                     33.90  +0.000 +- 0.000
+  pogo_vault                                 2.85  +0.000 +- 0.000
+  jump_over_ball                             0.00              n/a
+  pushed_opp_wrong_side                      0.00              n/a
+  tip_got_behind_ball                        0.00              n/a
+  catapult                                   0.00              n/a
+  peek_touch                                 0.00              n/a
+
+== farm3 vs farm2  (farm3 684M steps, farm2 427M steps)  farm3 W-D-L 31-12-85, goal diff -1.51/match
+  farm3: 605 rider-min, 0.86 goals/min, baseline goal diff next 10 s -0.028; vault apex median: pogo 6.96 m, other 6.14 m
+  farm2: 605 rider-min, 1.18 goals/min, baseline goal diff next 10 s +0.093; vault apex median: pogo 5.83 m, other 5.84 m
+  state                             farm3: share entries/min value            farm2: share entries/min value
+  good_side                                  77.7%    8.19  +0.065                     85.2%    7.25  +0.053
+  near_ball                                  32.8%   22.87  -0.035                     28.3%   24.42  -0.058
+  tip_behind_ball                            20.3%   21.78  +0.061                     14.7%   23.99  +0.080
+  tip_past_ball                              12.6%   12.97  -0.191                     13.6%   15.28  -0.208
+  sit_right_far                              49.3%   19.37  +0.051                     58.2%   22.72  +0.056
+  sit_right_close                            20.9%   22.41  -0.038                     21.0%   24.14  -0.044
+  sit_A                                       4.4%    2.48  -0.493                      3.7%    1.53  -0.433
+  sit_B                                      13.4%    7.51  -0.245                      8.4%    4.75  -0.336
+  sit_both_wrong                              0.9%    0.94  +0.101                      1.0%    0.94  -0.166
+  opp_out                                    11.1%    1.98  +0.326                      7.8%    1.40  +0.290
+  opp_wrong_side                             12.6%    4.54  +0.286                     19.5%    6.56  +0.221
+  airborne                                   68.1%   28.85  +0.005                     71.7%   30.01  +0.033
+  pole_planted                               20.8%   31.56  -0.009                     23.5%   30.47  +0.018
+  in_pit                                      2.9%    2.97  -0.196                      3.4%    2.72  -0.359
+  pole_fwd_down                              29.7%   29.19  -0.001                     33.0%   29.52  +0.002
+  pole_fwd_up                                28.6%   30.43  -0.031                     38.6%   29.77  -0.049
+  pole_back_up                               18.2%   30.39  +0.041                     17.2%   26.40  +0.057
+  pole_back_down                             23.5%   27.69  +0.007                     11.3%   24.30  +0.074
+  backswing_in_flight                        12.1%   30.41  +0.004                      4.2%   16.16  -0.049
+  pole_on_opp                                 5.5%    6.33  -0.029                      6.6%    8.07  -0.063
+  opp_pole_on_me                              6.4%    8.07  -0.002                      5.7%    6.33  -0.036
+  pole_over_opp_head                          2.5%    4.27  +0.010                      2.2%    3.91  +0.030
+  opp_on_my_pole                              1.2%    2.75  -0.181                      2.5%    3.17  -0.180
+  on_opp_pole                                 2.4%    3.17  +0.115                      1.3%    2.75  +0.116
+  tip_peek                                    6.8%   12.93  -0.146                      9.7%   16.09  -0.110
+  rhythmic_pressing                           0.4%    0.23  -0.087                      0.3%    0.34  -0.208
+  event                                 farm3: per min value +- se                farm2: per min value +- se
+  goal_for                                   0.86  +0.017 +- 0.014                     1.18  -0.090 +- 0.011
+  goal_against                               1.18  +0.026 +- 0.011                     0.86  -0.082 +- 0.014
+  kill                                       1.97  +0.296 +- 0.015                     1.38  +0.289 +- 0.019
+  death                                      1.38  -0.354 +- 0.019                     1.97  -0.361 +- 0.015
+  back_pass                                  7.70  -0.016 +- 0.009                     3.33  -0.005 +- 0.014
+  fwd_pass                                  23.24  +0.030 +- 0.005                    25.02  +0.067 +- 0.005
+  vault                                     19.98  +0.021 +- 0.005                    23.18  +0.050 +- 0.005
+  pogo_vault                                 1.15  -0.215 +- 0.023                     1.95  +0.011 +- 0.015
+  jump_over_ball                             0.35  -0.056 +- 0.047                     0.17  -0.353 +- 0.066
+  pushed_opp_wrong_side                      0.32  +0.217 +- 0.040                     0.39  +0.098 +- 0.046
+  tip_got_behind_ball                        3.22  -0.043 +- 0.012                     2.31  -0.005 +- 0.015
+  catapult                                   0.50  -0.209 +- 0.040                     0.56  -0.061 +- 0.037
+  peek_touch                                 0.38  -0.178 +- 0.040                     0.34  -0.211 +- 0.042
+
+== pbt1_m0 vs farm2  (pbt1_m0 40M steps, farm2 427M steps)  pbt1_m0 W-D-L 0-1-127, goal diff -5.27/match
+  pbt1_m0: 473 rider-min, 0.23 goals/min, baseline goal diff next 10 s -0.211; vault apex median: pogo 6.26 m, other 5.82 m
+  farm2: 473 rider-min, 1.65 goals/min, baseline goal diff next 10 s +0.254; vault apex median: pogo 5.99 m, other 5.84 m
+  state                           pbt1_m0: share entries/min value            farm2: share entries/min value
+  good_side                                  43.1%    5.18  +0.014                     93.2%    5.18  +0.018
+  near_ball                                  18.3%   13.60  -0.040                     18.7%   15.94  +0.077
+  tip_behind_ball                             8.4%   11.06  +0.043                     11.5%   17.20  +0.175
+  tip_past_ball                               9.9%    9.36  -0.110                      7.2%    9.69  -0.081
+  sit_right_far                              28.7%   11.27  -0.002                     72.1%   15.84  -0.026
+  sit_right_close                            11.1%   12.75  -0.056                     14.4%   15.52  +0.093
+  sit_A                                       9.9%    2.95  -0.418                      1.3%    0.59  -0.717
+  sit_B                                      41.8%    5.30  +0.087                      3.1%    1.88  -0.376
+  sit_both_wrong                              1.6%    1.02  -0.301                      1.6%    1.02  +0.258
+  opp_out                                     6.9%    1.19  +0.251                      7.5%    1.31  +0.300
+  opp_wrong_side                              6.0%    2.49  +0.238                     53.0%    4.60  -0.023
+  airborne                                   49.8%   22.38  -0.094                     78.4%   22.98  +0.007
+  pole_planted                               15.8%   18.80  -0.127                     17.7%   30.27  +0.078
+  in_pit                                      2.4%    2.69  -0.162                      1.1%    0.98  -0.152
+  pole_fwd_down                              22.6%   21.19  -0.100                     51.8%   20.89  -0.090
+  pole_fwd_up                                55.5%   23.55  +0.075                     27.9%   19.95  +0.054
+  pole_back_up                               13.6%   19.46  -0.078                     11.7%   18.55  +0.143
+  pole_back_down                              8.3%   15.30  -0.092                      8.6%   17.76  +0.169
+  backswing_in_flight                         4.9%   16.23  -0.121                      7.8%   37.42  -0.112
+  pole_on_opp                                34.7%    4.84  +0.177                     35.1%    6.55  -0.208
+  opp_pole_on_me                             35.3%    6.55  +0.164                     34.5%    4.84  -0.220
+  pole_over_opp_head                         17.3%   19.52  +0.181                     32.4%    4.17  -0.218
+  opp_on_my_pole                              0.9%    2.11  +0.000                      0.9%    1.94  -0.247
+  on_opp_pole                                 0.9%    1.94  +0.204                      0.9%    2.11  -0.043
+  tip_peek                                    4.8%    8.71  -0.116                      5.1%    9.49  +0.011
+  rhythmic_pressing                          10.1%    3.87  +0.186                      0.1%    0.12  -0.222
+  event                               pbt1_m0: per min value +- se                farm2: per min value +- se
+  goal_for                                   0.23  +0.118 +- 0.031                     1.65  -0.151 +- 0.012
+  goal_against                               1.65  +0.108 +- 0.012                     0.23  -0.161 +- 0.031
+  kill                                       1.19  +0.266 +- 0.018                     1.30  +0.303 +- 0.021
+  death                                      1.30  -0.346 +- 0.021                     1.19  -0.309 +- 0.018
+  back_pass                                  5.60  -0.112 +- 0.011                     1.71  +0.066 +- 0.022
+  fwd_pass                                  18.00  -0.084 +- 0.006                    17.30  +0.172 +- 0.006
+  vault                                     14.38  -0.099 +- 0.007                    16.37  +0.151 +- 0.006
+  pogo_vault                                 0.24  -0.267 +- 0.052                     1.02  +0.187 +- 0.024
+  jump_over_ball                             0.17  -0.093 +- 0.075                     0.09  -0.301 +- 0.106
+  pushed_opp_wrong_side                      0.22  +0.172 +- 0.062                     0.29  +0.236 +- 0.046
+  tip_got_behind_ball                        1.06  +0.018 +- 0.027                     1.38  +0.111 +- 0.022
+  catapult                                   0.18  -0.099 +- 0.069                     0.37  -0.002 +- 0.047
+  peek_touch                                 0.20  -0.130 +- 0.061                     0.27  -0.088 +- 0.051
+
+== pbt1_m1 vs farm2  (pbt1_m1 40M steps, farm2 427M steps)  pbt1_m1 W-D-L 1-2-125, goal diff -5.51/match
+  pbt1_m1: 453 rider-min, 0.34 goals/min, baseline goal diff next 10 s -0.233; vault apex median: pogo 9.26 m, other 6.32 m
+  farm2: 453 rider-min, 1.90 goals/min, baseline goal diff next 10 s +0.286; vault apex median: pogo 5.97 m, other 5.92 m
+  state                           pbt1_m1: share entries/min value            farm2: share entries/min value
+  good_side                                  51.8%    9.76  +0.066                     89.8%    6.66  +0.038
+  near_ball                                  37.4%   19.33  -0.017                     24.0%   19.17  +0.023
+  tip_behind_ball                            18.5%   14.66  +0.023                     15.8%   18.76  +0.112
+  tip_past_ball                              18.9%   13.32  -0.056                      8.2%    9.31  -0.147
+  sit_right_far                              30.4%   12.79  +0.070                     64.6%   18.92  +0.012
+  sit_right_close                            16.7%   18.23  -0.021                     17.9%   18.58  +0.023
+  sit_A                                       9.7%    6.78  -0.305                      3.0%    1.42  -0.661
+  sit_B                                      30.1%   13.12  -0.039                      4.1%    2.71  -0.374
+  sit_both_wrong                              1.9%    1.53  -0.050                      2.0%    1.53  -0.003
+  opp_out                                    11.1%    1.99  +0.218                      8.3%    1.42  +0.282
+  opp_wrong_side                              8.8%    3.16  +0.335                     43.0%    9.04  +0.048
+  airborne                                   56.9%   28.16  -0.005                     76.2%   29.68  +0.019
+  pole_planted                               21.5%   26.70  -0.011                     21.8%   28.95  +0.018
+  in_pit                                      3.8%    2.92  -0.140                      1.6%    1.54  -0.269
+  pole_fwd_down                              31.1%   25.33  -0.010                     41.3%   26.39  -0.043
+  pole_fwd_up                                30.2%   24.14  +0.011                     29.7%   27.21  -0.007
+  pole_back_up                               18.4%   22.31  +0.003                     17.2%   25.31  +0.057
+  pole_back_down                             20.3%   21.67  -0.005                     11.8%   22.45  +0.082
+  backswing_in_flight                         8.3%   23.38  -0.019                      5.2%   21.01  -0.042
+  pole_on_opp                                15.3%    8.44  +0.102                     18.4%   10.70  -0.124
+  opp_pole_on_me                             17.8%   10.70  +0.071                     15.7%    8.44  -0.155
+  pole_over_opp_head                          6.2%    6.95  +0.118                     12.1%    5.12  -0.151
+  opp_on_my_pole                              2.1%    4.95  -0.058                      3.2%    6.00  -0.094
+  on_opp_pole                                 3.1%    6.00  +0.041                      2.2%    4.95  +0.005
+  tip_peek                                    6.2%    8.49  -0.070                      4.8%    8.16  -0.084
+  rhythmic_pressing                           5.8%    1.96  +0.152                      0.3%    0.24  -0.322
+  event                               pbt1_m1: per min value +- se                farm2: per min value +- se
+  goal_for                                   0.34  +0.079 +- 0.029                     1.90  -0.164 +- 0.012
+  goal_against                               1.90  +0.111 +- 0.012                     0.34  -0.132 +- 0.029
+  kill                                       1.98  +0.231 +- 0.015                     1.41  +0.339 +- 0.021
+  death                                      1.41  -0.392 +- 0.021                     1.98  -0.285 +- 0.015
+  back_pass                                  2.93  -0.141 +- 0.016                     4.32  +0.004 +- 0.012
+  fwd_pass                                  16.33  -0.015 +- 0.007                    23.47  +0.084 +- 0.006
+  vault                                     14.25  +0.016 +- 0.007                    19.48  +0.074 +- 0.006
+  pogo_vault                                 2.13  -0.040 +- 0.016                     1.76  +0.058 +- 0.019
+  jump_over_ball                             1.34  -0.112 +- 0.023                     0.25  -0.062 +- 0.063
+  pushed_opp_wrong_side                      0.40  +0.288 +- 0.049                     1.29  +0.088 +- 0.023
+  tip_got_behind_ball                        2.26  -0.010 +- 0.019                     1.50  +0.079 +- 0.022
+  catapult                                   0.76  -0.129 +- 0.032                     0.87  -0.014 +- 0.031
+  peek_touch                                 0.46  -0.054 +- 0.039                     0.49  -0.046 +- 0.036
+
+== pbt1_m2 vs farm2  (pbt1_m2 41M steps, farm2 427M steps)  pbt1_m2 W-D-L 0-0-128, goal diff -6.12/match
+  pbt1_m2: 406 rider-min, 0.24 goals/min, baseline goal diff next 10 s -0.300; vault apex median: pogo 6.41 m, other 6.68 m
+  farm2: 406 rider-min, 2.17 goals/min, baseline goal diff next 10 s +0.345; vault apex median: pogo 5.96 m, other 5.87 m
+  state                           pbt1_m2: share entries/min value            farm2: share entries/min value
+  good_side                                  67.5%   10.12  +0.051                     87.0%    6.79  +0.047
+  near_ball                                  35.7%   18.40  -0.024                     28.3%   21.41  -0.028
+  tip_behind_ball                            18.2%   15.63  +0.032                     16.4%   22.66  +0.085
+  tip_past_ball                              17.5%   12.66  -0.082                     11.9%   12.75  -0.185
+  sit_right_far                              41.1%   14.53  +0.059                     57.7%   20.92  +0.045
+  sit_right_close                            21.5%   20.21  -0.032                     21.2%   20.90  -0.016
+  sit_A                                       7.8%    3.62  -0.241                      4.0%    1.81  -0.482
+  sit_B                                      19.2%   10.54  -0.102                      6.4%    3.64  -0.348
+  sit_both_wrong                              1.4%    1.29  -0.153                      1.4%    1.29  +0.108
+  opp_out                                     9.0%    1.62  +0.254                      9.2%    1.63  +0.197
+  opp_wrong_side                             11.9%    3.38  +0.295                     28.3%    9.46  +0.098
+  airborne                                   62.8%   28.80  -0.009                     75.3%   28.14  +0.029
+  pole_planted                               18.6%   30.92  -0.023                     23.5%   30.92  +0.012
+  in_pit                                      5.9%    4.05  -0.145                      1.3%    1.40  -0.294
+  pole_fwd_down                              32.2%   33.90  -0.002                     37.2%   27.23  -0.034
+  pole_fwd_up                                33.4%   25.10  -0.004                     32.1%   27.72  -0.002
+  pole_back_up                               10.3%   19.51  -0.023                     19.3%   25.92  +0.015
+  pole_back_down                             24.1%   26.61  +0.018                     11.4%   23.41  +0.090
+  backswing_in_flight                        10.9%   27.84  -0.037                      4.7%   18.99  -0.039
+  pole_on_opp                                12.1%    6.16  +0.187                     13.7%    9.75  -0.214
+  opp_pole_on_me                             13.8%    9.75  +0.169                     12.1%    6.16  -0.232
+  pole_over_opp_head                          6.2%    4.60  +0.206                      7.6%    3.65  -0.224
+  opp_on_my_pole                              1.1%    2.96  -0.119                      4.1%    4.55  -0.269
+  on_opp_pole                                 4.1%    4.55  +0.224                      1.1%    2.96  +0.074
+  tip_peek                                    7.4%   11.31  -0.173                      6.2%   12.01  -0.061
+  rhythmic_pressing                           2.2%    0.86  +0.212                      1.3%    0.99  -0.331
+  event                               pbt1_m2: per min value +- se                farm2: per min value +- se
+  goal_for                                   0.24  +0.259 +- 0.024                     2.17  -0.265 +- 0.010
+  goal_against                               2.17  +0.220 +- 0.010                     0.24  -0.304 +- 0.024
+  kill                                       1.60  +0.275 +- 0.019                     1.62  +0.207 +- 0.020
+  death                                      1.62  -0.252 +- 0.020                     1.60  -0.320 +- 0.019
+  back_pass                                  2.71  -0.118 +- 0.016                     3.63  +0.018 +- 0.015
+  fwd_pass                                  14.70  -0.001 +- 0.007                    24.33  +0.092 +- 0.006
+  vault                                     15.86  +0.014 +- 0.007                    21.39  +0.080 +- 0.006
+  pogo_vault                                 1.14  -0.088 +- 0.026                     1.91  +0.121 +- 0.019
+  jump_over_ball                             0.41  -0.239 +- 0.043                     0.18  +0.053 +- 0.077
+  pushed_opp_wrong_side                      0.23  +0.082 +- 0.063                     0.59  +0.139 +- 0.035
+  tip_got_behind_ball                        2.19  -0.029 +- 0.019                     2.89  +0.009 +- 0.016
+  catapult                                   0.38  -0.236 +- 0.044                     0.61  -0.035 +- 0.035
+  peek_touch                                 0.47  -0.237 +- 0.038                     2.04  -0.033 +- 0.019
+
+== pbt1_m3 vs farm2  (pbt1_m3 40M steps, farm2 427M steps)  pbt1_m3 W-D-L 0-0-128, goal diff -7.00/match
+  pbt1_m3: 182 rider-min, 0.00 goals/min, baseline goal diff next 10 s -0.791; vault apex median: pogo 7.09 m, other 5.75 m
+  farm2: 182 rider-min, 4.92 goals/min, baseline goal diff next 10 s +0.788; vault apex median: pogo 6.32 m, other 5.98 m
+  state                           pbt1_m3: share entries/min value            farm2: share entries/min value
+  good_side                                  71.7%    8.31  -0.068                     95.1%    7.24  +0.015
+  near_ball                                  30.4%   18.73  -0.067                     26.6%   24.20  +0.005
+  tip_behind_ball                            23.8%   20.36  -0.099                     18.4%   28.20  +0.016
+  tip_past_ball                               6.6%    8.30  +0.047                      8.2%   12.90  -0.019
+  sit_right_far                              51.5%   15.86  -0.056                     68.3%   26.01  +0.022
+  sit_right_close                            19.0%   18.79  -0.101                     23.7%   24.78  +0.021
+  sit_A                                       8.6%    5.89  +0.267                      1.0%    1.66  -0.365
+  sit_B                                      17.7%    9.75  +0.122                      2.4%    2.04  -0.393
+  sit_both_wrong                              1.1%    1.64  +0.120                      1.1%    1.64  -0.116
+  opp_out                                     2.1%    0.41  +0.113                      3.5%    0.80  -0.169
+  opp_wrong_side                              4.5%    2.20  +0.324                     27.0%    8.10  -0.164
+  airborne                                   58.1%   33.55  -0.033                     79.4%   34.07  +0.013
+  pole_planted                               12.9%   25.44  -0.025                     22.2%   27.81  +0.053
+  in_pit                                     14.8%   12.16  +0.020                      1.8%    0.74  -0.592
+  pole_fwd_down                              13.2%   14.15  +0.070                     34.6%   28.20  +0.007
+  pole_fwd_up                                17.0%   27.56  -0.006                     32.6%   26.79  +0.015
+  pole_back_up                               38.1%   45.32  -0.009                     19.2%   27.62  -0.043
+  pole_back_down                             31.7%   29.11  -0.015                     13.6%   26.48  +0.005
+  backswing_in_flight                        17.6%   47.35  -0.046                      4.2%   17.99  -0.050
+  pole_on_opp                                 4.7%    6.04  +0.385                      5.8%   10.06  -0.265
+  opp_pole_on_me                              5.9%   10.06  +0.269                      4.6%    6.04  -0.382
+  pole_over_opp_head                          0.7%    2.25  +0.395                      2.6%    4.45  -0.174
+  opp_on_my_pole                              1.9%    3.87  +0.264                      1.8%    1.81  -0.585
+  on_opp_pole                                 1.8%    1.81  +0.588                      1.9%    3.87  -0.261
+  tip_peek                                    1.8%    5.19  -0.153                      6.9%   13.93  +0.088
+  rhythmic_pressing                           0.1%    0.13  +0.047                      0.3%    0.28  -0.708
+  event                               pbt1_m3: per min value +- se                farm2: per min value +- se
+  goal_for                                   0.00              n/a                     4.92  -0.498 +- 0.015
+  goal_against                               4.92  +0.502 +- 0.015                     0.00              n/a
+  kill                                       0.40  +0.120 +- 0.058                     0.80  -0.015 +- 0.040
+  death                                      0.80  +0.019 +- 0.040                     0.40  -0.116 +- 0.058
+  back_pass                                 21.96  -0.055 +- 0.006                     2.32  -0.100 +- 0.026
+  fwd_pass                                  20.43  -0.071 +- 0.006                    25.58  +0.064 +- 0.006
+  vault                                     15.31  -0.058 +- 0.007                    23.99  +0.081 +- 0.006
+  pogo_vault                                 1.21  -0.077 +- 0.023                     0.77  +0.041 +- 0.033
+  jump_over_ball                             0.10  -0.098 +- 0.074                     0.15  +0.101 +- 0.080
+  pushed_opp_wrong_side                      0.15  +0.220 +- 0.094                     0.27  -0.068 +- 0.070
+  tip_got_behind_ball                        2.27  -0.100 +- 0.020                     1.38  +0.054 +- 0.025
+  catapult                                   0.75  +0.115 +- 0.041                     0.18  -0.121 +- 0.093
+  peek_touch                                 0.25  -0.075 +- 0.051                     0.23  +0.093 +- 0.050

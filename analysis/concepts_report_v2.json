@@ -1,0 +1,3383 @@
+{
+ "matches": 128,
+ "horizon_s": 10.0,
+ "concepts": [
+  [
+   "good_side",
+   "state",
+   "you-ball-goal: my body is behind the ball (ball x > my x in my attack frame). strategy.md \"Frame\"."
+  ],
+  [
+   "near_ball",
+   "state",
+   "Body within half a pole (3 m) of the ball along x: where farm1 \"gets bad\" and the tip starts to decide the side (strategy.md round 2 + round 3)."
+  ],
+  [
+   "tip_behind_ball",
+   "state",
+   "Near the ball with the pole tip behind it (tip x < ball x): hooked to PUSH the ball on, good even with the body slightly past (strategy.md round 3; the user's \"0-89 deg\" was stated attacking left, i.e. back-up in the attack frame \u2014 see the data note there)."
+  ],
+  [
+   "tip_past_ball",
+   "state",
+   "Near the ball with the tip beyond it (tip x >= ball x): can only pull the ball back = effectively the dreaded situation (strategy.md round 3)."
+  ],
+  [
+   "sit_right_far",
+   "state",
+   "Good side with room: more than half a pole behind the ball \u2014 can vault straight into it."
+  ],
+  [
+   "sit_right_close",
+   "state",
+   "Good side but within half a pole of the ball: time to back up (strategy.md round 2)."
+  ],
+  [
+   "sit_A",
+   "state",
+   "Situation A, you-opp-ball: past the ball with the opponent between me and it, on his good side."
+  ],
+  [
+   "sit_B",
+   "state",
+   "Situation B, opp-you-ball (\"you're fucked\"): past the ball, between it and the opponent."
+  ],
+  [
+   "sit_both_wrong",
+   "state",
+   "Both riders past the ball (from my side's view)."
+  ],
+  [
+   "opp_out",
+   "state",
+   "Kill window: I'm in play, the opponent is not (killed and waiting 3 s to respawn, or his 0.3 s spawn ghost). \"Kill: very often guarantees a goal\" (strategy.md round 2)."
+  ],
+  [
+   "opp_wrong_side",
+   "state",
+   "The opponent is past the ball from his point of view (he attacks -x: ball x > his x) \u2014 what tip peeking and the throw aim for (\"GG\")."
+  ],
+  [
+   "airborne",
+   "state",
+   "Feet off everything (the game's foot sensor: not on the ground or on a pole). Riders pogo on the pole, so this is true most of the time (farm2 ~72%)."
+  ],
+  [
+   "pole_planted",
+   "state",
+   "Pole tip on the floor (tip less than PLANTED_H = 0.35 m above it): the slingshot is loading."
+  ],
+  [
+   "in_pit",
+   "state",
+   "Body in a pit (|x| > 16.3 m and below plateau level, as h2h_breakdown.py)."
+  ],
+  [
+   "pole_fwd_down",
+   "state",
+   "Pole quadrant -90..0 deg (attack frame): forward and down \u2014 the normal low carry / planting."
+  ],
+  [
+   "pole_fwd_up",
+   "state",
+   "Pole quadrant 0..90 deg: forward and up."
+  ],
+  [
+   "pole_back_up",
+   "state",
+   "Pole quadrant 90..180 deg: back and up (near the ball: the hooked-to-push pole)."
+  ],
+  [
+   "pole_back_down",
+   "state",
+   "Pole quadrant 180..270 deg: back and down."
+  ],
+  [
+   "backswing_in_flight",
+   "state",
+   "Airborne, tip off the floor, pole rotating backward (counter-clockwise in the attack frame, > 1 rad/s): the user's trick that prolongs a jump and fine-tunes its height (strategy.md \"Normal play\")."
+  ],
+  [
+   "pole_on_opp",
+   "state",
+   "My pole (outer 80%, straight body->tip line) within 1 m of the opponent's body centre: contact / pressing proxy (strategy.md situation B \"keep your pole on him\")."
+  ],
+  [
+   "opp_pole_on_me",
+   "state",
+   "The opponent's pole within 1 m of my body: he presses me (situation B \"the opponent presses you down\")."
+  ],
+  [
+   "pole_over_opp_head",
+   "state",
+   "My pole passes over the opponent: at his x (between 25% and 105% of my pole's length out) the pole line is 0.6-2.5 m above his body centre. Situation A option 2: \"put your pole over his head: threatens a kill and limits his movement\" (kills are stomps: the upper rider wins)."
+  ],
+  [
+   "opp_on_my_pole",
+   "state",
+   "The opponent stands on my pole: his foot sensor is down (on_ground), he is more than 1 m above the floor, his body is within 1.5 m of my pole line and above it. The setup of the throw (strategy.md \"From above \u2014 the throw\"). (On_ground at height is ~90% someone's pole: checked against full snapshots.)"
+  ],
+  [
+   "on_opp_pole",
+   "state",
+   "I stand on the opponent's pole (mirror of opp_on_my_pole): he can throw me."
+  ],
+  [
+   "tip_peek",
+   "state",
+   "Tip peeking: the opponent and I are on opposite sides of the ball and my tip is past the ball on his side, between the ball and him and at most half a pole past the ball \u2014 the order \"opp-(our tip)-ball-us\" (strategy.md \"Ball handling\")."
+  ],
+  [
+   "rhythmic_pressing",
+   "state",
+   "Situation B defence: in B now, my pole on the opponent in >= half of the last 2 s, and my pole's rotation reversed >= 4 times in them (|w| > 0.5 rad/s; >= 1 Hz push/pull; the user eyeballed 2-3 Hz) \u2014 \"alternate pressing and releasing\" (strategy.md situation B + round 2 timing)."
+  ],
+  [
+   "goal_for",
+   "event",
+   "My side scored (my score went up)."
+  ],
+  [
+   "goal_against",
+   "event",
+   "The opponent scored."
+  ],
+  [
+   "kill",
+   "event",
+   "I killed the opponent: he drops out of play with the 3 s death timer (respawn_in > 0.5). In 1v1 only rider contacts set it (deleter falls and post-goal respawns give <= 0.1); matches the game's kill stats 186/186 in farm2 self-play. \"Kill: very often guarantees a goal\"."
+  ],
+  [
+   "death",
+   "event",
+   "I was killed (my 3 s death timer started)."
+  ],
+  [
+   "back_pass",
+   "event",
+   "Backward swing over the top: the pole passes vertical going backward (angle crosses 90 deg upward, counter-clockwise in the attack frame), as analysis/pole_rotation.py. The rotation all agents struggle with (HANDOFF farm3)."
+  ],
+  [
+   "fwd_pass",
+   "event",
+   "Forward swing over the top (angle crosses 90 deg downward): every normal vault stride does one."
+  ],
+  [
+   "vault",
+   "event",
+   "A slingshot launch: the tip leaves the floor after a planted phase (>= 2 steps) in which the body rose at >= 6 m/s, and the body is airborne at release (strategy.md \"Vaulting = a slingshot\"). Marked at the release; length = the planted phase. (farm2 vaults reach 10-15 m/s.)"
+  ],
+  [
+   "pogo_vault",
+   "event",
+   "Landing on the pole to store energy: a vault (see `vault`) whose planted phase began while airborne and falling at >= 3 m/s and in which the body never touched down \u2014 the fall was caught by the pole and turned into the next jump (strategy.md \"Landing: store kinetic + gravitational energy ... -> bigger next jump\"). The robust proxy we have: the pole's bend is not in the observation."
+  ],
+  [
+   "jump_over_ball",
+   "event",
+   "Situation A option 1, the long jump over the ball: I was in A within the last 2 s, and now, airborne and moving backward (vx < -1 m/s, so I moved, not the ball), I cross to the good side and stay there for 0.5 s. Marked when confirmed (crossing + 0.5 s); length from the last A moment."
+  ],
+  [
+   "pushed_opp_wrong_side",
+   "event",
+   "I pushed the opponent to the wrong side: he had been on his good side for >= 0.5 s, crosses past the ball (from his view) while my pole touched him or he stood on it in the last 1 s, and stays wrong (or dies) for 1 s. \"makes him miss and land on the wrong side ... GG\" (strategy.md \"Ball handling\"). Marked when confirmed; length from the first contact step considered."
+  ],
+  [
+   "tip_got_behind_ball",
+   "event",
+   "Near the ball my tip went from past the ball to behind it and stays 0.33 s: re-hooked to push (strategy.md round 3; also the goal of the B defence for the opponent's tip). Marked when confirmed."
+  ],
+  [
+   "catapult",
+   "event",
+   "The throw: the opponent stood on my pole for >= 0.2 s, and within 0.5 s of leaving it he flies, airborne, at >= 8 m/s and >= 4 m/s faster than while on it (I flung him; riders also just bounce off a pole) \u2014 strategy.md \"From above \u2014 the throw: when the opponent steps on our pole we fling it and he flies\". Marked at the first step the launch speed is reached; length from when he left the pole."
+  ],
+  [
+   "peek_touch",
+   "event",
+   "Tip peeking from below pays off: while peeking (my tip between the ball and the opponent), my tip touches him (tip within 1 m of his body) as he is airborne going at the ball \u2014 \"a slight touch on the opponent as he vaults at the ball makes him miss\" (strategy.md \"Ball handling\"). Marked at the touch."
+  ],
+  [
+   "committed",
+   "state",
+   "Committed (no agency): airborne, pole tip off the floor, and touching nothing that matters \u2014 not the ball this step, my pole not on the opponent, his pole not on me, not standing on each other's poles. \"In the air you can barely affect the outcome until you touch something (a pole swing only bends the trajectory a little)\" (strategy.md 2026-10-02 \"Agency\"). Without touch rows the ball part is the ball > 1 m from my body and tip."
+  ],
+  [
+   "at_mercy",
+   "state",
+   "At his mercy: committed (above) while the opponent can act \u2014 on the ground / a pole or with his tip planted \u2014 and is within reach (REACH = 5.5 m, a pole) of the ball or of me: he can move the ball so I miss, kill me, or hit the ball right after me (strategy.md 2026-10-02 \"Agency\")."
+  ],
+  [
+   "high_energy",
+   "state",
+   "Total energy (Frames.energy = 0.5 v^2 + G * height above standing, J/kg; the pole's bend not included) at least E_HIGH: \"high total energy is generally good (rough guide)\" (strategy.md 2026-10-02 \"Energy\")."
+  ],
+  [
+   "takeoff",
+   "event",
+   "Every jump: the feet leave the ground / a pole (the game's foot sensor). Its speed is the body speed one step later (Frames.speed); analysis/concept_report.py bins the value by it (\"if you jump, faster is better\")."
+  ],
+  [
+   "fast_takeoff",
+   "event",
+   "A jump launched at >= V_FAST m/s (takeoff_speed): \"if you jump, faster is better\" (2026-10-02 \"Energy\")."
+  ],
+  [
+   "lunge_at_opp",
+   "event",
+   "Jumping at the opponent from in front of the ball: a take-off toward him (vx >= 4 m/s in my attack direction) while he is 0.5-8 m ahead of me and the ball is behind me or about over me (ball x < my x + 1 m) \u2014 the user's [ball, you, opp] (attacking ->) and the deep-defence version (in my hole with the ball above me, he waits in front of it). \"Hoping they catch you with their pole\" (strategy.md 2026-10-02 \"No action is an action\"). The commitment; whether it backfires is `overcommit`."
+  ],
+  [
+   "lunge_from_pit",
+   "event",
+   "lunge_at_opp from my own hole (body in the pit in front of the goal I defend, x < -16.3 m)."
+  ],
+  [
+   "overcommit",
+   "event",
+   "The lunge backfired: within 1.5 s of `lunge_at_opp` I am past the opponent with him between me and the ball (situation A) \u2014 he didn't need to catch me: \"the situation becomes [ball, opp, you far] \u2014 so much tempo it's basically worth a goal\" (strategy.md 2026-10-02 \"No action is an action\"). Marked at the flip."
+  ],
+  [
+   "overcommit_opp_still",
+   "event",
+   "`overcommit` while the opponent \"did nothing\": for >= 80% of my flight his body speed was < 2 m/s and his pole turned at < 1.5 rad/s. For a human, not touching the controller."
+  ],
+  [
+   "got_flung",
+   "event",
+   "I was thrown off the opponent's pole: the mirror of `catapult` (I stood on his pole >= 0.2 s and within 0.5 s of leaving it I fly at >= 8 m/s, >= 4 m/s faster than on it). \"When you land on the opponent's pole they can fling you\" (strategy.md 2026-10-02 \"Agency\")."
+  ],
+  [
+   "flung_own_goal",
+   "event",
+   "The worst case of being flung: `got_flung`, then I touch the ball within 1.5 s, then within 3 s of that touch the opponent's team scores with the game crediting the ball to me (an own goal: PlayState::lastTouch = me) \u2014 \"being flung into the ball and auto-scoring\". Marked at the goal; needs touch rows."
+  ],
+  [
+   "second_touch",
+   "event",
+   "I hit the ball second: my touch begins while the opponent touched it within the last SECOND_W = 0.5 s, before me (his touch older than mine). \"Hitting the ball second very often guarantees the best outcome\" (strategy.md 2026-10-02). Needs touch rows."
+  ],
+  [
+   "second_kick",
+   "event",
+   "I KICK the ball second (the game's kick impulse, from my body / pole handle) within 0.6 s of the opponent's kick: his kick turned off his ball collisions for 0.6 s (the ball glitches through him and his pole), mine sends it my way; I am pushed back by it (strategy.md 2026-10-02). Needs touch rows."
+  ],
+  [
+   "impale_plant",
+   "event",
+   "Impaling the pole to brake (the attempt): flying backward (toward my own goal, vx <= -6 m/s in my attack frame \u2014 the way the second kicker is pushed) when the tip goes into the floor in the lower-back quadrant (pole angle 180-270 deg). \"When flying the wrong way you can impale the pole into the ground (lower back quadrant) to shed energy quickly\" (strategy.md 2026-10-02). `impale_brake` = it worked."
+  ],
+  [
+   "impale_brake",
+   "event",
+   "`impale_plant` that sheds speed: within 0.33 s of the plant my speed drops by >= 3 m/s and >= 30%. Marked when the drop is reached; length from the plant."
+  ]
+ ],
+ "runs": {
+  "farm2 self-play": {
+   "steps": {
+    "farm2": 427374080
+   },
+   "farm2": {
+    "rider_minutes": 1200.7644444444445,
+    "goals_per_min": 1.0193506358912099,
+    "baseline_10s": 0.030350165145260424,
+    "states": {
+     "good_side": {
+      "share": 0.83752578116419,
+      "entries_per_min": 7.317838265993515,
+      "value": 0.05972357280142136,
+      "n": 819795
+     },
+     "near_ball": {
+      "share": 0.2974129339066549,
+      "entries_per_min": 25.82354944257732,
+      "value": -0.04221467084235163,
+      "n": 291289
+     },
+     "tip_behind_ball": {
+      "share": 0.15575382700279475,
+      "entries_per_min": 25.703625838354824,
+      "value": 0.06764241842065542,
+      "n": 152634
+     },
+     "tip_past_ball": {
+      "share": 0.14165910690386016,
+      "entries_per_min": 16.501154819892513,
+      "value": -0.16314739568148343,
+      "n": 138655
+     },
+     "sit_right_far": {
+      "share": 0.5569463711104512,
+      "entries_per_min": 23.287664894955803,
+      "value": 0.05631683181421081,
+      "n": 544971
+     },
+     "sit_right_close": {
+      "share": 0.2159302169482424,
+      "entries_per_min": 25.373835926742963,
+      "value": -0.034481810523395794,
+      "n": 211538
+     },
+     "sit_A": {
+      "share": 0.03764049971727165,
+      "entries_per_min": 2.1269783693350903,
+      "value": -0.5444211032982632,
+      "n": 36849
+     },
+     "sit_B": {
+      "share": 0.08966149890773292,
+      "entries_per_min": 5.6122581170513595,
+      "value": -0.34208543919574935,
+      "n": 87940
+     },
+     "sit_both_wrong": {
+      "share": 0.012848884748534491,
+      "entries_per_min": 1.1575959018699198,
+      "value": -0.030350165145260424,
+      "n": 12634
+     },
+     "opp_out": {
+      "share": 0.08697252856776734,
+      "entries_per_min": 1.6256310794604918,
+      "value": 0.31841635364449616,
+      "n": 85206
+     },
+     "opp_wrong_side": {
+      "share": 0.14014579833129254,
+      "entries_per_min": 5.259149726840679,
+      "value": 0.3070001092001674,
+      "n": 137418
+     },
+     "airborne": {
+      "share": 0.7260067366639682,
+      "entries_per_min": 30.815369468338687,
+      "value": 0.028808913326962778,
+      "n": 710863
+     },
+     "pole_planted": {
+      "share": 0.24119677486280555,
+      "entries_per_min": 32.18782849444057,
+      "value": 0.009152361154493294,
+      "n": 236314
+     },
+     "in_pit": {
+      "share": 0.02819045720631847,
+      "entries_per_min": 2.6741298136002247,
+      "value": -0.27942772332302684,
+      "n": 27373
+     },
+     "pole_fwd_down": {
+      "share": 0.3314044073078159,
+      "entries_per_min": 31.34669765926891,
+      "value": 0.0033720694034662484,
+      "n": 324504
+     },
+     "pole_fwd_up": {
+      "share": 0.3883639995281081,
+      "entries_per_min": 32.24695749374472,
+      "value": -0.04874345486916381,
+      "n": 380193
+     },
+     "pole_back_up": {
+      "share": 0.16378615973541508,
+      "entries_per_min": 27.96218705121182,
+      "value": 0.05935373459009684,
+      "n": 160216
+     },
+     "pole_back_down": {
+      "share": 0.11644543342866093,
+      "entries_per_min": 25.311375716210414,
+      "value": 0.06940908195476146,
+      "n": 114225
+     },
+     "backswing_in_flight": {
+      "share": 0.04507076344790273,
+      "entries_per_min": 16.930048265549352,
+      "value": -0.039387333046327216,
+      "n": 44151
+     },
+     "pole_on_opp": {
+      "share": 0.04549485597126341,
+      "entries_per_min": 6.973890706660941,
+      "value": -0.045958394125582426,
+      "n": 44720
+     },
+     "opp_pole_on_me": {
+      "share": 0.04549485597126341,
+      "entries_per_min": 6.973890706660941,
+      "value": -0.01474193616493842,
+      "n": 44720
+     },
+     "pole_over_opp_head": {
+      "share": 0.022175869237121622,
+      "entries_per_min": 3.6002065350961607,
+      "value": 0.07242098552458726,
+      "n": 21796
+     },
+     "opp_on_my_pole": {
+      "share": 0.013671644584023203,
+      "entries_per_min": 2.70577632027005,
+      "value": -0.20039034969653294,
+      "n": 13438
+     },
+     "on_opp_pole": {
+      "share": 0.013671644584023203,
+      "entries_per_min": 2.70577632027005,
+      "value": 0.13969001940601208,
+      "n": 13438
+     },
+     "tip_peek": {
+      "share": 0.10385588583469951,
+      "entries_per_min": 17.34395126067838,
+      "value": -0.10093909480225095,
+      "n": 101659
+     },
+     "rhythmic_pressing": {
+      "share": 0.0028059263116357973,
+      "entries_per_min": 0.2573360673941045,
+      "value": -0.2837028291539592,
+      "n": 2759
+     },
+     "committed": {
+      "share": 0.45719004633490495,
+      "entries_per_min": 60.24495506566187,
+      "value": 0.03111538140402653,
+      "n": 447096
+     },
+     "at_mercy": {
+      "share": 0.05542390946183981,
+      "entries_per_min": 16.203844217757577,
+      "value": 0.09816285559215163,
+      "n": 54298
+     },
+     "high_energy": {
+      "share": 0.2529422054438428,
+      "entries_per_min": 36.79905763735694,
+      "value": 0.032520692643005236,
+      "n": 247905
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 1.0193506358912099,
+      "n": 1224,
+      "value": -0.029532503657116516,
+      "se": 0.005723582661786051
+     },
+     "goal_against": {
+      "per_min": 1.0193506358912099,
+      "n": 1224,
+      "value": -0.03116782663340433,
+      "se": 0.005723582661786051
+     },
+     "kill": {
+      "per_min": 1.6089750233184785,
+      "n": 1932,
+      "value": 0.3083344542229426,
+      "se": 0.012150565474503449
+     },
+     "death": {
+      "per_min": 1.6089750233184785,
+      "n": 1932,
+      "value": -0.3690347845134634,
+      "se": 0.012150565474503449
+     },
+     "back_pass": {
+      "per_min": 3.5760552536902415,
+      "n": 4294,
+      "value": -0.02615142476737379,
+      "se": 0.010032831294066168
+     },
+     "fwd_pass": {
+      "per_min": 26.78293827635728,
+      "n": 32160,
+      "value": 0.05383676470934276,
+      "se": 0.0032547336358818954
+     },
+     "vault": {
+      "per_min": 24.056341885909717,
+      "n": 28886,
+      "value": 0.04179655514318778,
+      "se": 0.003341379350010807
+     },
+     "pogo_vault": {
+      "per_min": 2.072846186873547,
+      "n": 2489,
+      "value": 0.0348672261590874,
+      "se": 0.01106488481038307
+     },
+     "jump_over_ball": {
+      "per_min": 0.22235834949587668,
+      "n": 267,
+      "value": -0.1614363074673578,
+      "se": 0.04374364848198201
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.41889981197163284,
+      "n": 503,
+      "value": 0.19474943644836507,
+      "se": 0.03083236436580106
+     },
+     "tip_got_behind_ball": {
+      "per_min": 2.9314658809943293,
+      "n": 3520,
+      "value": -0.030065670123923298,
+      "se": 0.009718741832458412
+     },
+     "catapult": {
+      "per_min": 0.4771960084686792,
+      "n": 573,
+      "value": -0.1422382770333723,
+      "se": 0.027798805910976963
+     },
+     "peek_touch": {
+      "per_min": 0.4705335860118739,
+      "n": 565,
+      "value": -0.0746764062800122,
+      "se": 0.02593092495422771
+     },
+     "takeoff": {
+      "per_min": 27.391717128347867,
+      "n": 32891,
+      "value": 0.01252480062171155,
+      "se": 0.0032629849597468944
+     },
+     "fast_takeoff": {
+      "per_min": 7.164602549486993,
+      "n": 8603,
+      "value": 0.04004778691431603,
+      "se": 0.006296809213283686
+     },
+     "lunge_at_opp": {
+      "per_min": 0.21153191300356808,
+      "n": 254,
+      "value": -0.17995646435785886,
+      "se": 0.03982317241925739
+     },
+     "lunge_from_pit": {
+      "per_min": 0.04080733754793243,
+      "n": 49,
+      "value": -0.21402363453301554,
+      "se": 0.07455808660375755
+     },
+     "overcommit": {
+      "per_min": 0.08577868913136816,
+      "n": 103,
+      "value": -0.35073851465982353,
+      "se": 0.06471234992797016
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0,
+      "n": 0,
+      "value": null,
+      "se": null
+     },
+     "got_flung": {
+      "per_min": 0.48302562811838384,
+      "n": 580,
+      "value": 0.08191235644368604,
+      "se": 0.02761781357232333
+     },
+     "flung_own_goal": {
+      "per_min": 0.003331211228402647,
+      "n": 4,
+      "value": -0.030350165145260424,
+      "se": 0.0
+     },
+     "second_touch": {
+      "per_min": 10.689024029136993,
+      "n": 12835,
+      "value": -0.025202762243996972,
+      "se": 0.004774460831761759
+     },
+     "second_kick": {
+      "per_min": 2.9930932887197783,
+      "n": 3594,
+      "value": 0.04153615416373929,
+      "se": 0.008262908439549214
+     },
+     "impale_plant": {
+      "per_min": 0.05413218246154301,
+      "n": 65,
+      "value": -0.014965549760645038,
+      "se": 0.07689940464157374
+     },
+     "impale_brake": {
+      "per_min": 0.03664332351242912,
+      "n": 44,
+      "value": 0.03783165303655775,
+      "se": 0.09853119274067514
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 5.854400157928467,
+     "other": 5.829400062561035
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.0724279927854909,
+     "p_goal_for_5s_baseline": 0.0934689492185984,
+     "lunge": {
+      "n": 254,
+      "overcommit_per_lunge": 0.40551181102362205,
+      "p_goal_against_5s": 0.18110236220472442,
+      "p_goal_against_5s_after_overcommit": 0.2912621359223301,
+      "p_goal_against_5s_after_overcommit_opp_still": null,
+      "opp_still_share_of_overcommits": 0.0,
+      "n_from_pit": 49,
+      "opp_speed_at_overcommit": 13.962779998779297
+     },
+     "energy_bins": {
+      "edges": [
+       36.79061794281006,
+       101.23611450195312,
+       166.30959701538086
+      ],
+      "value": [
+       -0.07723620799919347,
+       0.005130095002461647,
+       0.03985867203364016,
+       0.03224762475199634
+      ],
+      "n": [
+       244785,
+       244784,
+       244784,
+       244785
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -68.71497344970703,
+       0.0,
+       68.71497344970703
+      ],
+      "value": [
+       -0.1289482688041517,
+       -0.06445527896594148,
+       0.006193545953182816,
+       0.06824793851363085
+      ],
+      "n": [
+       223483,
+       231197,
+       215769,
+       223483
+      ]
+     },
+     "energy_median": 101.23611450195312,
+     "takeoff_speed_bins": {
+      "edges": [
+       8.86429738998413,
+       11.770310401916504,
+       14.128887176513672
+      ],
+      "value": [
+       -0.015866231357529167,
+       -0.01026739980933053,
+       0.03599189206715589,
+       0.04024379785376586
+      ],
+      "n": [
+       8216,
+       8216,
+       8215,
+       8216
+      ]
+     },
+     "second_touch": {
+      "n": 12822,
+      "p_ball_my_way_0.5s": 0.5956169084386211,
+      "p_goal_for_5s": 0.05420371236936515,
+      "p_goal_against_5s": 0.0520979566370301,
+      "speed_at": 11.265995025634766,
+      "max_speed_next_0.5s": 15.78593921661377,
+      "p_past_ball_1s": 0.11644049290282327,
+      "dx_1s": -4.123619079589844
+     },
+     "second_kick": {
+      "n": 3589,
+      "p_ball_my_way_0.5s": 0.9626636946224575,
+      "p_goal_for_5s": 0.05293953747561995,
+      "p_goal_against_5s": 0.019504040122596825,
+      "speed_at": 19.59384536743164,
+      "max_speed_next_0.5s": 21.461788177490234,
+      "p_past_ball_1s": 0.014767344664251881,
+      "dx_1s": -8.209712028503418
+     },
+     "got_flung": {
+      "n": 580,
+      "own_goals_after": 4
+     },
+     "impale_brake": {
+      "n_plants": 65,
+      "n": 44
+     }
+    },
+    "touch_rows": true
+   }
+  },
+  "farm3 self-play": {
+   "steps": {
+    "farm3": 683781120
+   },
+   "farm3": {
+    "rider_minutes": 1174.302222222222,
+    "goals_per_min": 1.1095951070706767,
+    "baseline_10s": 0.04024251931780842,
+    "states": {
+     "good_side": {
+      "share": 0.7758278659046542,
+      "entries_per_min": 8.181028544610891,
+      "value": 0.07625334158559262,
+      "n": 731923
+     },
+     "near_ball": {
+      "share": 0.32332198892417247,
+      "entries_per_min": 21.219409729844298,
+      "value": -0.04077439055243915,
+      "n": 304585
+     },
+     "tip_behind_ball": {
+      "share": 0.20655015708860347,
+      "entries_per_min": 20.35080880182274,
+      "value": 0.07652397850919428,
+      "n": 194662
+     },
+     "tip_past_ball": {
+      "share": 0.116771831835569,
+      "entries_per_min": 11.525142117493889,
+      "value": -0.24849738863542167,
+      "n": 109923
+     },
+     "sit_right_far": {
+      "share": 0.49431601860806523,
+      "entries_per_min": 18.36069079320864,
+      "value": 0.0606943798481777,
+      "n": 466539
+     },
+     "sit_right_close": {
+      "share": 0.2023136688705124,
+      "entries_per_min": 21.0559083786873,
+      "value": -0.03023737501486147,
+      "n": 190502
+     },
+     "sit_A": {
+      "share": 0.052243693517445323,
+      "entries_per_min": 2.6543422476894083,
+      "value": -0.45171713067471064,
+      "n": 49274
+     },
+     "sit_B": {
+      "share": 0.12235825904274561,
+      "entries_per_min": 6.494069291267061,
+      "value": -0.2892088435929352,
+      "n": 115365
+     },
+     "sit_both_wrong": {
+      "share": 0.027161194316335,
+      "entries_per_min": 1.5379345843205234,
+      "value": -0.04024251931780842,
+      "n": 25692
+     },
+     "opp_out": {
+      "share": 0.10160716564489644,
+      "entries_per_min": 1.7848897501305743,
+      "value": 0.35499785628859604,
+      "n": 96058
+     },
+     "opp_wrong_side": {
+      "share": 0.20175787367734982,
+      "entries_per_min": 5.949064787410396,
+      "value": 0.21720522823113392,
+      "n": 190326
+     },
+     "airborne": {
+      "share": 0.6607909165980272,
+      "entries_per_min": 28.39643779000674,
+      "value": 0.010455276618353708,
+      "n": 623893
+     },
+     "pole_planted": {
+      "share": 0.19351797264475196,
+      "entries_per_min": 29.167108221241552,
+      "value": 0.00496043775222256,
+      "n": 183019
+     },
+     "in_pit": {
+      "share": 0.030774390391809243,
+      "entries_per_min": 2.9140709565585996,
+      "value": -0.29606046398726676,
+      "n": 29134
+     },
+     "pole_fwd_down": {
+      "share": 0.2843973418857593,
+      "entries_per_min": 26.727361496945708,
+      "value": -0.006183619516028908,
+      "n": 268388
+     },
+     "pole_fwd_up": {
+      "share": 0.2977585739582004,
+      "entries_per_min": 29.190100598748007,
+      "value": -0.04201185113694497,
+      "n": 280897
+     },
+     "pole_back_up": {
+      "share": 0.1928662052265841,
+      "entries_per_min": 29.856027976897867,
+      "value": 0.05290230728274896,
+      "n": 181921
+     },
+     "pole_back_down": {
+      "share": 0.2249778789294562,
+      "entries_per_min": 25.796595992702997,
+      "value": 0.018077934542263953,
+      "n": 212224
+     },
+     "backswing_in_flight": {
+      "share": 0.11657672346605273,
+      "entries_per_min": 29.252265174969157,
+      "value": 0.008031210643910845,
+      "n": 109977
+     },
+     "pole_on_opp": {
+      "share": 0.06780912284550265,
+      "entries_per_min": 8.863987313506271,
+      "value": -0.043796836168715006,
+      "n": 63866
+     },
+     "opp_pole_on_me": {
+      "share": 0.06780912284550265,
+      "entries_per_min": 8.863987313506271,
+      "value": -0.03668820246690184,
+      "n": 63866
+     },
+     "pole_over_opp_head": {
+      "share": 0.028267511503484003,
+      "entries_per_min": 5.7140315951222105,
+      "value": -0.011528458811840402,
+      "n": 26642
+     },
+     "opp_on_my_pole": {
+      "share": 0.02235520058722346,
+      "entries_per_min": 3.804812692549335,
+      "value": -0.13966690445647928,
+      "n": 21021
+     },
+     "on_opp_pole": {
+      "share": 0.02235520058722346,
+      "entries_per_min": 3.804812692549335,
+      "value": 0.059181865820862434,
+      "n": 21021
+     },
+     "tip_peek": {
+      "share": 0.062206876040797686,
+      "entries_per_min": 11.881949753612549,
+      "value": -0.13283353449694266,
+      "n": 58699
+     },
+     "rhythmic_pressing": {
+      "share": 0.004511749215084303,
+      "entries_per_min": 0.3576592056559357,
+      "value": -0.22150428956262952,
+      "n": 4248
+     },
+     "committed": {
+      "share": 0.4351475599325452,
+      "entries_per_min": 55.170635611502625,
+      "value": 0.01193141491111857,
+      "n": 410454
+     },
+     "at_mercy": {
+      "share": 0.05792925686913291,
+      "entries_per_min": 15.12217184294787,
+      "value": 0.05578354646901591,
+      "n": 54631
+     },
+     "high_energy": {
+      "share": 0.24995280486737376,
+      "entries_per_min": 32.38093165492132,
+      "value": 0.011638600037139575,
+      "n": 236136
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 1.1095951070706767,
+      "n": 1303,
+      "value": -0.06176442554378844,
+      "se": 0.009204354177768811
+     },
+     "goal_against": {
+      "per_min": 1.1095951070706767,
+      "n": 1303,
+      "value": -0.018720613091828407,
+      "se": 0.009204354177768811
+     },
+     "kill": {
+      "per_min": 1.7721162070714336,
+      "n": 2081,
+      "value": 0.33271224487853424,
+      "se": 0.012078443269827691
+     },
+     "death": {
+      "per_min": 1.7721162070714336,
+      "n": 2081,
+      "value": -0.4131972835141511,
+      "se": 0.012078443269827691
+     },
+     "back_pass": {
+      "per_min": 8.504624968775785,
+      "n": 9987,
+      "value": -0.024597147740233454,
+      "se": 0.006048759623162429
+     },
+     "fwd_pass": {
+      "per_min": 22.58958511532144,
+      "n": 26527,
+      "value": 0.03984201855440353,
+      "se": 0.003597815609227215
+     },
+     "vault": {
+      "per_min": 18.402417700535167,
+      "n": 21610,
+      "value": 0.04250779342833437,
+      "se": 0.004009379238976313
+     },
+     "pogo_vault": {
+      "per_min": 1.0389148354767654,
+      "n": 1220,
+      "value": -0.18544350373126206,
+      "se": 0.01723308283430585
+     },
+     "jump_over_ball": {
+      "per_min": 0.41130808650432604,
+      "n": 483,
+      "value": -0.0609894072846134,
+      "se": 0.031450019291506245
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.4768789408745809,
+      "n": 560,
+      "value": 0.0995424269187507,
+      "se": 0.028510780466755713
+     },
+     "tip_got_behind_ball": {
+      "per_min": 3.0716113209546667,
+      "n": 3607,
+      "value": -0.025246684827389093,
+      "se": 0.009206897483367844
+     },
+     "catapult": {
+      "per_min": 0.5875829807204658,
+      "n": 690,
+      "value": -0.17357585265114175,
+      "se": 0.024498041335289652
+     },
+     "peek_touch": {
+      "per_min": 0.35510449704410757,
+      "n": 417,
+      "value": -0.25178098085627,
+      "se": 0.030913930283469837
+     },
+     "takeoff": {
+      "per_min": 24.572890567637334,
+      "n": 28856,
+      "value": 0.020546488697180648,
+      "se": 0.003507908213827808
+     },
+     "fast_takeoff": {
+      "per_min": 5.35296611131717,
+      "n": 6286,
+      "value": -0.0009363449066053658,
+      "se": 0.007363795300992934
+     },
+     "lunge_at_opp": {
+      "per_min": 0.2145955233935614,
+      "n": 252,
+      "value": -0.08389331296860207,
+      "se": 0.040569422905951155
+     },
+     "lunge_from_pit": {
+      "per_min": 0.04598475501290601,
+      "n": 54,
+      "value": -0.15135363042891953,
+      "se": 0.06762006882779828
+     },
+     "overcommit": {
+      "per_min": 0.08260224511577562,
+      "n": 97,
+      "value": -0.12271674612193213,
+      "se": 0.07241503513637498
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0017031390745520746,
+      "n": 2,
+      "value": 0.9597574806821916,
+      "se": 0.0
+     },
+     "got_flung": {
+      "per_min": 0.5960986760932261,
+      "n": 700,
+      "value": 0.09975748068219159,
+      "se": 0.024339436379368074
+     },
+     "flung_own_goal": {
+      "per_min": 0.010218834447312447,
+      "n": 12,
+      "value": -0.04024251931780842,
+      "se": 0.0
+     },
+     "second_touch": {
+      "per_min": 9.933558652324976,
+      "n": 11665,
+      "value": -0.03706546281772256,
+      "se": 0.005151183784250276
+     },
+     "second_kick": {
+      "per_min": 2.6330530092575075,
+      "n": 3092,
+      "value": -0.00943836886385252,
+      "se": 0.009079544214258734
+     },
+     "impale_plant": {
+      "per_min": 0.549262351543044,
+      "n": 645,
+      "value": -0.2619479456743976,
+      "se": 0.02337417549085807
+     },
+     "impale_brake": {
+      "per_min": 0.3287058413885504,
+      "n": 386,
+      "value": -0.24231505817791205,
+      "se": 0.03111380002454292
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 6.671950340270996,
+     "other": 6.103950023651123
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.07217069628907286,
+     "p_goal_for_5s_baseline": 0.1031533871087415,
+     "lunge": {
+      "n": 252,
+      "overcommit_per_lunge": 0.38492063492063494,
+      "p_goal_against_5s": 0.1349206349206349,
+      "p_goal_against_5s_after_overcommit": 0.18556701030927836,
+      "p_goal_against_5s_after_overcommit_opp_still": 0.0,
+      "opp_still_share_of_overcommits": 0.020618556701030927,
+      "n_from_pit": 54,
+      "opp_speed_at_overcommit": 5.734259605407715
+     },
+     "energy_bins": {
+      "edges": [
+       16.98772430419922,
+       97.39928436279297,
+       165.12957763671875
+      ],
+      "value": [
+       -0.032721044532132294,
+       -0.02606867669282803,
+       0.047213015179789694,
+       0.011576795693766337
+      ],
+      "n": [
+       235858,
+       235857,
+       235857,
+       235858
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -80.97151374816895,
+       0.0,
+       80.97151374816895
+      ],
+      "value": [
+       -0.11188519809407198,
+       -0.05974434303158617,
+       -0.019527016762442152,
+       0.03140015945845513
+      ],
+      "n": [
+       211843,
+       218236,
+       205450,
+       211843
+      ]
+     },
+     "energy_median": 97.39928436279297,
+     "takeoff_speed_bins": {
+      "edges": [
+       7.503820896148682,
+       10.579512596130371,
+       13.544666290283203
+      ],
+      "value": [
+       -0.026642741354999652,
+       0.04900106152882586,
+       0.05607947929426653,
+       0.00375470483208748
+      ],
+      "n": [
+       7206,
+       7205,
+       7205,
+       7205
+      ]
+     },
+     "second_touch": {
+      "n": 11646,
+      "p_ball_my_way_0.5s": 0.613086038124678,
+      "p_goal_for_5s": 0.06156620298815044,
+      "p_goal_against_5s": 0.05830328009617036,
+      "speed_at": 8.906393051147461,
+      "max_speed_next_0.5s": 12.948748588562012,
+      "p_past_ball_1s": 0.17611196977503005,
+      "dx_1s": -3.4340660572052
+     },
+     "second_kick": {
+      "n": 3084,
+      "p_ball_my_way_0.5s": 0.8998054474708171,
+      "p_goal_for_5s": 0.04118028534370947,
+      "p_goal_against_5s": 0.02172503242542153,
+      "speed_at": 17.49298667907715,
+      "max_speed_next_0.5s": 20.01580810546875,
+      "p_past_ball_1s": 0.024319066147859923,
+      "dx_1s": -7.170973300933838
+     },
+     "got_flung": {
+      "n": 700,
+      "own_goals_after": 12
+     },
+     "impale_brake": {
+      "n_plants": 645,
+      "n": 386
+     }
+    },
+    "touch_rows": true
+   }
+  },
+  "cand_search1_t2_10M self-play": {
+   "steps": {
+    "cand_search1_t2_10M": 10002432
+   },
+   "cand_search1_t2_10M": {
+    "rider_minutes": 1263.9133333333334,
+    "goals_per_min": 0.6986238507914572,
+    "baseline_10s": 0.020832575547281063,
+    "states": {
+     "good_side": {
+      "share": 0.7422954834455799,
+      "entries_per_min": 5.591364386798673,
+      "value": 0.04720367573686564,
+      "n": 775807
+     },
+     "near_ball": {
+      "share": 0.26801582442424526,
+      "entries_per_min": 18.474367968267867,
+      "value": -0.02706627319688802,
+      "n": 280251
+     },
+     "tip_behind_ball": {
+      "share": 0.1511741157631988,
+      "entries_per_min": 17.075537879706943,
+      "value": 0.04911803860999385,
+      "n": 157940
+     },
+     "tip_past_ball": {
+      "share": 0.11684170866104648,
+      "entries_per_min": 8.79965398471414,
+      "value": -0.12544295400874406,
+      "n": 122311
+     },
+     "sit_right_far": {
+      "share": 0.5221937550040032,
+      "entries_per_min": 16.37612283542648,
+      "value": 0.033954015403442506,
+      "n": 545900
+     },
+     "sit_right_close": {
+      "share": 0.17369472048226817,
+      "entries_per_min": 18.19428547316008,
+      "value": -0.012609036285802257,
+      "n": 181552
+     },
+     "sit_A": {
+      "share": 0.04624311213676824,
+      "entries_per_min": 4.459957697521454,
+      "value": -0.28087284038196697,
+      "n": 48181
+     },
+     "sit_B": {
+      "share": 0.1900324965855037,
+      "entries_per_min": 7.614446138184579,
+      "value": -0.11595402273199469,
+      "n": 198399
+     },
+     "sit_both_wrong": {
+      "share": 0.005026138557905148,
+      "entries_per_min": 0.5538354423035334,
+      "value": -0.020832575547281063,
+      "n": 5336
+     },
+     "opp_out": {
+      "share": 0.06280977723355155,
+      "entries_per_min": 1.1962845553756323,
+      "value": 0.31224568958081417,
+      "n": 65342
+     },
+     "opp_wrong_side": {
+      "share": 0.2412998634201479,
+      "entries_per_min": 4.123700464694309,
+      "value": 0.10381710648706399,
+      "n": 251914
+     },
+     "airborne": {
+      "share": 0.5544755804643715,
+      "entries_per_min": 33.6059434454894,
+      "value": 0.01605132378071916,
+      "n": 578274
+     },
+     "pole_planted": {
+      "share": 0.14742240851504734,
+      "entries_per_min": 21.56160496236556,
+      "value": 0.01379251340917879,
+      "n": 154570
+     },
+     "in_pit": {
+      "share": 0.03603541656854896,
+      "entries_per_min": 2.386239562839224,
+      "value": -0.11467390326800928,
+      "n": 37297
+     },
+     "pole_fwd_down": {
+      "share": 0.3487985682663778,
+      "entries_per_min": 24.482691323772197,
+      "value": -0.003358452961957019,
+      "n": 364024
+     },
+     "pole_fwd_up": {
+      "share": 0.2876042010078651,
+      "entries_per_min": 31.669101784405047,
+      "value": -0.02791130482904902,
+      "n": 301184
+     },
+     "pole_back_up": {
+      "share": 0.27655159421654973,
+      "entries_per_min": 28.01774383264675,
+      "value": 0.02434026040509411,
+      "n": 288337
+     },
+     "pole_back_down": {
+      "share": 0.08704563650920737,
+      "entries_per_min": 19.521908147710548,
+      "value": 0.028638164319992564,
+      "n": 91165
+     },
+     "backswing_in_flight": {
+      "share": 0.054207130410210524,
+      "entries_per_min": 18.332744333735963,
+      "value": 0.011635665998964342,
+      "n": 54946
+     },
+     "pole_on_opp": {
+      "share": 0.3380567983798804,
+      "entries_per_min": 4.745578547052276,
+      "value": -0.021605095348406735,
+      "n": 353389
+     },
+     "opp_pole_on_me": {
+      "share": 0.3380567983798804,
+      "entries_per_min": 4.745578547052276,
+      "value": -0.02006005574615539,
+      "n": 353389
+     },
+     "pole_over_opp_head": {
+      "share": 0.07296755051099703,
+      "entries_per_min": 7.2853096467584795,
+      "value": -0.0007757194038044528,
+      "n": 76333
+     },
+     "opp_on_my_pole": {
+      "share": 0.09590919794659257,
+      "entries_per_min": 7.976812756148892,
+      "value": -0.04130487597952915,
+      "n": 100868
+     },
+     "on_opp_pole": {
+      "share": 0.09590919794659257,
+      "entries_per_min": 7.976812756148892,
+      "value": -0.0003602751150329764,
+      "n": 100868
+     },
+     "tip_peek": {
+      "share": 0.04489238449583196,
+      "entries_per_min": 8.173028741422144,
+      "value": -0.10447498506256435,
+      "n": 46914
+     },
+     "rhythmic_pressing": {
+      "share": 0.03683134743088588,
+      "entries_per_min": 2.218506543170154,
+      "value": -0.02536027211399344,
+      "n": 38651
+     },
+     "committed": {
+      "share": 0.3167343286393821,
+      "entries_per_min": 42.33992837061613,
+      "value": 0.02002401485496057,
+      "n": 330473
+     },
+     "at_mercy": {
+      "share": 0.037027268873922665,
+      "entries_per_min": 11.198552643377447,
+      "value": 0.072961994377258,
+      "n": 38563
+     },
+     "high_energy": {
+      "share": 0.1745424574954081,
+      "entries_per_min": 26.41557701741153,
+      "value": 0.018617592517649387,
+      "n": 182965
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 0.6986238507914572,
+      "n": 883,
+      "value": -0.01172095823520817,
+      "se": 0.008363904119835288
+     },
+     "goal_against": {
+      "per_min": 0.6986238507914572,
+      "n": 883,
+      "value": -0.029944192859353957,
+      "se": 0.008363904119835288
+     },
+     "kill": {
+      "per_min": 1.1907462009525969,
+      "n": 1505,
+      "value": 0.30914730372837285,
+      "se": 0.014503832619615895
+     },
+     "death": {
+      "per_min": 1.1907462009525969,
+      "n": 1505,
+      "value": -0.350812454822935,
+      "se": 0.014503832619615895
+     },
+     "back_pass": {
+      "per_min": 10.330613385938909,
+      "n": 13057,
+      "value": 0.0015439676625954787,
+      "se": 0.0034016410037336926
+     },
+     "fwd_pass": {
+      "per_min": 26.05637517340324,
+      "n": 32933,
+      "value": 0.03023645316377575,
+      "se": 0.0027760510751240384
+     },
+     "vault": {
+      "per_min": 16.243993522762636,
+      "n": 20531,
+      "value": 0.04527543190150851,
+      "se": 0.00386918287617835
+     },
+     "pogo_vault": {
+      "per_min": 0.3394220067831655,
+      "n": 429,
+      "value": -0.037226018170231884,
+      "se": 0.02638017594647013
+     },
+     "jump_over_ball": {
+      "per_min": 0.12184379730677736,
+      "n": 154,
+      "value": -0.10579989580871897,
+      "se": 0.05224484562216188
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.24922594903659004,
+      "n": 315,
+      "value": 0.22361186889716336,
+      "se": 0.035090176855407725
+     },
+     "tip_got_behind_ball": {
+      "per_min": 1.3379081899075358,
+      "n": 1691,
+      "value": -0.038073954857625894,
+      "se": 0.013459252583438492
+     },
+     "catapult": {
+      "per_min": 0.34654274818421094,
+      "n": 438,
+      "value": -0.10759056641486096,
+      "se": 0.02947798903717093
+     },
+     "peek_touch": {
+      "per_min": 0.23181969227847898,
+      "n": 293,
+      "value": -0.08590106869796599,
+      "se": 0.03521968468911908
+     },
+     "takeoff": {
+      "per_min": 31.22919820451824,
+      "n": 39471,
+      "value": 0.009420982944632613,
+      "se": 0.002394322627456335
+     },
+     "fast_takeoff": {
+      "per_min": 5.290710860976755,
+      "n": 6687,
+      "value": 0.06626128726860342,
+      "se": 0.007129666625925941
+     },
+     "lunge_at_opp": {
+      "per_min": 0.09652560565861583,
+      "n": 122,
+      "value": -0.299521100137445,
+      "se": 0.052179448551234096
+     },
+     "lunge_from_pit": {
+      "per_min": 0.031647739560201914,
+      "n": 40,
+      "value": -0.44583257554728106,
+      "se": 0.07816249100431741
+     },
+     "overcommit": {
+      "per_min": 0.03876848096124734,
+      "n": 49,
+      "value": -0.46981216738401577,
+      "se": 0.0766935652359528
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0,
+      "n": 0,
+      "value": null,
+      "se": null
+     },
+     "got_flung": {
+      "per_min": 0.3497075221402311,
+      "n": 442,
+      "value": 0.07419004888710808,
+      "se": 0.02949943857187371
+     },
+     "flung_own_goal": {
+      "per_min": 0.003955967445025239,
+      "n": 5,
+      "value": -0.020832575547281063,
+      "se": 0.0
+     },
+     "second_touch": {
+      "per_min": 6.3683163930016295,
+      "n": 8049,
+      "value": -0.019083668614114292,
+      "se": 0.0059727515677393565
+     },
+     "second_kick": {
+      "per_min": 2.6560365425899453,
+      "n": 3357,
+      "value": -0.00407112687921761,
+      "se": 0.008180910869887354
+     },
+     "impale_plant": {
+      "per_min": 0.016615063269106004,
+      "n": 21,
+      "value": 0.1696436149289094,
+      "se": 0.12811289697800937
+     },
+     "impale_brake": {
+      "per_min": 0.012659095824080764,
+      "n": 16,
+      "value": 0.16666742445271893,
+      "se": 0.15857643070456592
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 5.594699859619141,
+     "other": 5.696700096130371
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.046881909812292406,
+     "p_goal_for_5s_baseline": 0.06291219572895827,
+     "lunge": {
+      "n": 122,
+      "overcommit_per_lunge": 0.4016393442622951,
+      "p_goal_against_5s": 0.29508196721311475,
+      "p_goal_against_5s_after_overcommit": 0.40816326530612246,
+      "p_goal_against_5s_after_overcommit_opp_still": null,
+      "opp_still_share_of_overcommits": 0.0,
+      "n_from_pit": 40,
+      "opp_speed_at_overcommit": 11.396080017089844
+     },
+     "energy_bins": {
+      "edges": [
+       10.831866979598999,
+       89.33198928833008,
+       135.21287155151367
+      ],
+      "value": [
+       -0.02533525188296018,
+       -0.005214814412112193,
+       0.008362185093969889,
+       0.02218789325177552
+      ],
+      "n": [
+       261178,
+       261177,
+       261177,
+       261178
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -91.65201377868652,
+       0.0,
+       91.65201377868652
+      ],
+      "value": [
+       -0.04407613670100469,
+       -0.03846070427195329,
+       -0.002188465018842175,
+       0.0024109856064425637
+      ],
+      "n": [
+       244842,
+       251700,
+       237984,
+       244842
+      ]
+     },
+     "energy_median": 89.33198547363281,
+     "takeoff_speed_bins": {
+      "edges": [
+       2.555996000766754,
+       8.713688850402832,
+       12.83364224433899
+      ],
+      "value": [
+       -0.007670653294449719,
+       -0.0028733918738116752,
+       -0.00868971840442392,
+       0.056914593108978506
+      ],
+      "n": [
+       9801,
+       9800,
+       9800,
+       9801
+      ]
+     },
+     "second_touch": {
+      "n": 8005,
+      "p_ball_my_way_0.5s": 0.6854465958775765,
+      "p_goal_for_5s": 0.06171143035602748,
+      "p_goal_against_5s": 0.061961274203622733,
+      "speed_at": 12.95810604095459,
+      "max_speed_next_0.5s": 16.466432571411133,
+      "p_past_ball_1s": 0.11955028107432855,
+      "dx_1s": -4.92665433883667
+     },
+     "second_kick": {
+      "n": 3341,
+      "p_ball_my_way_0.5s": 0.9542053277461838,
+      "p_goal_for_5s": 0.03591739000299311,
+      "p_goal_against_5s": 0.025142173002095182,
+      "speed_at": 19.478424072265625,
+      "max_speed_next_0.5s": 20.628137588500977,
+      "p_past_ball_1s": 0.016162825501346904,
+      "dx_1s": -8.345184326171875
+     },
+     "got_flung": {
+      "n": 442,
+      "own_goals_after": 5
+     },
+     "impale_brake": {
+      "n_plants": 21,
+      "n": 16
+     }
+    },
+    "touch_rows": true
+   }
+  },
+  "farm3 vs farm2": {
+   "steps": {
+    "farm3": 683781120,
+    "farm2": 427374080
+   },
+   "farm3": {
+    "rider_minutes": 611.7111111111111,
+    "goals_per_min": 0.8500744723362517,
+    "baseline_10s": -0.015872670825865024,
+    "states": {
+     "good_side": {
+      "share": 0.7745727630807491,
+      "entries_per_min": 8.175427761833836,
+      "value": 0.06417902696564294,
+      "n": 391936
+     },
+     "near_ball": {
+      "share": 0.33414393250778135,
+      "entries_per_min": 23.072982889526646,
+      "value": -0.029835705596058453,
+      "n": 169225
+     },
+     "tip_behind_ball": {
+      "share": 0.2061499293676933,
+      "entries_per_min": 21.781523595015802,
+      "value": 0.05451478335077688,
+      "n": 104368
+     },
+     "tip_past_ball": {
+      "share": 0.12799400314008808,
+      "entries_per_min": 13.172884804010607,
+      "value": -0.16557266275416488,
+      "n": 64857
+     },
+     "sit_right_far": {
+      "share": 0.48680415373052693,
+      "entries_per_min": 19.50267010571439,
+      "value": 0.0564792529563711,
+      "n": 246364
+     },
+     "sit_right_close": {
+      "share": 0.21383094678770564,
+      "entries_per_min": 22.84738620263741,
+      "value": -0.028983550942704214,
+      "n": 108257
+     },
+     "sit_A": {
+      "share": 0.044523930382909735,
+      "entries_per_min": 2.604170450830094,
+      "value": -0.4941553453612653,
+      "n": 22487
+     },
+     "sit_B": {
+      "share": 0.13541531402848114,
+      "entries_per_min": 7.689904457441784,
+      "value": -0.22508309997586212,
+      "n": 68552
+     },
+     "sit_both_wrong": {
+      "share": 0.010431545686707355,
+      "entries_per_min": 0.9138300577614705,
+      "value": 0.050199340007305984,
+      "n": 5302
+     },
+     "opp_out": {
+      "share": 0.10899410938366919,
+      "entries_per_min": 1.945362734769499,
+      "value": 0.2814678764918961,
+      "n": 55065
+     },
+     "opp_wrong_side": {
+      "share": 0.127325062073796,
+      "entries_per_min": 4.441639117956915,
+      "value": 0.28922778626586876,
+      "n": 64579
+     },
+     "airborne": {
+      "share": 0.6744657325101423,
+      "entries_per_min": 28.627892614523923,
+      "value": 0.0009617377051820419,
+      "n": 341092
+     },
+     "pole_planted": {
+      "share": 0.20666737495720744,
+      "entries_per_min": 31.55084099248011,
+      "value": -0.008088578445648031,
+      "n": 104669
+     },
+     "in_pit": {
+      "share": 0.027615461195515733,
+      "entries_per_min": 3.0046863079885204,
+      "value": -0.19551701398788857,
+      "n": 13960
+     },
+     "pole_fwd_down": {
+      "share": 0.2905584870914049,
+      "entries_per_min": 29.337377847204564,
+      "value": 0.0014005168007971865,
+      "n": 147041
+     },
+     "pole_fwd_up": {
+      "share": 0.2917507761683843,
+      "entries_per_min": 30.88876375921822,
+      "value": -0.023613387943138827,
+      "n": 147799
+     },
+     "pole_back_up": {
+      "share": 0.18181031192328426,
+      "entries_per_min": 30.6321066589167,
+      "value": 0.04019003975197512,
+      "n": 91704
+     },
+     "pole_back_down": {
+      "share": 0.23588042481692656,
+      "entries_per_min": 27.730410142768918,
+      "value": -0.003360190752769592,
+      "n": 119483
+     },
+     "backswing_in_flight": {
+      "share": 0.1187016247398016,
+      "entries_per_min": 29.988011770261924,
+      "value": 0.0025477555603635946,
+      "n": 60188
+     },
+     "pole_on_opp": {
+      "share": 0.052757807919475236,
+      "entries_per_min": 6.380462818323828,
+      "value": 0.0005408545092313085,
+      "n": 26807
+     },
+     "opp_pole_on_me": {
+      "share": 0.06005320048950746,
+      "entries_per_min": 8.121480728012497,
+      "value": -0.0038311155850902813,
+      "n": 30451
+     },
+     "pole_over_opp_head": {
+      "share": 0.022478387301137593,
+      "entries_per_min": 4.225850982671559,
+      "value": -0.008372405760568236,
+      "n": 11425
+     },
+     "opp_on_my_pole": {
+      "share": 0.010905706854284962,
+      "entries_per_min": 2.7251425872779453,
+      "value": -0.11878436888532631,
+      "n": 5540
+     },
+     "on_opp_pole": {
+      "share": 0.025685369471890703,
+      "entries_per_min": 3.151814582046718,
+      "value": 0.0844392838650131,
+      "n": 13053
+     },
+     "tip_peek": {
+      "share": 0.07005386943057375,
+      "entries_per_min": 13.336360664075272,
+      "value": -0.128136805708431,
+      "n": 35456
+     },
+     "rhythmic_pressing": {
+      "share": 0.0034843959658918755,
+      "entries_per_min": 0.302430341119628,
+      "value": -0.14505335966538285,
+      "n": 1771
+     },
+     "committed": {
+      "share": 0.4451448650903267,
+      "entries_per_min": 57.7658299124496,
+      "value": 0.0015770440244559213,
+      "n": 224824
+     },
+     "at_mercy": {
+      "share": 0.050178449866802026,
+      "entries_per_min": 15.302975260653177,
+      "value": 0.06967163260028691,
+      "n": 25428
+     },
+     "high_energy": {
+      "share": 0.2399294857417179,
+      "entries_per_min": 34.11577723689469,
+      "value": 0.008575326729292714,
+      "n": 121277
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 0.8500744723362517,
+      "n": 520,
+      "value": -0.014896559943365747,
+      "se": 0.01238970456647067
+     },
+     "goal_against": {
+      "per_min": 1.0854797108293675,
+      "n": 664,
+      "value": 0.01286062263309394,
+      "se": 0.011066354411258382
+     },
+     "kill": {
+      "per_min": 1.9371889417662658,
+      "n": 1185,
+      "value": 0.2692510492042434,
+      "se": 0.015295943575128444
+     },
+     "death": {
+      "per_min": 1.381371017546409,
+      "n": 845,
+      "value": -0.341523778878277,
+      "se": 0.01893736197858131
+     },
+     "back_pass": {
+      "per_min": 7.8664583863116215,
+      "n": 4812,
+      "value": 0.007762876689870015,
+      "se": 0.008119608773937312
+     },
+     "fwd_pass": {
+      "per_min": 23.5585061939187,
+      "n": 14411,
+      "value": 0.034422066407357316,
+      "se": 0.004572619848385445
+     },
+     "vault": {
+      "per_min": 19.948959203690922,
+      "n": 12203,
+      "value": 0.021946209893494703,
+      "se": 0.005033772239913398
+     },
+     "pogo_vault": {
+      "per_min": 1.1247139172448868,
+      "n": 688,
+      "value": -0.23412732917413498,
+      "se": 0.02302758650836462
+     },
+     "jump_over_ball": {
+      "per_min": 0.39234206415519307,
+      "n": 240,
+      "value": -0.13412732917413497,
+      "se": 0.04137397195768803
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.3596468921422603,
+      "n": 220,
+      "value": 0.27041812537131954,
+      "se": 0.04159661027627531
+     },
+     "tip_got_behind_ball": {
+      "per_min": 3.3201947179133215,
+      "n": 2031,
+      "value": -0.016178611225417024,
+      "se": 0.011678342865520257
+     },
+     "catapult": {
+      "per_min": 0.5378355796127439,
+      "n": 329,
+      "value": -0.13306349938690093,
+      "se": 0.034348135590771836
+     },
+     "peek_touch": {
+      "per_min": 0.4381153049732989,
+      "n": 268,
+      "value": -0.12964971723383648,
+      "se": 0.0352655621683693
+     },
+     "takeoff": {
+      "per_min": 25.549642169506303,
+      "n": 15629,
+      "value": 0.011260833777440735,
+      "se": 0.004497283763251861
+     },
+     "fast_takeoff": {
+      "per_min": 5.267192211283467,
+      "n": 3222,
+      "value": 0.01680492688552941,
+      "se": 0.009713161739550322
+     },
+     "lunge_at_opp": {
+      "per_min": 0.2157881352853562,
+      "n": 132,
+      "value": -0.07503642008322589,
+      "se": 0.048454708262638736
+     },
+     "lunge_from_pit": {
+      "per_min": 0.052312275220692414,
+      "n": 32,
+      "value": -0.20287732917413498,
+      "se": 0.09616041894602477
+     },
+     "overcommit": {
+      "per_min": 0.0866422058342718,
+      "n": 53,
+      "value": -0.2294103480420595,
+      "se": 0.08398096199420042
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0,
+      "n": 0,
+      "value": null,
+      "se": null
+     },
+     "got_flung": {
+      "per_min": 0.5754350274276165,
+      "n": 352,
+      "value": -0.02958187462868043,
+      "se": 0.03328506946043113
+     },
+     "flung_own_goal": {
+      "per_min": 0.006539034402586552,
+      "n": 4,
+      "value": 0.015872670825865024,
+      "se": 0.0
+     },
+     "second_touch": {
+      "per_min": 10.367639045300978,
+      "n": 6342,
+      "value": -0.03352758169938751,
+      "se": 0.006605330898336422
+     },
+     "second_kick": {
+      "per_min": 2.352417626330512,
+      "n": 1439,
+      "value": 0.04440433401306057,
+      "se": 0.01224912613541994
+     },
+     "impale_plant": {
+      "per_min": 0.6506339230573619,
+      "n": 398,
+      "value": -0.1976951683701149,
+      "se": 0.031063115327300342
+     },
+     "impale_brake": {
+      "per_min": 0.41686344316489266,
+      "n": 255,
+      "value": -0.1998136036839389,
+      "se": 0.038650287845121395
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 6.823450088500977,
+     "other": 6.13100004196167
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.0786539058192547,
+     "p_goal_for_5s_baseline": 0.07678641653508607,
+     "lunge": {
+      "n": 132,
+      "overcommit_per_lunge": 0.4015151515151515,
+      "p_goal_against_5s": 0.15151515151515152,
+      "p_goal_against_5s_after_overcommit": 0.22641509433962265,
+      "p_goal_against_5s_after_overcommit_opp_still": null,
+      "opp_still_share_of_overcommits": 0.0,
+      "n_from_pit": 32,
+      "opp_speed_at_overcommit": 9.337095260620117
+     },
+     "energy_bins": {
+      "edges": [
+       22.008237838745117,
+       98.47314453125,
+       161.25213623046875
+      ],
+      "value": [
+       -0.01458414184062774,
+       -0.01750888118311472,
+       0.02350867228034149,
+       0.008584536572424504
+      ],
+      "n": [
+       126507,
+       126507,
+       126506,
+       126507
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -80.89518547058105,
+       -6.340672016143799,
+       73.02677345275879
+      ],
+      "value": [
+       -0.08849042689368687,
+       -0.07414861709324089,
+       -0.02610887964424319,
+       0.0512723923113938
+      ],
+      "n": [
+       112741,
+       112740,
+       112740,
+       112741
+      ]
+     },
+     "energy_median": 98.47314453125,
+     "takeoff_speed_bins": {
+      "edges": [
+       7.609463214874268,
+       10.644189357757568,
+       13.469973087310791
+      ],
+      "value": [
+       -0.02537764944059667,
+       0.008698702083871687,
+       0.03918806923734337,
+       0.02253421322914455
+      ],
+      "n": [
+       3903,
+       3903,
+       3903,
+       3903
+      ]
+     },
+     "second_touch": {
+      "n": 6336,
+      "p_ball_my_way_0.5s": 0.6240530303030303,
+      "p_goal_for_5s": 0.04482323232323232,
+      "p_goal_against_5s": 0.06581439393939394,
+      "speed_at": 8.90709114074707,
+      "max_speed_next_0.5s": 13.302297592163086,
+      "p_past_ball_1s": 0.19381313131313133,
+      "dx_1s": -3.194751501083374
+     },
+     "second_kick": {
+      "n": 1437,
+      "p_ball_my_way_0.5s": 0.9589422407794015,
+      "p_goal_for_5s": 0.03549060542797495,
+      "p_goal_against_5s": 0.020180932498260265,
+      "speed_at": 19.014184951782227,
+      "max_speed_next_0.5s": 21.3215389251709,
+      "p_past_ball_1s": 0.026443980514961725,
+      "dx_1s": -7.574194431304932
+     },
+     "got_flung": {
+      "n": 352,
+      "own_goals_after": 4
+     },
+     "impale_brake": {
+      "n_plants": 398,
+      "n": 255
+     }
+    },
+    "touch_rows": true,
+    "h2h": {
+     "goal_diff_per_match": -1.125,
+     "w": 34,
+     "d": 22,
+     "l": 72
+    }
+   },
+   "farm2": {
+    "rider_minutes": 611.7111111111111,
+    "goals_per_min": 1.0854797108293675,
+    "baseline_10s": 0.07351245079810703,
+    "states": {
+     "good_side": {
+      "share": 0.8519554100290644,
+      "entries_per_min": 7.065426671994769,
+      "value": 0.05343281429772845,
+      "n": 414982
+     },
+     "near_ball": {
+      "share": 0.2789693781195198,
+      "entries_per_min": 24.397137356050422,
+      "value": -0.059401949173083134,
+      "n": 135998
+     },
+     "tip_behind_ball": {
+      "share": 0.14296138233815286,
+      "entries_per_min": 23.77265957060341,
+      "value": 0.07219584544288313,
+      "n": 69646
+     },
+     "tip_past_ball": {
+      "share": 0.13600799578136688,
+      "entries_per_min": 15.286627674646711,
+      "value": -0.19753282697365562,
+      "n": 66352
+     },
+     "sit_right_far": {
+      "share": 0.5877819064787904,
+      "entries_per_min": 22.649580411959167,
+      "value": 0.056838172007224824,
+      "n": 286205
+     },
+     "sit_right_close": {
+      "share": 0.20556638828593501,
+      "entries_per_min": 23.944309223671304,
+      "value": -0.043525527652075506,
+      "n": 100177
+     },
+     "sit_A": {
+      "share": 0.03913272751799664,
+      "entries_per_min": 1.6102372216369383,
+      "value": -0.4482512723609988,
+      "n": 19144
+     },
+     "sit_B": {
+      "share": 0.08230422394728344,
+      "entries_per_min": 4.762051803683656,
+      "value": -0.3301028728841189,
+      "n": 40134
+     },
+     "sit_both_wrong": {
+      "share": 0.010836818202257296,
+      "entries_per_min": 0.9138300577614705,
+      "value": -0.107839119979548,
+      "n": 5302
+     },
+     "opp_out": {
+      "share": 0.07437793556773727,
+      "entries_per_min": 1.3960838449522288,
+      "value": 0.28897240436215293,
+      "n": 36316
+     },
+     "opp_wrong_side": {
+      "share": 0.1977647785013224,
+      "entries_per_min": 6.62240709121953,
+      "value": 0.21510079396004117,
+      "n": 96340
+     },
+     "airborne": {
+      "share": 0.7239677225512919,
+      "entries_per_min": 29.885021978421186,
+      "value": 0.03178711711642851,
+      "n": 352708
+     },
+     "pole_planted": {
+      "share": 0.2379685155889122,
+      "entries_per_min": 30.619028590111526,
+      "value": 0.01525330790310886,
+      "n": 116047
+     },
+     "in_pit": {
+      "share": 0.030331645062523248,
+      "entries_per_min": 2.5306063138009955,
+      "value": -0.3455254554039049,
+      "n": 14764
+     },
+     "pole_fwd_down": {
+      "share": 0.3326240960801867,
+      "entries_per_min": 29.747702255966868,
+      "value": 0.003597172477941224,
+      "n": 162055
+     },
+     "pole_fwd_up": {
+      "share": 0.383550192332062,
+      "entries_per_min": 30.108983906709778,
+      "value": -0.04613981701141668,
+      "n": 186902
+     },
+     "pole_back_up": {
+      "share": 0.1724570676412036,
+      "entries_per_min": 26.424238020852254,
+      "value": 0.05380724113966154,
+      "n": 84009
+     },
+     "pole_back_down": {
+      "share": 0.11136864394654764,
+      "entries_per_min": 24.374250735641372,
+      "value": 0.06481793659326135,
+      "n": 54312
+     },
+     "backswing_in_flight": {
+      "share": 0.043386107125483894,
+      "entries_per_min": 16.486540487521342,
+      "value": -0.05122898997233614,
+      "n": 21047
+     },
+     "pole_on_opp": {
+      "share": 0.062386307428800344,
+      "entries_per_min": 8.121480728012497,
+      "value": -0.053808664387151726,
+      "n": 30451
+     },
+     "opp_pole_on_me": {
+      "share": 0.05480748398595424,
+      "entries_per_min": 6.380462818323828,
+      "value": -0.058180634481473315,
+      "n": 26807
+     },
+     "pole_over_opp_head": {
+      "share": 0.02264449431588242,
+      "entries_per_min": 3.853126021724125,
+      "value": 0.030919357126795943,
+      "n": 11079
+     },
+     "opp_on_my_pole": {
+      "share": 0.026683263227172575,
+      "entries_per_min": 3.151814582046718,
+      "value": -0.1420790638372551,
+      "n": 13053
+     },
+     "on_opp_pole": {
+      "share": 0.011329400847814445,
+      "entries_per_min": 2.7251425872779453,
+      "value": 0.0611445889130843,
+      "n": 5540
+     },
+     "tip_peek": {
+      "share": 0.09757224204816273,
+      "entries_per_min": 16.08929414756421,
+      "value": -0.10500007840807216,
+      "n": 47606
+     },
+     "rhythmic_pressing": {
+      "share": 0.0027306656201840336,
+      "entries_per_min": 0.32204744432738763,
+      "value": -0.2344405945106819,
+      "n": 1336
+     },
+     "committed": {
+      "share": 0.45207845349488407,
+      "entries_per_min": 58.10749445998474,
+      "value": 0.03444508959849765,
+      "n": 220068
+     },
+     "at_mercy": {
+      "share": 0.0685487002767456,
+      "entries_per_min": 16.80858793184873,
+      "value": 0.06647194202259049,
+      "n": 33318
+     },
+     "high_energy": {
+      "share": 0.2569401011327357,
+      "entries_per_min": 36.08729610927453,
+      "value": 0.023864661153264244,
+      "n": 125358
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 1.0854797108293675,
+      "n": 664,
+      "value": -0.07050040260533595,
+      "se": 0.011066354411258382
+     },
+     "goal_against": {
+      "per_min": 0.8500744723362517,
+      "n": 520,
+      "value": -0.04274322002887626,
+      "se": 0.01238970456647067
+     },
+     "kill": {
+      "per_min": 1.381371017546409,
+      "n": 845,
+      "value": 0.283883998906035,
+      "se": 0.01893736197858131
+     },
+     "death": {
+      "per_min": 1.9371889417662658,
+      "n": 1185,
+      "value": -0.32689082917648543,
+      "se": 0.015295943575128444
+     },
+     "back_pass": {
+      "per_min": 3.2433610636829293,
+      "n": 1984,
+      "value": -0.002912349940820097,
+      "se": 0.012798507423090619
+     },
+     "fwd_pass": {
+      "per_min": 25.204708104769864,
+      "n": 15418,
+      "value": 0.06147878353732572,
+      "se": 0.004434521806343128
+     },
+     "vault": {
+      "per_min": 23.292040542013297,
+      "n": 14248,
+      "value": 0.04694576833183885,
+      "se": 0.004581379899813008
+     },
+     "pogo_vault": {
+      "per_min": 1.89141570094816,
+      "n": 1157,
+      "value": 0.030204057412783203,
+      "se": 0.015642570006805186
+     },
+     "jump_over_ball": {
+      "per_min": 0.20597958368147637,
+      "n": 126,
+      "value": -0.21636959365524988,
+      "se": 0.06220347720791476
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.3498383405383805,
+      "n": 214,
+      "value": 0.14611371742619203,
+      "se": 0.04498560296413769
+     },
+     "tip_got_behind_ball": {
+      "per_min": 2.3033748683111126,
+      "n": 1409,
+      "value": -0.023725822064109878,
+      "se": 0.01426939892074571
+     },
+     "catapult": {
+      "per_min": 0.5656264758237367,
+      "n": 346,
+      "value": -0.01859915600041917,
+      "se": 0.03345076359579656
+     },
+     "peek_touch": {
+      "per_min": 0.38743778835325315,
+      "n": 237,
+      "value": -0.13283448469641213,
+      "se": 0.03910479596682123
+     },
+     "takeoff": {
+      "per_min": 26.12507719693392,
+      "n": 15981,
+      "value": 0.013945261268050096,
+      "se": 0.004516760168561591
+     },
+     "fast_takeoff": {
+      "per_min": 6.789152468485487,
+      "n": 4153,
+      "value": 0.019039971472319575,
+      "se": 0.008597627253021815
+     },
+     "lunge_at_opp": {
+      "per_min": 0.16020634286337052,
+      "n": 98,
+      "value": -0.21636959365524988,
+      "se": 0.0594995091310745
+     },
+     "lunge_from_pit": {
+      "per_min": 0.021251861808406294,
+      "n": 13,
+      "value": -0.3042816815673378,
+      "se": 0.1168545423558077
+     },
+     "overcommit": {
+      "per_min": 0.052312275220692414,
+      "n": 32,
+      "value": -0.29226245079810703,
+      "se": 0.09616041894602477
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0,
+      "n": 0,
+      "value": null,
+      "se": null
+     },
+     "got_flung": {
+      "per_min": 0.5411050968140372,
+      "n": 331,
+      "value": 0.07754495101458178,
+      "se": 0.034240035677062394
+     },
+     "flung_own_goal": {
+      "per_min": 0.006539034402586552,
+      "n": 4,
+      "value": -0.07351245079810703,
+      "se": 0.0
+     },
+     "second_touch": {
+      "per_min": 10.567079594579868,
+      "n": 6464,
+      "value": -0.023496966127930508,
+      "se": 0.0066256386762577665
+     },
+     "second_kick": {
+      "per_min": 2.7790896210992844,
+      "n": 1700,
+      "value": 0.02178166684895179,
+      "se": 0.011860818473382795
+     },
+     "impale_plant": {
+      "per_min": 0.0474079994187525,
+      "n": 29,
+      "value": -0.14247796803948634,
+      "se": 0.09668752128540367
+     },
+     "impale_brake": {
+      "per_min": 0.02942565481163948,
+      "n": 18,
+      "value": -0.12906800635366258,
+      "se": 0.14640174352631388
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 5.844399929046631,
+     "other": 5.831699848175049
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.05639696436120654,
+     "p_goal_for_5s_baseline": 0.10166065367203116,
+     "lunge": {
+      "n": 98,
+      "overcommit_per_lunge": 0.32653061224489793,
+      "p_goal_against_5s": 0.19387755102040816,
+      "p_goal_against_5s_after_overcommit": 0.25,
+      "p_goal_against_5s_after_overcommit_opp_still": null,
+      "opp_still_share_of_overcommits": 0.0,
+      "n_from_pit": 13,
+      "opp_speed_at_overcommit": 6.745318412780762
+     },
+     "energy_bins": {
+      "edges": [
+       32.95275020599365,
+       102.36610794067383,
+       168.06893157958984
+      ],
+      "value": [
+       -0.08346976486804629,
+       0.012582493340327863,
+       0.04819270192847913,
+       0.022695068492649823
+      ],
+      "n": [
+       121820,
+       121819,
+       121819,
+       121820
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -73.02677345275879,
+       6.340672016143799,
+       80.89518547058105
+      ],
+      "value": [
+       -0.10891217228363581,
+       -0.031530900327998816,
+       0.016508837120998876,
+       0.03085064692144486
+      ],
+      "n": [
+       112741,
+       112740,
+       112740,
+       112741
+      ]
+     },
+     "energy_median": 102.36610412597656,
+     "takeoff_speed_bins": {
+      "edges": [
+       8.716639041900635,
+       11.825112342834473,
+       14.108039379119873
+      ],
+      "value": [
+       -0.0028534680870070522,
+       -0.0013319996702874787,
+       0.04202639631968745,
+       0.017943324696756413
+      ],
+      "n": [
+       3991,
+       3990,
+       3990,
+       3991
+      ]
+     },
+     "second_touch": {
+      "n": 6458,
+      "p_ball_my_way_0.5s": 0.5786621244967483,
+      "p_goal_for_5s": 0.0673583152678848,
+      "p_goal_against_5s": 0.04026014245896562,
+      "speed_at": 11.185053825378418,
+      "max_speed_next_0.5s": 15.347452163696289,
+      "p_past_ball_1s": 0.10560545060390214,
+      "dx_1s": -3.8305704593658447
+     },
+     "second_kick": {
+      "n": 1700,
+      "p_ball_my_way_0.5s": 0.9635294117647059,
+      "p_goal_for_5s": 0.057058823529411766,
+      "p_goal_against_5s": 0.01411764705882353,
+      "speed_at": 19.698471069335938,
+      "max_speed_next_0.5s": 21.521968841552734,
+      "p_past_ball_1s": 0.015294117647058824,
+      "dx_1s": -8.390702247619629
+     },
+     "got_flung": {
+      "n": 331,
+      "own_goals_after": 4
+     },
+     "impale_brake": {
+      "n_plants": 29,
+      "n": 18
+     }
+    },
+    "touch_rows": true
+   }
+  },
+  "cand_search1_t2_10M vs farm2": {
+   "steps": {
+    "cand_search1_t2_10M": 10002432,
+    "farm2": 427374080
+   },
+   "cand_search1_t2_10M": {
+    "rider_minutes": 619.7833333333333,
+    "goals_per_min": 0.6534541640896012,
+    "baseline_10s": -0.04326303614342305,
+    "states": {
+     "good_side": {
+      "share": 0.653751299309538,
+      "entries_per_min": 7.486487213273456,
+      "value": 0.061425197645260034,
+      "n": 327439
+     },
+     "near_ball": {
+      "share": 0.33257383832834686,
+      "entries_per_min": 20.399064189098343,
+      "value": -0.026300042699131783,
+      "n": 166712
+     },
+     "tip_behind_ball": {
+      "share": 0.1306364344179686,
+      "entries_per_min": 17.136633769865814,
+      "value": 0.06515323234216824,
+      "n": 65189
+     },
+     "tip_past_ball": {
+      "share": 0.20193740391037826,
+      "entries_per_min": 10.464947427864576,
+      "value": -0.08502316501296514,
+      "n": 101523
+     },
+     "sit_right_far": {
+      "share": 0.4415063690869065,
+      "entries_per_min": 17.26409766854008,
+      "value": 0.05676176583429943,
+      "n": 221206
+     },
+     "sit_right_close": {
+      "share": 0.16647761630549485,
+      "entries_per_min": 20.23933094898755,
+      "value": -0.024016539312949316,
+      "n": 83101
+     },
+     "sit_A": {
+      "share": 0.04466660606515716,
+      "entries_per_min": 2.968779412160164,
+      "value": -0.40138480606059507,
+      "n": 21851
+     },
+     "sit_B": {
+      "share": 0.2763290503875203,
+      "entries_per_min": 7.321913571947186,
+      "value": -0.08612896777820211,
+      "n": 138718
+     },
+     "sit_both_wrong": {
+      "share": 0.00831360490714136,
+      "entries_per_min": 0.8486836797805685,
+      "value": -0.056903511560597884,
+      "n": 4203
+     },
+     "opp_out": {
+      "share": 0.06270675324777981,
+      "entries_per_min": 1.1778309624331085,
+      "value": 0.3299656702278407,
+      "n": 31510
+     },
+     "opp_wrong_side": {
+      "share": 0.09684252961240065,
+      "entries_per_min": 3.8029418882942965,
+      "value": 0.336338124555299,
+      "n": 48636
+     },
+     "airborne": {
+      "share": 0.5534544836553776,
+      "entries_per_min": 28.08723478635007,
+      "value": 0.017453111083622647,
+      "n": 276754
+     },
+     "pole_planted": {
+      "share": 0.17061366932918082,
+      "entries_per_min": 25.10393417054347,
+      "value": 0.004132449184618664,
+      "n": 85713
+     },
+     "in_pit": {
+      "share": 0.03765527490030393,
+      "entries_per_min": 2.88165219028155,
+      "value": -0.10838414770354826,
+      "n": 18820
+     },
+     "pole_fwd_down": {
+      "share": 0.23787541647069982,
+      "entries_per_min": 27.735498964691963,
+      "value": -0.005102395292008552,
+      "n": 119114
+     },
+     "pole_fwd_up": {
+      "share": 0.44787545599342343,
+      "entries_per_min": 30.781724796299784,
+      "value": -0.028044392845167944,
+      "n": 224647
+     },
+     "pole_back_up": {
+      "share": 0.21745007291942503,
+      "entries_per_min": 24.88450264877511,
+      "value": 0.047446827415646556,
+      "n": 108275
+     },
+     "pole_back_down": {
+      "share": 0.09679905461645173,
+      "entries_per_min": 20.25223868556216,
+      "value": 0.03646633974979135,
+      "n": 48553
+     },
+     "backswing_in_flight": {
+      "share": 0.04764661942383774,
+      "entries_per_min": 15.237583026326405,
+      "value": 0.015491120387714611,
+      "n": 23693
+     },
+     "pole_on_opp": {
+      "share": 0.23956501290416926,
+      "entries_per_min": 5.606798074595961,
+      "value": 0.0018918089715790898,
+      "n": 120301
+     },
+     "opp_pole_on_me": {
+      "share": 0.24501124421486134,
+      "entries_per_min": 8.370667168634201,
+      "value": 0.002197625448713561,
+      "n": 123145
+     },
+     "pole_over_opp_head": {
+      "share": 0.1407917982444006,
+      "entries_per_min": 7.497781482776239,
+      "value": 0.024720512331215416,
+      "n": 70972
+     },
+     "opp_on_my_pole": {
+      "share": 0.03063208691837372,
+      "entries_per_min": 3.9223384516094337,
+      "value": -0.09256541876679203,
+      "n": 15203
+     },
+     "on_opp_pole": {
+      "share": 0.011325236444693876,
+      "entries_per_min": 2.3153252480705624,
+      "value": 0.11151334637210591,
+      "n": 5641
+     },
+     "tip_peek": {
+      "share": 0.0551361755441291,
+      "entries_per_min": 9.932503294161938,
+      "value": -0.13114626956359257,
+      "n": 27510
+     },
+     "rhythmic_pressing": {
+      "share": 0.1076875649654769,
+      "entries_per_min": 3.3882808508349695,
+      "value": 0.006070066589076821,
+      "n": 54392
+     },
+     "committed": {
+      "share": 0.3524537682940807,
+      "entries_per_min": 47.450453115336,
+      "value": 0.02249813303493865,
+      "n": 175970
+     },
+     "at_mercy": {
+      "share": 0.037250166983507166,
+      "entries_per_min": 11.23134428698201,
+      "value": 0.05988145578532291,
+      "n": 18654
+     },
+     "high_energy": {
+      "share": 0.20039008928183258,
+      "entries_per_min": 29.034339957512035,
+      "value": 0.02378413413575105,
+      "n": 100365
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 0.6534541640896012,
+      "n": 405,
+      "value": 0.04822581529975059,
+      "se": 0.011636123008400246
+     },
+     "goal_against": {
+      "per_min": 1.0842498722671903,
+      "n": 672,
+      "value": 0.03877201817935119,
+      "se": 0.010040718016730843
+     },
+     "kill": {
+      "per_min": 1.1439481539247587,
+      "n": 709,
+      "value": 0.3293820163133947,
+      "se": 0.019637060192895885
+     },
+     "death": {
+      "per_min": 1.6699384193400921,
+      "n": 1035,
+      "value": -0.3534391947004179,
+      "se": 0.017798948854497707
+     },
+     "back_pass": {
+      "per_min": 5.5325785892919574,
+      "n": 3429,
+      "value": 0.0033803381962089693,
+      "se": 0.009248357266658118
+     },
+     "fwd_pass": {
+      "per_min": 23.03708285153414,
+      "n": 14278,
+      "value": 0.02906168631215196,
+      "se": 0.004789500083390763
+     },
+     "vault": {
+      "per_min": 17.778793664452632,
+      "n": 11019,
+      "value": 0.039163555410982494,
+      "se": 0.005448345081312716
+     },
+     "pogo_vault": {
+      "per_min": 0.4485438459676769,
+      "n": 278,
+      "value": 0.014382169717430268,
+      "se": 0.03382133062432666
+     },
+     "jump_over_ball": {
+      "per_min": 0.1936160486191411,
+      "n": 120,
+      "value": -0.3150702971899103,
+      "se": 0.0610052745139182
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.31785301314975667,
+      "n": 197,
+      "value": 0.3021462848743875,
+      "se": 0.047563466488987
+     },
+     "tip_got_behind_ball": {
+      "per_min": 1.284319789173636,
+      "n": 796,
+      "value": -0.018605650725263823,
+      "se": 0.020668865436457337
+     },
+     "catapult": {
+      "per_min": 0.495334391050636,
+      "n": 307,
+      "value": -0.24758663705919134,
+      "se": 0.03506253895986197
+     },
+     "peek_touch": {
+      "per_min": 0.2775163363541023,
+      "n": 172,
+      "value": -0.03813231269378626,
+      "se": 0.050303454866784066
+     },
+     "takeoff": {
+      "per_min": 25.050689757173206,
+      "n": 15526,
+      "value": 0.0009367033485926796,
+      "se": 0.004639757832048121
+     },
+     "fast_takeoff": {
+      "per_min": 6.255411837470084,
+      "n": 3877,
+      "value": 0.04636943013772799,
+      "se": 0.009595393000288959
+     },
+     "lunge_at_opp": {
+      "per_min": 0.16296017425444376,
+      "n": 101,
+      "value": -0.25673696385657696,
+      "se": 0.06244997998398398
+     },
+     "lunge_from_pit": {
+      "per_min": 0.05485788044208998,
+      "n": 34,
+      "value": -0.19203108150363576,
+      "se": 0.0935536735958185
+     },
+     "overcommit": {
+      "per_min": 0.07583295237583026,
+      "n": 47,
+      "value": -0.36978044211744654,
+      "se": 0.08462128998561545
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0,
+      "n": 0,
+      "value": null,
+      "se": null
+     },
+     "got_flung": {
+      "per_min": 0.4630650496141125,
+      "n": 287,
+      "value": 0.004530641777225869,
+      "se": 0.04114959687923316
+     },
+     "flung_own_goal": {
+      "per_min": 0.0016134670718261758,
+      "n": 1,
+      "value": 0.04326303614342305,
+      "se": null
+     },
+     "second_touch": {
+      "per_min": 6.975018151504559,
+      "n": 4323,
+      "value": -0.009881544965883053,
+      "se": 0.008510541280663857
+     },
+     "second_kick": {
+      "per_min": 2.625110925861188,
+      "n": 1627,
+      "value": 0.04819217970472927,
+      "se": 0.01265661045836997
+     },
+     "impale_plant": {
+      "per_min": 0.009680802430957055,
+      "n": 6,
+      "value": 0.2099297028100897,
+      "se": 0.15214515486254618
+     },
+     "impale_brake": {
+      "per_min": 0.009680802430957055,
+      "n": 6,
+      "value": 0.2099297028100897,
+      "se": 0.15214515486254618
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 5.608949661254883,
+     "other": 5.682700157165527
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.07312785538635487,
+     "p_goal_for_5s_baseline": 0.06013116548705625,
+     "lunge": {
+      "n": 101,
+      "overcommit_per_lunge": 0.46534653465346537,
+      "p_goal_against_5s": 0.23,
+      "p_goal_against_5s_after_overcommit": 0.32608695652173914,
+      "p_goal_against_5s_after_overcommit_opp_still": null,
+      "opp_still_share_of_overcommits": 0.0,
+      "n_from_pit": 34,
+      "opp_speed_at_overcommit": 14.381534576416016
+     },
+     "energy_bins": {
+      "edges": [
+       1.5145456790924072,
+       69.90353393554688,
+       145.89942932128906
+      ],
+      "value": [
+       -0.01798444683672845,
+       -0.019455207202402257,
+       0.013865607519484801,
+       0.02357419022622168
+      ],
+      "n": [
+       125148,
+       125147,
+       125147,
+       125147
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -78.61415100097656,
+       -35.676361083984375,
+       44.47555160522461
+      ],
+      "value": [
+       -0.08299261321276352,
+       -0.013870075479327865,
+       -0.011269704819661823,
+       0.019471785184098412
+      ],
+      "n": [
+       117270,
+       117270,
+       117269,
+       117270
+      ]
+     },
+     "energy_median": 69.90353393554688,
+     "takeoff_speed_bins": {
+      "edges": [
+       8.341434478759766,
+       11.440542221069336,
+       13.996786117553711
+      ],
+      "value": [
+       -0.01308227272191683,
+       -0.018510031832798195,
+       -0.010770055893805495,
+       0.04610614805864662
+      ],
+      "n": [
+       3869,
+       3869,
+       3868,
+       3869
+      ]
+     },
+     "second_touch": {
+      "n": 4309,
+      "p_ball_my_way_0.5s": 0.689719192388025,
+      "p_goal_for_5s": 0.05662566720816895,
+      "p_goal_against_5s": 0.07844047342770945,
+      "speed_at": 12.651541709899902,
+      "max_speed_next_0.5s": 16.40548324584961,
+      "p_past_ball_1s": 0.15873752610814573,
+      "dx_1s": -4.3084635734558105
+     },
+     "second_kick": {
+      "n": 1623,
+      "p_ball_my_way_0.5s": 0.9704251386321626,
+      "p_goal_for_5s": 0.04559457794208256,
+      "p_goal_against_5s": 0.033271719038817,
+      "speed_at": 20.09892463684082,
+      "max_speed_next_0.5s": 21.249874114990234,
+      "p_past_ball_1s": 0.014787430683918669,
+      "dx_1s": -8.765551567077637
+     },
+     "got_flung": {
+      "n": 287,
+      "own_goals_after": 1
+     },
+     "impale_brake": {
+      "n_plants": 6,
+      "n": 6
+     }
+    },
+    "touch_rows": true,
+    "h2h": {
+     "goal_diff_per_match": -2.0859375,
+     "w": 16,
+     "d": 14,
+     "l": 98
+    }
+   },
+   "farm2": {
+    "rider_minutes": 619.7833333333333,
+    "goals_per_min": 1.0842498722671903,
+    "baseline_10s": 0.09359779070761057,
+    "states": {
+     "good_side": {
+      "share": 0.8853606307076255,
+      "entries_per_min": 5.79718718907145,
+      "value": 0.04092658559644108,
+      "n": 455791
+     },
+     "near_ball": {
+      "share": 0.2804363482719879,
+      "entries_per_min": 21.925404039045905,
+      "value": -0.022800902202856896,
+      "n": 144625
+     },
+     "tip_behind_ball": {
+      "share": 0.1324389986268089,
+      "entries_per_min": 21.625299163686236,
+      "value": 0.07870760726887929,
+      "n": 68396
+     },
+     "tip_past_ball": {
+      "share": 0.14799734964517894,
+      "entries_per_min": 14.054911662677819,
+      "value": -0.11387878612930047,
+      "n": 76229
+     },
+     "sit_right_far": {
+      "share": 0.6011849774815867,
+      "entries_per_min": 19.861779654180225,
+      "value": 0.027152240818546447,
+      "n": 309267
+     },
+     "sit_right_close": {
+      "share": 0.21561980852146692,
+      "entries_per_min": 21.091241562911772,
+      "value": -0.02522748829877397,
+      "n": 111174
+     },
+     "sit_A": {
+      "share": 0.026601496106091013,
+      "entries_per_min": 1.331110334256595,
+      "value": -0.6622096641728713,
+      "n": 13846
+     },
+     "sit_B": {
+      "share": 0.05944092877651555,
+      "entries_per_min": 3.8400516309462986,
+      "value": -0.3159653084427441,
+      "n": 30589
+     },
+     "sit_both_wrong": {
+      "share": 0.008079741110268204,
+      "entries_per_min": 0.8486836797805685,
+      "value": 0.006568756996410366,
+      "n": 4203
+     },
+     "opp_out": {
+      "share": 0.08907304800407156,
+      "entries_per_min": 1.6989808266329631,
+      "value": 0.2882771138454797,
+      "n": 45837
+     },
+     "opp_wrong_side": {
+      "share": 0.32003994737701297,
+      "entries_per_min": 5.826229596364321,
+      "value": 0.07685903066048658,
+      "n": 164769
+     },
+     "airborne": {
+      "share": 0.7571045833853481,
+      "entries_per_min": 29.248931078064917,
+      "value": 0.014540873716689037,
+      "n": 390064
+     },
+     "pole_planted": {
+      "share": 0.2329719504114772,
+      "entries_per_min": 33.32616236856966,
+      "value": 0.0033331853317367516,
+      "n": 120364
+     },
+     "in_pit": {
+      "share": 0.017590289714510692,
+      "entries_per_min": 1.8651679350310593,
+      "value": -0.2781806134769099,
+      "n": 8977
+     },
+     "pole_fwd_down": {
+      "share": 0.45982119707692753,
+      "entries_per_min": 25.752547933417592,
+      "value": -0.022055707253087337,
+      "n": 237231
+     },
+     "pole_fwd_up": {
+      "share": 0.3035270845136695,
+      "entries_per_min": 25.96552558689865,
+      "value": -0.02152594945525664,
+      "n": 156122
+     },
+     "pole_back_up": {
+      "share": 0.13804507523742762,
+      "entries_per_min": 22.92252668943448,
+      "value": 0.06505252297576705,
+      "n": 70772
+     },
+     "pole_back_down": {
+      "share": 0.09860664317197537,
+      "entries_per_min": 21.33164815661387,
+      "value": 0.0785390051814249,
+      "n": 50791
+     },
+     "backswing_in_flight": {
+      "share": 0.05426313414060324,
+      "entries_per_min": 24.385941323580823,
+      "value": -0.029998037415153292,
+      "n": 27563
+     },
+     "pole_on_opp": {
+      "share": 0.23811901629584106,
+      "entries_per_min": 8.370667168634201,
+      "value": -0.05253238001290108,
+      "n": 123145
+     },
+     "opp_pole_on_me": {
+      "share": 0.2328259888416221,
+      "entries_per_min": 5.606798074595961,
+      "value": -0.05222656353576661,
+      "n": 120301
+     },
+     "pole_over_opp_head": {
+      "share": 0.19629910598538464,
+      "entries_per_min": 6.589399521338103,
+      "value": -0.04714978393722314,
+      "n": 101619
+     },
+     "opp_on_my_pole": {
+      "share": 0.011006654695257209,
+      "entries_per_min": 2.3153252480705624,
+      "value": -0.16184810093629343,
+      "n": 5641
+     },
+     "on_opp_pole": {
+      "share": 0.029770398609523994,
+      "entries_per_min": 3.9223384516094337,
+      "value": 0.04223066420260452,
+      "n": 15203
+     },
+     "tip_peek": {
+      "share": 0.07547173434994287,
+      "entries_per_min": 13.065856347648372,
+      "value": -0.07670397301574136,
+      "n": 38594
+     },
+     "rhythmic_pressing": {
+      "share": 0.0018283607171322392,
+      "entries_per_min": 0.22265845591201228,
+      "value": -0.38771543776643413,
+      "n": 952
+     },
+     "committed": {
+      "share": 0.3743069226115598,
+      "entries_per_min": 49.10909726517332,
+      "value": 0.03603936065984137,
+      "n": 192036
+     },
+     "at_mercy": {
+      "share": 0.05226960638389813,
+      "entries_per_min": 15.21015408610536,
+      "value": 0.0996614685516487,
+      "n": 27000
+     },
+     "high_energy": {
+      "share": 0.20768602898105382,
+      "entries_per_min": 31.193158899615458,
+      "value": 0.0360377144154741,
+      "n": 107162
+     }
+    },
+    "events": {
+     "goal_for": {
+      "per_min": 1.0842498722671903,
+      "n": 672,
+      "value": -0.08910677274353872,
+      "se": 0.010040718016730843
+     },
+     "goal_against": {
+      "per_min": 0.6534541640896012,
+      "n": 405,
+      "value": -0.09856056986393812,
+      "se": 0.011636123008400246
+     },
+     "kill": {
+      "per_min": 1.6699384193400921,
+      "n": 1035,
+      "value": 0.3031044401362304,
+      "se": 0.017798948854497707
+     },
+     "death": {
+      "per_min": 1.1439481539247587,
+      "n": 709,
+      "value": -0.37971677087758227,
+      "se": 0.019637060192895885
+     },
+     "back_pass": {
+      "per_min": 2.7590286928227608,
+      "n": 1710,
+      "value": -0.002581936332977569,
+      "se": 0.015209391331138218
+     },
+     "fwd_pass": {
+      "per_min": 21.88990776346573,
+      "n": 13567,
+      "value": 0.06850638212458832,
+      "se": 0.0049751814056217675
+     },
+     "vault": {
+      "per_min": 19.59878452147256,
+      "n": 12147,
+      "value": 0.050322189452759764,
+      "se": 0.005129525997795977
+     },
+     "pogo_vault": {
+      "per_min": 1.3101352623228548,
+      "n": 812,
+      "value": 0.025656867677482598,
+      "se": 0.01767957855411749
+     },
+     "jump_over_ball": {
+      "per_min": 0.1403716352488773,
+      "n": 87,
+      "value": -0.047620779213357695,
+      "se": 0.07948181692914032
+     },
+     "pushed_opp_wrong_side": {
+      "per_min": 0.39691289966923926,
+      "n": 246,
+      "value": 0.12272873990463434,
+      "se": 0.039050516493935976
+     },
+     "tip_got_behind_ball": {
+      "per_min": 2.3185521822142148,
+      "n": 1437,
+      "value": 0.02957548695418484,
+      "se": 0.014650157355951344
+     },
+     "catapult": {
+      "per_min": 0.45338424718315545,
+      "n": 281,
+      "value": -0.03964095617523647,
+      "se": 0.041043567025888
+     },
+     "peek_touch": {
+      "per_min": 0.31785301314975667,
+      "n": 197,
+      "value": -0.1545114962913669,
+      "se": 0.04576108643761881
+     },
+     "takeoff": {
+      "per_min": 26.431817570656413,
+      "n": 16382,
+      "value": 0.028254809917274568,
+      "se": 0.004333107221831689
+     },
+     "fast_takeoff": {
+      "per_min": 6.018232177911636,
+      "n": 3730,
+      "value": 0.036977168991475934,
+      "se": 0.009470631093210311
+     },
+     "lunge_at_opp": {
+      "per_min": 0.13230429988974643,
+      "n": 82,
+      "value": -0.3375002297320008,
+      "se": 0.0680329897094279
+     },
+     "lunge_from_pit": {
+      "per_min": 0.029042407292871168,
+      "n": 18,
+      "value": -0.31582001292983275,
+      "se": 0.1255987033912087
+     },
+     "overcommit": {
+      "per_min": 0.06131174872939468,
+      "n": 38,
+      "value": -0.5146504222865579,
+      "se": 0.10933935931296702
+     },
+     "overcommit_opp_still": {
+      "per_min": 0.0,
+      "n": 0,
+      "value": null,
+      "se": null
+     },
+     "got_flung": {
+      "per_min": 0.5017882593379407,
+      "n": 311,
+      "value": 0.2031764028407765,
+      "se": 0.03484718746812416
+     },
+     "flung_own_goal": {
+      "per_min": 0.0032269341436523516,
+      "n": 2,
+      "value": -0.09359779070761057,
+      "se": 0.0
+     },
+     "second_touch": {
+      "per_min": 8.001183209186006,
+      "n": 4959,
+      "value": 0.00010793687789843742,
+      "se": 0.007721617688495533
+     },
+     "second_kick": {
+      "per_min": 1.9297066179041065,
+      "n": 1196,
+      "value": 0.0396796610945688,
+      "se": 0.01412123076489984
+     },
+     "impale_plant": {
+      "per_min": 0.0403366767956544,
+      "n": 25,
+      "value": 0.06640220929238944,
+      "se": 0.12237646832622684
+     },
+     "impale_brake": {
+      "per_min": 0.03226934143652352,
+      "n": 20,
+      "value": 0.15640220929238943,
+      "se": 0.11989578808281799
+     }
+    },
+    "vault_apex_m": {
+     "pogo": 5.857649803161621,
+     "other": 5.821300029754639
+    },
+    "outcomes": {
+     "p_goal_against_5s_baseline": 0.04607936051705521,
+     "p_goal_for_5s_baseline": 0.09747997731668855,
+     "lunge": {
+      "n": 82,
+      "overcommit_per_lunge": 0.4634146341463415,
+      "p_goal_against_5s": 0.21951219512195122,
+      "p_goal_against_5s_after_overcommit": 0.42105263157894735,
+      "p_goal_against_5s_after_overcommit_opp_still": null,
+      "opp_still_share_of_overcommits": 0.0,
+      "n_from_pit": 18,
+      "opp_speed_at_overcommit": 13.327167510986328
+     },
+     "energy_bins": {
+      "edges": [
+       49.976200103759766,
+       86.7199478149414,
+       147.8450469970703
+      ],
+      "value": [
+       -0.04015218016142439,
+       -0.034908606452314556,
+       0.0356572391999479,
+       0.03940357651630341
+      ],
+      "n": [
+       128729,
+       128729,
+       128730,
+       128728
+      ]
+     },
+     "energy_lead_bins": {
+      "edges": [
+       -44.47555160522461,
+       35.676361083984375,
+       78.61415100097656
+      ],
+      "value": [
+       -0.06980653974828593,
+       -0.03906551476320876,
+       -0.036464191887803116,
+       0.03265785864857601
+      ],
+      "n": [
+       117270,
+       117270,
+       117269,
+       117270
+      ]
+     },
+     "energy_median": 86.7199478149414,
+     "takeoff_speed_bins": {
+      "edges": [
+       7.3493492603302,
+       11.24227237701416,
+       13.748281478881836
+      ],
+      "value": [
+       -0.007589459416260408,
+       0.028921199735908176,
+       0.05468652301787963,
+       0.037007453105180416
+      ],
+      "n": [
+       4081,
+       4081,
+       4080,
+       4081
+      ]
+     },
+     "second_touch": {
+      "n": 4941,
+      "p_ball_my_way_0.5s": 0.5557579437360858,
+      "p_goal_for_5s": 0.07245496862983201,
+      "p_goal_against_5s": 0.041287188828172436,
+      "speed_at": 11.669729232788086,
+      "max_speed_next_0.5s": 15.87790298461914,
+      "p_past_ball_1s": 0.071645415907711,
+      "dx_1s": -4.563179969787598
+     },
+     "second_kick": {
+      "n": 1193,
+      "p_ball_my_way_0.5s": 0.9555741827326069,
+      "p_goal_for_5s": 0.06202849958088852,
+      "p_goal_against_5s": 0.01173512154233026,
+      "speed_at": 20.314159393310547,
+      "max_speed_next_0.5s": 21.732240676879883,
+      "p_past_ball_1s": 0.013411567476948869,
+      "dx_1s": -8.11949348449707
+     },
+     "got_flung": {
+      "n": 311,
+      "own_goals_after": 2
+     },
+     "impale_brake": {
+      "n_plants": 25,
+      "n": 20
+     }
+    },
+    "touch_rows": true
+   }
+  }
+ }
+}

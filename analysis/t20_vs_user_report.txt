@@ -1,0 +1,220 @@
+t20 (300M) vs the user — the 2026-10-03 series + new concepts (2026-10-03 04:34)
+Real games: 3 matches vs t20_300M (1-7, 5-5, 4-7; the 5-5 cut at the end of regulation, the sudden-death goal ignored) and 13 earlier matches (farm2 family 9, ~20M search trials 4: all won by the user). The user is always the left rider (real controller).
+Sim: 128 matches t20_300M self-play (300M steps) and 128 farm2 self-play (427M), native sim, 7 goals / 5 min, no sudden death, sampled actions (as in the real game). Both sim riders are pooled (each interlock counted once).
+Sample sizes: 3 real matches vs t20 = ~13 min of play. Anything below ~20 episodes is a hint, not a finding (n is printed everywhere). Goal outcomes are correlational. Concepts: concepts.py; outcome code: analysis/concept_outcomes.py.
+
+== Headlines
+  - Results vs t20_300M: 1-7, 5-5, 4-7 (the user's first non-wins in the logs; 13/13 won before).
+  - Interlocks are a t20 trait: 0.91 per match-minute vs the user (n=12, 7% of play) vs 0.19 with the earlier bots (n=11); t20 self-play 0.78/min (n=447, 10% of play, p90 16 s, longest 271 s = to the final whistle), farm2 0.29/min. Detector vs real geometry: precision 0.96, recall 0.89 (sim rows).
+  - In t20 self-play the attacker at the start of an interlock scores within 5 s after it 30% and concedes 2% (n=446): for bots it is a safe hold, not a coin flip. Bots never let go: 1 let-go escapes in 447 t20 interlocks, servo off 1% of play (the user: 30%).
+  - The user let go to end 5 of the 12 interlocks vs t20; on top 2 times (20261003-032948 at 140 s after 7.5 s, attacker user, first kick user, goal -, 20261003-033847 at 134 s after 5.7 s, attacker user, first kick user, goal -). n=2: consistent with the user's demonstrations, not a measurement.
+  - Open goals (opponent dead or > 5.5 m on his wrong side): t20 converts 30% vs the user (n=30), the user 31% vs t20 (n=29), t20 self-play 43% (n=1930), the earlier bots vs the user only 12% (n=113). With the user dead: t20 9 windows, 22%; from the middle (ball 10-20 m out): t20 46% (n=13) vs earlier bots 9% (n=56). Real-game samples are small.
+  - The named situation [t20, user, ball] is situation A for t20. From it t20 conceded within 10 s 62% of 16 entries and was back on the good side within 3 s 25%; the user in the mirror: 34% / 66% (n=38); t20 self-play 54% / 49% (n=2001), farm2 59% (baseline P(conceded 10 s) ~18%). t20 is interlocked 38% of its real A time.
+  - Pole rotation in A (the user's 'he doesn't want to move his pole clockwise'): t20's stick drives the pole backward 7% of the time in the real games and 10% in self-play, aims into the back half 5% / 9%; the user in A: 54% backward, 40% back half; the pole actually turns backward 22% (t20) vs 48% (user). Elsewhere t20 sweeps backward plenty (back passes 11.7/min vs farm2 3.9): it is the situation, not the skill. Caveat: in self-play, A stays with the pole turning backward >= 30% of the time are not better on goals (conceded 10 s 55% vs 54%; back on the good side in 3 s 56% vs 46%): the data show t20 rarely tries it, not that trying it (the way t20 would) pays.
+  - The user vs t20 (vs the earlier bots): the user's pole on the bot 12% vs 6% (t +5.9), the user at the bot's mercy 9% vs 6% (+7.2), good side 76% vs 82% (-3.6), lunges 0.74 vs 0.18/min (+4.1; 7 of 10 overcommitted vs 2 of 10 before), ball kicks 14.1 vs 16.7/min (-3.8); kills unchanged (1.66 vs 1.48/min).
+  - t20 vs farm2 as the user's opponent: airborne 57% vs 72% (t -10.1), still 7.8% vs 3.2% (+9.1), tip behind the ball 21% vs 13% (+10.9), at the user's mercy 6.1% vs 9.0% (-4.0), back passes 11.9 vs 4.0/min, second kicks 2.1 vs 3.9/min: it stays down, keeps the tip hooked and gives fewer free hits. Real-game t20 matches its sim self-play (airborne 57%, back passes 11.0/min in sim).
+
+== 1. The user vs t20 and vs the earlier bots; t20 vs farm2 as an opponent (per-match concept rates, Welch t)
+  t_user: user vs t20 (3 matches) against user vs earlier (13); t_bot: t20 in the real game (3) against the farm2-family bots (9). With 3 matches |t| < ~3 is noise.
+  -- pressure / contact (the user: 'pressure is pointless vs it')
+  concept                user v20  user vE      t    t20 bot  farm2 b      t   user per match  t20 per match
+  pole_on_opp               12.0%     5.6%   +5.9      11.3%     4.4%   +4.9         12/10/14        12/9/13
+  opp_pole_on_me            10.9%     4.3%   +4.2      12.4%     5.9%   +7.3          11/8/13       12/12/14
+  pole_over_opp_head         4.5%     2.8%   +1.1       3.9%     2.5%   +1.4            3/3/8          5/2/5
+  rhythmic_pressing          1.4%     0.4%   +1.3       2.1%     0.1%   +3.6            3/0/1          2/1/3
+  at_mercy                   9.4%     5.9%   +7.2       6.1%     9.0%   -4.0           9/9/10          5/7/6
+  mutual_pole_contact        7.7%     1.8%   +5.9       8.0%     1.7%   +6.9            9/6/9          9/7/9
+  interlocked                6.6%     1.1%   +7.2       6.9%     1.0%   +8.1            7/5/7          8/6/7
+  lunge_at_opp               0.74     0.18   +4.1       0.07     0.24   -1.4      0.6/1.0/0.6    0.0/0.0/0.2
+  kill                       1.66     1.48   +0.5       0.93     0.84   +0.2      1.6/2.2/1.2    1.6/0.0/1.2
+  death                      0.93     0.88   +0.1       1.66     1.39   +0.8      1.6/0.0/1.2    1.6/2.2/1.2
+  catapult                   0.60     0.80   -0.6       0.33     0.36   -0.1      0.0/1.2/0.6    0.0/0.6/0.4
+  got_flung                  0.33     0.38   -0.2       0.60     0.74   -0.4      0.0/0.6/0.4    0.0/1.2/0.6
+  -- position
+  concept                user v20  user vE      t    t20 bot  farm2 b      t   user per match  t20 per match
+  good_side                 76.2%    82.0%   -3.6      84.5%    81.2%   +1.5         75/76/78       88/83/82
+  sit_A                      6.3%     3.7%   +2.9       4.9%     5.5%   -0.5            7/7/5          5/7/3
+  sit_B                     14.9%    11.7%   +2.1       9.6%    10.9%   -0.7         17/13/15         7/9/13
+  tip_behind_ball           19.5%    18.6%   +0.4      20.6%    13.0%  +10.9         16/23/20       21/19/22
+  tip_past_ball             14.4%    11.7%   +1.2      13.5%    13.9%   -0.2         11/14/18       10/13/17
+  opp_out                    8.8%     7.5%   +1.0       4.8%     4.5%   +0.1          10/10/7          8/0/6
+  open_goal                  9.8%    11.0%   -1.2       8.5%     7.9%   +0.3          11/9/10         12/6/8
+  -- technique / tempo
+  concept                user v20  user vE      t    t20 bot  farm2 b      t   user per match  t20 per match
+  still                     10.1%     9.4%   +0.7       7.8%     3.2%   +9.1          9/11/11          7/8/8
+  airborne                  67.5%    64.5%   +1.8      56.7%    72.2%  -10.1         70/65/68       59/56/54
+  takeoff                   24.14    23.71   +0.3      27.53    28.15   -0.5   22.2/27.2/23.0 25.7/27.4/29.5
+  fast_takeoff              11.27    12.37   -0.9       7.96     7.88   +0.1    11.0/13.5/9.4    7.2/8.7/7.9
+  back_pass                  6.00     5.72   +0.7      11.90     4.04   +6.6      5.9/6.4/5.7  13.8/9.9/12.0
+  fwd_pass                  20.85    21.90   -1.3      30.31    27.34   +2.5   21.0/21.7/19.9 32.2/29.2/29.5
+  aim_back_pass              2.61     1.74   +1.5      19.17     6.86   +8.2      2.8/3.4/1.6 21.9/17.3/18.3
+  backswing_in_flight       11.9%    11.1%   +1.1       7.5%     5.8%   +3.1         13/12/11          8/7/8
+  pole_back_down            19.5%    17.7%   +1.0       8.6%    10.9%  -11.9         19/23/17          9/9/8
+  pole_fwd_up               25.3%    24.0%   +1.4      35.1%    40.0%   -4.6         24/25/26       35/33/36
+  ball_kick                 14.14    16.72   -3.8      14.80    13.33   +1.3   14.1/14.9/13.4 16.3/15.1/13.0
+  second_kick                3.29     2.93   +1.1       2.06     3.90   -4.5      3.4/3.4/3.1    1.6/2.6/2.0
+  impale_plant               0.74     0.78   -0.2       0.00     0.07   -2.0      0.6/1.0/0.6    0.0/0.0/0.0
+  -- largest |t|, the user vs t20 against vs the earlier bots: interlocked +7.2, at_mercy +7.2, on_opp_pole +7.2, overcommit +6.9, pole_on_opp +5.9, mutual_pole_contact +5.9, pole_planted -5.6, opp_pole_on_me +4.2, lunge_at_opp +4.1, sit_right_far -3.9
+  -- largest |t|, t20 against farm2 as the user's opponent: pole_back_down -11.9, tip_behind_ball +10.9, airborne -10.1, pole_back_up +9.5, second_touch -9.4, still +9.1, aim_back_pass +8.2, interlocked +8.1, committed -7.6, opp_pole_on_me +7.3
+
+== 2. pole_interlock: both riders' poles on each other for >= 1 s (gaps <= 1/3 s bridged)
+  Game fact: the two poles never collide (collision filter, pole_ctor.cpp); 'interlocked poles' = each pole resting on the other RIDER. Stacked = one rider standing on the other's pole for >= half of it (in the real games: the user balanced on t20's upright pole, his own pole pointing down onto t20). Real games: from the user's view; sim: each interlock once.
+                                           user v t20     user v early          t20 sim        farm2 sim
+  interlocks per match-minute (n)           0.91 (12)        0.19 (11)       0.78 (447)       0.29 (177)
+    >= 3 s per match-minute (n)              0.46 (6)         0.11 (6)       0.38 (220)        0.11 (69)
+    share of play time interlocked                 7%               1%              10%               2%
+    duration median / p90 (s)                 2.8/9.5          3.7/6.3         2.9/15.8          2.5/6.6
+    longest (s)                                    16                8              271               34
+    stacked                                       33%              36%              79%              64%
+    attacker at start me/opp/none               7/5/0            3/8/0        230/216/1          90/87/0
+    on top me/opp/none                          4/0/8            1/3/7       187/165/95         76/38/63
+    attacker still on good side 2 s after              67%              91%              89%              82%
+    let-go escapes me/opp                         5/1              2/0              0/1              1/0
+  ('me' = the user in the real columns, rider A in sim. Outcomes after the last contact, per side of each interlock:)
+  cells: n / kicks the ball first within 3 s / scores within 5 s / concedes within 5 s
+                                            user v t20      user v early           t20 sim         farm2 sim
+  attacker                                12/50%/8%/8%     11/73%/36%/0%    446/29%/30%/2%    177/33%/34%/0%
+  defender                                12/33%/8%/8%      11/9%/0%/36%    446/33%/2%/30%    177/16%/0%/34%
+  top                                      4/75%/0%/0%      4/50%/50%/0%    352/24%/26%/3%    114/30%/30%/5%
+  bottom                                   4/25%/0%/0%      4/25%/0%/50%    352/39%/3%/26%    114/20%/5%/30%
+  -- letting go (let_go_escape: servo off at the end, released <= 0.5 s before the last contact) vs nobody letting go
+  cells as above, for the side in question
+                                            user v t20      user v early           t20 sim         farm2 sim
+  released (any role)                     6/50%/0%/17%       2/50%/0%/0%      1/0%/100%/0%        1/0%/0%/0%
+  released, attacker                      3/100%/0%/0%      1/100%/0%/0%      1/0%/100%/0%        1/0%/0%/0%
+  released, on top                        2/100%/0%/0%     0/n/a/n/a/n/a      1/0%/100%/0%     0/n/a/n/a/n/a
+  the OTHER released                      6/50%/17%/0%        2/0%/0%/0%      1/0%/0%/100%        1/0%/0%/0%
+  nobody released (any role)              12/33%/8%/8%    18/44%/22%/22%   892/31%/16%/16%   352/24%/17%/17%
+  nobody released: attacker                6/0%/0%/17%      9/78%/44%/0%    445/29%/30%/2%    176/33%/35%/0%
+  nobody released: on top                   1/0%/0%/0%      4/50%/50%/0%    351/24%/26%/3%    114/30%/30%/5%
+  -- who lets go, real games vs t20: user 5, t20 1; vs earlier bots: user 2, bots 0
+  -- the real t20 matches, every interlock (t = seconds into the match; first kick within 3 s of the last contact; goal within 5 s):
+  log                             t   dur stacked   top attacker let go u/t20 1st kick  goal    user sit
+  20261003-032948_m1.jsonl     40.8   1.1   False     -      t20          -/-     user     - right_close
+  20261003-032948_m1.jsonl    104.7   2.3   False     -      t20          -/-     none     -           B
+  20261003-032948_m1.jsonl    128.2   3.3   False     -     user          -/-      t20   t20 right_close
+  20261003-032948_m1.jsonl    136.9   2.1   False     -      t20          -/-     user     -           B
+  20261003-032948_m1.jsonl    139.9   7.5    True  user     user          Y/-     user     -   right_far
+  20261003-033315_m2.jsonl     12.3  16.3    True  user     user          -/-      t20     -   right_far
+  20261003-033847_m3.jsonl      2.7   9.7   False     -      t20          Y/-      t20   t20           B
+  20261003-033847_m3.jsonl     69.9   1.8   False     -     user          Y/-     user     - right_close
+  20261003-033847_m3.jsonl    124.6   1.1    True  user     user          -/Y     user     -   right_far
+  20261003-033847_m3.jsonl    133.7   5.7    True  user     user          Y/-     user     - right_close
+  20261003-033847_m3.jsonl    198.1   3.8   False     -     user          -/-     none     -   right_far
+  20261003-033847_m3.jsonl    242.5   1.0   False     -      t20          Y/-      t20     -           B
+  -- servo off ('pole let go': right stick within the dead zone) share of time
+                                           user v t20         t20 real     user v early       early bots          t20 sim        farm2 sim
+  overall                                         30%               2%              39%               2%               1%               1%
+  while interlocked                                4%               1%               6%               0%               0%               0%
+    (interlocked minutes of the rider)              0.8              0.8              0.6              0.6            107.7             18.8
+
+== 3. open_goal / open_goal_conversion: the opponent dead (respawning) or > 5.5 m on his wrong side of the ball, me on the good side; windows >= 0.5 s (gaps <= 1 s merged); converted = my goal before the window closes + 1 s
+                                           user v t20         t20 real     user v early       early bots          t20 sim        farm2 sim
+  windows per rider-minute                       2.21             2.28             2.83             2.00             1.68             2.41
+  all: n / converted                           29/31%           30/30%          160/40%          113/12%         1930/43%         2937/28%
+  opp dead: n / converted                      15/33%            9/22%           55/29%           33/21%          781/36%         1319/16%
+  opp out of position: n / converted           14/29%           21/33%          105/46%            80/8%         1149/48%         1618/38%
+  ball < 10 m from goal: n / converted            6/67%           12/25%           69/58%           14/43%          709/61%          899/54%
+  ball 10-20 m (middle): n / converted           12/33%           13/46%           46/43%            56/9%          638/49%          927/28%
+  ball in my half (>= 20 m): n / converted            11/9%             5/0%            45/9%            43/5%          583/15%          1111/7%
+  goal within 5 s / 10 s of the start          28%/41%          33%/47%          46%/66%          15%/27%          49%/62%          32%/48%
+  time to goal median (converted, s)              2.6              2.5              2.5              2.5              2.4              2.9
+  window length median (s)                        2.4              1.8              2.1              1.9              2.0              2.1
+  conceded within 10 s of the start                7%               3%               1%               6%               2%               2%
+  baseline P(goal for within 10 s)                19%              19%              18%              18%              20%              18%
+  threshold check, t20 sim: out-of-position windows when 'out of position' = more than dx on his wrong side: dx 3.0 m: n=2047 converted 40%, goal 5 s 42%, dx 5.5 m: n=1149 converted 48%, goal 5 s 54%, dx 8.0 m: n=609 converted 56%, goal 5 s 70%
+  threshold check, farm2 sim: out-of-position windows when 'out of position' = more than dx on his wrong side: dx 3.0 m: n=2279 converted 33%, goal 5 s 35%, dx 5.5 m: n=1618 converted 38%, goal 5 s 43%, dx 8.0 m: n=1107 converted 40%, goal 5 s 51%
+
+== 4. The user's named situation: x order [t20, user, ball] (t20 behind the user, on its wrong side)
+  t20 attacks -x, so in its attack frame the order is [ball, user, t20] = ball < opp < me = situation A (sit_A, 'you-opp-ball', situations.py class 2). The user's mirror = the user in A ([ball, t20, user]).
+                                           user v t20         t20 real     user v early       early bots          t20 sim        farm2 sim
+  share of alive time in A                         6%               5%               4%               5%               6%               4%
+  entries per rider-minute (n)              2.89 (38)        1.22 (16)        1.63 (92)        1.68 (95)      1.75 (2001)      1.27 (1552)
+  median stay (s)                                 0.8              1.3              1.1              1.6              1.0              1.1
+  goal diff 10 s after entry                    -0.29            -0.62            -0.29            -0.74            -0.51            -0.54
+  P(conceded within 10 s)                         34%              62%              34%              77%              54%              59%
+    baseline P(conceded 10 s)                     17%              17%              16%              16%              18%              15%
+  P(scored within 10 s)                            5%               0%               4%               3%               4%               5%
+  back on the good side within 3 / 5 s          66%/82%          25%/69%          50%/79%          37%/69%          49%/74%          49%/79%
+  conceded 10 s, not out within 5 s                3%              19%               8%              24%               9%              13%
+  jump over the ball from it                      16%              12%              13%               6%              12%               6%
+  interlocked share of A time                      5%              38%               6%               2%              23%               8%
+  exit to B / both-wrong / opp out / I died         24/2/2/8          9/2/1/4       58/5/11/18       39/16/4/32  1241/194/67/458   699/272/79/475
+  close (opp within 6 m): n / ga10             37/35%           16/62%           90/34%           83/75%         1955/54%         1418/58%
+  far: n / ga10                                  1/0%            0/n/a             2/0%           12/92%           46/85%          134/69%
+  pole turning back >= 30% of the stay: n/ga10/out 3 s       23/43%/61%        4/50%/50%       67/33%/43%       40/92%/25%      711/55%/56%      725/63%/46%
+    < 30%: n/ga10/out 3 s                  15/20%/73%       12/67%/17%       25/36%/68%       55/65%/45%     1290/54%/46%      827/55%/51%
+  for reference, B: n / ga10 / escaped 5 s       84/39%/89%       60/28%/83%      300/24%/89%      276/52%/86%     6073/39%/89%     4547/43%/88%
+
+== 5. Pole rotation (the user: t20 'doesn't want to move his pole clockwise' in [t20, user, ball]) and the pole servo
+  Frame: every number is in the rider's attack frame (0 deg = toward the goal it attacks, 90 = up). Backward = counter-clockwise there = CLOCKWISE ON SCREEN for t20 (it attacks left), counter-clockwise on screen for the user.
+  How the stick drives the pole (sim/src/game/player.cpp pole servo, input.cpp; checked in the sim below):
+   - target = atan2(stick y, stick x): the stick sets an ABSOLUTE pole angle. The error to the handle's angle is wrapped to
+     +-180 deg, so the pole always turns the SHORT way; motor speed and max torque both scale with the error (kp 0.06, kd 0.004,
+     clamp 0.4: never reached by the error alone), i.e. the push is strongest just under 180 deg ahead and flips direction past it.
+   - per-axis dead zone 0.1, then the servo works only if the stick length > 0.2: a centred stick = zero torque, the pole
+     hangs free ('letting go'). A policy's (aim x, aim y) maps to the stick directly (x mirrored for the right rider).
+   - so a full backward rotation needs the stick swept round backward, kept ahead of the pole by < 180 deg the whole way
+     (a human: a continuous circular motion of the thumb). Aiming straight 'behind' does not rotate backward: from a
+     forward-down pole, any aim more than 180 deg away going backward makes the pole go FORWARD (demo).
+  Demo (native sim, kick-off stance, stick held at a fixed aim; pole angle after 0.13 / 0.27 / 0.53 s):
+    aim 120 deg from -0: [5.0, 36.0, 112.0] -> went backward (CCW) (short way: backward (CCW))
+    aim 150 deg from -0: [7.0, 47.0, 134.0] -> went backward (CCW) (short way: backward (CCW))
+    aim 170 deg from -0: [8.0, 52.0, 147.0] -> went backward (CCW) (short way: backward (CCW))
+    aim 190 deg from -0: [-12.0, -21.0, -72.0] -> went forward (CW) (short way: forward (CW))
+    aim 210 deg from -0: [-10.0, -19.0, -55.0] -> went forward (CW) (short way: forward (CW))
+    aim 240 deg from -0: [-8.0, -14.0, -36.0] -> went forward (CW) (short way: forward (CW))
+  -- all play
+                                           user v t20         t20 real     user v early       early bots          t20 sim        farm2 sim
+  minutes                                        12.5             11.9             53.4             51.9           1074.8           1107.1
+  pole turning backward (w > 1 rad/s)              23%              19%              22%              16%              17%              13%
+  pole turning forward (w < -1)                   52%              58%              53%              67%              57%              68%
+  back passes / fwd passes per min           6.3/22.0        12.9/33.2         6.1/23.2         5.5/30.1        11.7/33.1         3.9/29.4
+  stick drives back / fwd / holds          18%/77%/5%      15%/72%/13%       20%/75%/5%       12%/81%/8%      18%/72%/10%       10%/83%/7%
+  aim offset p10/p50/p90 (deg)          -162/-105/111    -165/-101/138    -166/-106/125     -158/-101/62    -166/-108/163     -160/-112/33
+  stick sweeps over top back/fwd /min         2.7/18.4        20.8/36.8         1.9/19.0         8.1/30.3        21.0/38.4         6.9/33.0
+  stick aimed into the back half                  56%              51%              55%              53%              52%              52%
+  servo off                                       30%               2%              39%               2%               1%               1%
+  -- in situation A (for t20 in the real games: the named situation)
+                                           user v t20         t20 real     user v early       early bots          t20 sim        farm2 sim
+  minutes                                         0.8              0.6              2.0              2.9             63.6             42.7
+  pole turning backward (w > 1 rad/s)              48%              22%              52%              29%              21%              28%
+  pole turning forward (w < -1)                   32%              23%              25%              50%              28%              49%
+  back passes / fwd passes per min          21.8/11.5          5.1/6.9         23.6/9.0         6.9/23.0         5.9/11.0         8.7/21.9
+  stick drives back / fwd / holds          54%/40%/6%       7%/80%/13%       58%/37%/5%      26%/52%/22%      10%/77%/13%      23%/55%/22%
+  aim offset p10/p50/p90 (deg)            -133/49/137     -148/-125/-1      -141/67/138     -121/-34/127     -144/-112/35     -129/-39/110
+  stick sweeps over top back/fwd /min          9.0/6.4         6.9/12.0          9.0/8.0        21.9/31.5        11.3/15.3        20.0/31.6
+  stick aimed into the back half                  40%               5%              37%              25%               9%              23%
+  servo off                                       31%               2%              28%               4%               2%               3%
+  -- while interlocked
+                                           user v t20         t20 real     user v early       early bots          t20 sim        farm2 sim
+  minutes                                         0.8              0.8              0.6              0.6            107.7             18.8
+  pole turning backward (w > 1 rad/s)              18%              24%              25%              25%              12%              16%
+  pole turning forward (w < -1)                   19%              21%              18%              26%              10%              20%
+  back passes / fwd passes per min            2.5/3.7        12.3/16.0        14.7/11.4          3.3/9.8          2.3/4.6         5.5/13.3
+  stick drives back / fwd / holds           7%/92%/1%        6%/92%/2%       19%/79%/2%        5%/94%/1%        2%/90%/8%        4%/92%/5%
+  aim offset p10/p50/p90 (deg)          -151/-131/-46    -159/-132/-41    -157/-116/134    -166/-135/-71    -164/-135/-30    -163/-121/-34
+  stick sweeps over top back/fwd /min          2.5/1.2          3.7/9.9          1.6/1.6         1.6/11.4          4.4/5.7        14.1/18.5
+  stick aimed into the back half                  81%              25%              48%              58%              49%              49%
+  servo off                                        4%               1%               6%               0%               0%               0%
+
+== 6. Calibration / sanity
+  mutual_pole_contact (straight body->tip lines, 1 m) vs the real pole polylines / hulls, sim t20 self-play, 8 matches with full snapshots: precision 0.96, recall 0.89 (rows: 2440 true); interlocks from the real geometry 41, found by the concept 39; concept interlocks 39, real 39
+  mutual_pole_contact (straight body->tip lines, 1 m) vs the real pole polylines / hulls, real games, all 16: precision 0.94, recall 0.79 (rows: 2072 true); interlocks from the real geometry 38, found by the concept 31; concept interlocks 31, real 30
+  mutual_pole_contact (straight body->tip lines, 1 m) vs the real pole polylines / hulls, real games vs t20: precision 0.97, recall 0.86 (rows: 948 true); interlocks from the real geometry 16, found by the concept 14; concept interlocks 14, real 14
+  mutual-contact runs (gaps <= 1/3 s bridged), t20 sim: n=2024, share lasting >= 0.5/1/2/3/5/10 s: 30%/22%/13%/11%/8%/5%
+  mutual-contact runs (gaps <= 1/3 s bridged), farm2 sim: n=1098, share lasting >= 0.5/1/2/3/5/10 s: 28%/16%/9%/6%/3%/1%
+  mutual-contact runs (gaps <= 1/3 s bridged), real (all 16, user view): n=140, share lasting >= 0.5/1/2/3/5/10 s: 25%/16%/13%/9%/4%/1%
+  t20 sim rates: airborne 57%, good_side 80%, sit_A 6%, sit_B 12%, pole_on_opp 16%, interlocked 10%, open_goal 7%, mutual_pole_contact 12%; per min: takeoff 29.71, back_pass 10.95, fwd_pass 31.09, kill 1.16, goal_for 1.14
+  farm2 sim rates: airborne 73%, good_side 84%, sit_A 4%, sit_B 9%, pole_on_opp 5%, interlocked 2%, open_goal 10%, mutual_pole_contact 2%; per min: takeoff 27.42, back_pass 3.57, fwd_pass 26.70, kill 1.65, goal_for 1.01
+
+== 7. Training ideas for the weaknesses above (suggestions only, nothing implemented)
+  - Start states from situation A (the named [t20, user, ball]): a share of resets (like --pit-frac / --goal-spawn) that put one rider past the ball with the opponent between it and the ball, incl. the stacked variant (the opponent standing on its upright pole) — or restore real states harvested at A entries / interlock starts (NativeHost.snapshot/restore, the sim and the 16 real logs). Measure: P(conceded 10 s) and 'back on the good side in 3 s' from A (section 4).
+  - Action parameterization for the pole: aim RELATIVE to the current pole angle (a signed rotation offset in (-180, 180) plus a strength) instead of an absolute stick angle. The servo already works on the error to the aimed angle, so 'keep rotating backward' becomes one constant output instead of a stick sweep that has to stay < 180 deg ahead of a moving pole; a forward-biased Gaussian on (aim x, aim y) (t20 drives forward ~75% of the time) rarely produces it. Could be an --action-head option, A/B-tested like gated/resmlp.
+  - A real 'let go' action: bots almost never centre the stick (servo off 1-2% of play; the user 30%), because a Gaussian over (aim x, aim y) seldom lands in the 0.28 dead box. A discrete release bit (or the gated head's gate on the aim, if n1_t20_gated has one) makes letting go learnable; check whether n1_t20_gated ever releases in interlocks.
+  - Concept prediction targets (auxiliary heads, no reward change): from each state predict 'conceded within 10 s', 'back on the good side within 3 s' (from A), the outcome of the current interlock (who kicks first after it), and open-goal conversion; plus the concept states themselves (sit_A, interlocked, open_goal) 1 s ahead.
+  - Interlocks: t20 self-play treats them as safe for the attacker (scores 30% / concedes 2% within 5 s after) and holds some to the final whistle (4.5 min); humans break them by letting go. A league opponent that releases its pole in interlocks (a scripted override of the frozen opponent's aim while interlocked) would price that in. Note the user rejected random do-nothing opponents; this is a targeted expert move, so it needs the user's call.
+  - Open-goal finishing: kill-window start states (opponent dead with 1-3 s of respawn left, ball at various x) and opponent-out-of-position states, scored by conversion within the window; the sim conversion (t20 43%, farm2 28%) is the baseline to beat.
+  - Behaviour cloning on the user's demos (runs/human/demos.npz) restricted to A / interlock states as an auxiliary loss: the user's backward drive in A (54% of the time vs t20 7%) and his let-gos are in those rows.
+
+  thresholds: interlock >= 1 s, gaps <= 0.33 s, long >= 3 s; let-go window 0 s; open goal dx 5.5 m, grace 1 s; servo dead zone 0.1, off below stick length 0.2

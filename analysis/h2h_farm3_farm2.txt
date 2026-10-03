@@ -1,0 +1,19 @@
+farm3 vs farm2: 128 matches, 586 match-minutes
+  goals/min   farm3 0.80   farm2 1.29
+  kills/min   farm3 2.10   farm2 1.46
+
+  situation share of live time and goal diff next 10 s (farm3 | farm2):
+    right-far           45.2%  +0.028   |    60.3%  +0.166
+    right-close         19.7%  -0.079   |    20.4%  +0.072
+    A you-opp-ball       6.1%  -0.501   |     2.7%  -0.466
+    B opp-you-ball      15.9%  -0.296   |     7.3%  -0.258
+    both-wrong           1.3%  -0.145   |     1.3%  +0.145
+    opp-dead            11.8%  +0.232   |     8.1%  +0.403
+
+  3 s before a goal — situation of the scorer / the conceder:
+    farm3 scored 467: scorer right-far 48%, right-close 11%, A you-opp-ball 0%, B opp-you-ball 2%, both-wrong 1% | conceder dead/ghost 38%, conceder right-far 18%, right-close 12%, A you-opp-ball 11%, B opp-you-ball 19%
+    farm2 scored 754: scorer right-far 65%, right-close 14%, A you-opp-ball 0%, B opp-you-ball 1%, both-wrong 2% | conceder dead/ghost 19%, conceder right-far 12%, right-close 14%, A you-opp-ball 19%, B opp-you-ball 35%
+
+  style (share of live time):
+    farm3  good side 72.5%  airborne 70.0%  pit  3.1%  |ball dx|  6.2 m  pole fwd-down/fwd-up/back-up/back-down 29/32/18/21%  passes back 8.8 fwd 24.4 /min
+    farm2  good side 87.3%  airborne 76.3%  pit  3.2%  |ball dx|  6.9 m  pole fwd-down/fwd-up/back-up/back-down 34/38/16/12%  passes back 3.2 fwd 25.1 /min

@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pole Riders Lab</title>
+<style>
+  :root {
+    --bg: #0e1116; --panel: #161b22; --panel2: #1c232d; --line: #2a3340; --text: #e6edf3;
+    --muted: #8b98a8; --accent: #7ee787; --bad: #ff7b72;
+    --v1: #1fe0d4; --v2: #ff3cc7;   /* Vaulters: cyan / magenta */
+    --b1: #ffd21f; --b2: #ff7a1a;   /* Benders: yellow / orange */
+    --ball: #ff8a3d; --pole: #f3ead8; --ground: #3a2a22; --sky: #121925;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 13px/1.4 ui-sans-serif, -apple-system, "SF Pro Text", Inter, sans-serif; }
+  header { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: baseline;
+           padding: 14px 18px; border-bottom: 1px solid var(--line); position: sticky; top: 0;
+           background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); z-index: 5; }
+  h1 { font-size: 16px; margin: 0 8px 0 0; letter-spacing: .02em; }
+  h1 small { color: var(--muted); font-weight: 500; }
+  .stat { color: var(--muted); } .stat b { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 600; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 5px; }
+  .dot.off { background: var(--bad); }
+  main { padding: 14px 18px 40px; display: grid; gap: 16px; }
+  main > section { min-width: 0; }  /* wide tables scroll inside their box instead of widening the page */
+  section h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+               margin: 4px 0 8px; font-weight: 600; }
+  .arenas { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .card canvas { display: block; width: 100%; aspect-ratio: 16 / 7; background: var(--sky); }
+  .cap { display: flex; justify-content: space-between; gap: 8px; padding: 6px 9px; font-size: 12px; }
+  .cap .l { color: var(--muted); line-height: 1.6; }
+  .cap .score { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tag { font-size: 10px; padding: 1px 6px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+  .tag.league { color: #d2a8ff; border-color: #6e40c9; }
+  .charts { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .chart { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px 8px; }
+  .chart.wide { grid-column: 1 / -1; }
+  .chart .t { display: flex; justify-content: space-between; gap: 8px; font-weight: 600; }
+  .chart .t span { color: var(--muted); font-weight: 400; font-size: 12px; }
+  .chart canvas { width: 100%; height: 150px; display: block; margin-top: 6px; }
+  .chart.wide canvas { height: 190px; }
+  .note { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .row2 { display: grid; gap: 10px; grid-template-columns: 2fr 1fr; }
+  @media (max-width: 900px) { .row2 { grid-template-columns: 1fr; } }
+  .feed { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+          max-height: 360px; overflow: auto; }
+  .ev { display: grid; grid-template-columns: 62px 58px 1fr; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--line);
+        font-variant-numeric: tabular-nums; }
+  .ev:last-child { border-bottom: 0; }
+  .ev .ty { font-weight: 600; } .ev .ty.goal { color: var(--accent); } .ev .ty.kill { color: var(--b2); }
+  .ev .ty.crash { color: var(--bad); } .ev .when { color: var(--muted); }
+  .legend { display: flex; gap: 12px; font-size: 12px; color: var(--muted); margin-top: 4px; flex-wrap: wrap; }
+  .sw { display: inline-block; width: 10px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+  .tabs { display: flex; gap: 4px; margin-right: 8px; }
+  .tabs a { padding: 3px 11px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted);
+            text-decoration: none; font-weight: 600; font-size: 12px; }
+  .tabs a.on { color: var(--text); background: var(--panel2); border-color: #3d4a5c; }
+  .hide { display: none !important; }
+  table.grid { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+  table.grid th { padding: 4px 6px; color: var(--muted); font-weight: 600; text-align: right; white-space: nowrap; }
+  table.grid td { padding: 3px 6px; text-align: right; border-top: 1px solid var(--line); white-space: nowrap; }
+  table.grid .l { text-align: left; }
+  table.grid.fit { width: auto; } table.grid.fit th, table.grid.fit td { padding-left: 10px; padding-right: 10px; }
+  table.h2h td { text-align: center; padding: 3px 4px; min-width: 38px; }
+  table.h2h th.v { writing-mode: vertical-rl; transform: rotate(180deg); text-align: left; padding: 4px 2px; }
+  .ebar { display: inline-block; height: 6px; border-radius: 3px; background: var(--accent); opacity: .55; vertical-align: middle; margin-left: 6px; }
+  .st { font-size: 11px; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+  .st.training { color: var(--accent); border-color: #2f6f3a; } .st.rating { color: var(--v1); border-color: #1a6b66; }
+  .st.pruned { opacity: .7; } .st.failed { color: var(--bad); border-color: #8e2a26; } .st.done { color: var(--text); border-color: #3d4a5c; }
+  .smalls { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .smalls .chart canvas { height: 120px; }
+  .logline { font: 11px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; color: var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pole Riders Lab <small id="run">—</small></h1>
+  <nav class="tabs"><a href="#farm" id="tab_farm">Farm</a><a href="#killer" id="tab_killer">Killer</a><a href="#manager" id="tab_manager">Manager</a><a href="#worker" id="tab_worker">Worker</a><a href="#pbt" id="tab_pbt" class="hide">PBT</a><a href="#gauntlet" id="tab_gauntlet" class="hide">Gauntlet</a><a href="#search" id="tab_search" class="hide">Search</a><a href="#mods" id="tab_mods">Mods &amp; play</a></nav>
+  <span class="stat"><span class="dot" id="hdot"></span><b id="alive">–</b> <span id="alivelab">games live</span></span>
+  <span class="stat">update <b id="upd">–</b></span>
+  <span class="stat">env steps <b id="steps">–</b></span>
+  <span class="stat"><b id="sps">–</b> steps/s</span>
+  <span class="stat">game time <b id="gtime">–</b></span>
+  <span class="stat">pool <b id="pool">–</b></span>
+  <span class="stat">goals <b id="ngoal">–</b> · kills <b id="nkill">–</b> · crashes <b id="ncrash">–</b></span>
+</header>
+<main id="p_worker" class="hide">
+  <section>
+    <h2>Worker live <span id="w_sub" style="text-transform:none;letter-spacing:0;font-weight:400"></span></h2>
+    <div class="arenas" id="w_arenas"></div>
+    <div class="note">Goal-conditioned worker (train_worker.py), real time. Each rider chases a random target:
+      dashed line = where its body should be, diamond = a point in the air its body should pass through (a jump),
+      ring = where its pole tip should be (drawn in the rider's colours);
+      the line turns solid / the ring fills while that part is satisfied. A rider with both only scores once both
+      are satisfied at the same moment (body within 0.75 m in x, tip within 1 m); it earns a little for progress
+      toward each part meanwhile. Unreached targets are dropped after 6 s and a new one is drawn.</div>
+  </section>
+  <section>
+    <h2>Can it get there? <span id="w_upd" style="text-transform:none;letter-spacing:0;font-weight:400"></span></h2>
+    <div class="charts">
+      <div class="chart wide"><div class="t">Ground body targets reached, by where the target was <span id="wn_bucket"></span></div><canvas id="w_bucket"></canvas>
+        <div class="legend" id="w_bucket_legend"></div>
+        <div class="note">Share of body targets reached within 6 s, by the target's distance from the rider when it was set (negative = behind it, i.e. away from the goal it attacks). "Far behind" is the skill the game policy lacks: getting back on the right side of the ball.</div></div>
+      <div class="chart"><div class="t">Targets reached <span id="wn_succ"></span></div><canvas id="w_succ"></canvas>
+        <div class="legend"><span><i class="sw" style="background:var(--text)"></i>all</span><span><i class="sw" style="background:var(--accent)"></i>body (ground)</span><span><i class="sw" style="background:var(--v1)"></i>air (jump point)</span><span><i class="sw" style="background:var(--b1)"></i>pole tip</span><span><i class="sw" style="background:var(--v2)"></i>both</span></div></div>
+      <div class="chart"><div class="t">Jumps: air targets reached, by height <span id="wn_air"></span></div><canvas id="w_air"></canvas>
+        <div class="legend"><span><i class="sw" style="background:#b5e07a"></i>1.5–3 m</span><span><i class="sw" style="background:#3fb9a8"></i>3–4.5 m</span><span><i class="sw" style="background:#58a6ff"></i>4.5–6 m</span><span><i class="sw" style="background:#d2a8ff"></i>6–7.5 m</span></div>
+        <div class="note">Air targets: a point 1.5–7 m above the ground the body must pass through (within 1 m) — a jump. Height above the surface under the point.</div></div>
+      <div class="chart"><div class="t">Time to reach (median, s) <span id="wn_time"></span></div><canvas id="w_time"></canvas>
+        <div class="legend"><span><i class="sw" style="background:#ff7b72"></i>10+ m behind</span><span><i class="sw" style="background:#f0a35e"></i>5–10 m behind</span><span><i class="sw" style="background:#7ee787"></i>5–10 m ahead</span><span><i class="sw" style="background:#3fb9a8"></i>10+ m ahead</span></div></div>
+      <div class="chart"><div class="t">Deaths per minute <span id="wn_death"></span></div><canvas id="w_death"></canvas></div>
+      <div class="chart"><div class="t">Reward per step <span id="wn_rew"></span></div><canvas id="w_rew"></canvas></div>
+      <div class="chart"><div class="t">Policy std (exploration) <span id="wn_std"></span></div><canvas id="w_std"></canvas></div>
+      <div class="chart"><div class="t">Throughput <span id="wn_sps"></span></div><canvas id="w_sps"></canvas></div>
+    </div>
+  </section>
+</main>
+<main id="p_mods" class="hide">
+  <section>
+    <h2>Game mods <span id="mods_bin" style="text-transform:none;letter-spacing:0;font-weight:400"></span></h2>
+    <div class="chart wide" style="font-size:13px;line-height:2">
+      <label>Score limit <input id="m_score" type="number" min="1" max="99" style="width:4em"></label> &nbsp;
+      <label>Round length (min) <input id="m_minutes" type="number" min="1" max="60" style="width:4em"></label>
+      <div id="m_modes"></div>
+      <button id="m_apply">Apply</button> <button id="m_restore">Restore vanilla game</button>
+      <pre class="note" id="m_out" style="white-space:pre-wrap"></pre>
+      <div class="note">Applies to the real game (Sportsfriends): patches the game binary from mods.toml (a backup of the original is kept) and sets the match format in config.ini; restart the game to see it. Snake / pencil / Christmas / Chinese New Year are cosmetic; the hidden 8th character has a shorter pole and stiffer arms. Training uses the native simulator and is not affected.</div>
+    </div>
+  </section>
+  <section>
+    <h2>Play against a bot <span id="play_state" style="text-transform:none;letter-spacing:0;font-weight:400"></span></h2>
+    <div class="chart wide" style="font-size:13px;line-height:2">
+      <label>Bot <select id="p_bot"></select></label> &nbsp;
+      <label>Your side <select id="p_side"><option value="left">left (attacks →)</option><option value="right">right (attacks ←)</option></select></label> &nbsp;
+      <label>Window <select id="p_win"><option value="">full screen</option><option value="1280x720">1280×720 window</option></select></label> &nbsp;
+      <label><input type="checkbox" id="p_rec" checked> record my play</label><br>
+      <button id="p_start">Start game</button> <button id="p_stop">Stop</button>
+      <div class="note">Plug in your controller first and don't press anything while the menus are scripted. Your recorded play (sticks every frame + the state every 4th) goes to runs/human/ and becomes training data (analysis/playlog.py). <span id="p_recs"></span></div>
+    </div>
+  </section>
+</main>
+<main id="p_pbt" class="hide">
+  <section>
+    <h2>Population <span id="pbt_sub" style="text-transform:none;letter-spacing:0;font-weight:400"></span></h2>
+    <div class="chart wide" style="overflow-x:auto"><div id="pbt_table"></div>
+      <div class="note">Fitness = mean goal difference per match in the last tournament, against every other member and the anchors (farm2, farm3), 32 matches per pairing, 7 goals / 5 min. After each tournament the worst member takes over the best one's weights with a perturbed genome (if the best leads by more than 0.25). Each member has its own tab (training charts, exhibitions vs farm2).</div></div>
+  </section>
+  <section>
+    <h2>Fitness</h2>
+    <div class="charts">
+      <div class="chart wide"><div class="t">Tournament fitness per generation</div><canvas id="c_fit"></canvas><div class="legend" id="fit_leg"></div></div>
+      <div class="chart"><div class="t">vs farm2 (goals per match)</div><canvas id="c_fa2"></canvas></div>
+      <div class="chart"><div class="t">vs farm3 (goals per match)</div><canvas id="c_fa3"></canvas></div>
+    </div>
+  </section>
+  <section>
+    <h2>Genes over generations</h2>
+    <div class="charts" id="pbt_genes"></div>
+  </section>
+  <section>
+    <h2>Lineage</h2>
+    <div class="feed" id="pbt_log"></div>
+  </section>
+</main>
+<main id="p_gauntlet" class="hide">
+  <section>
+    <h2>Ratings <span id="g_sub" style="text-transform:none;letter-spacing:0;font-weight:400"></span></h2>
+    <div class="chart wide" style="overflow-x:auto"><div id="g_members"></div>
+      <div class="note">Elo from every member pairing (Bradley-Terry on win / draw / loss, a draw counts half; farm2 latest = 1500; +200 Elo ≈ wins 3 of 4). 64 matches per pairing, sides alternating, 7 goals / 5 min, a tie at the end of time is a draw. Goal difference = goals per match from that policy's view. While the round robin is still filling, ratings move.</div></div>
+  </section>
+  <section id="g_cand_box">
+    <h2>Rated candidates</h2>
+    <div class="chart wide" style="overflow-x:auto"><div id="g_cands"></div>
+      <div class="note">Each candidate played every member (gauntlet.py rate) and is rated with the members' ratings held fixed, so candidates rated at different times stay comparable.</div></div>
+  </section>
+  <section>
+    <h2>Head-to-head</h2>
+    <div class="chart wide" style="overflow-x:auto"><div id="g_matrix"></div>
+      <div class="note">Goal difference per match from the row's view (green = row wins); hover a cell for wins-draws-losses and kills. Sorted by Elo. Blank = not played yet; – = hierarchical vs hierarchical (not supported).</div></div>
+  </section>
+  <section id="g_ex_box" class="hide">
+    <h2>Exploitability</h2>
+    <div class="chart wide" style="overflow-x:auto"><div id="g_exploit"></div>
+      <div class="note">A copy of the target trained only against the frozen target (gauntlet.py exploit). Its goal difference against the target afterwards is how exploitable the target is: 0 = nothing found, higher = a counter-strategy exists.</div></div>
+  </section>
+</main>
+<main id="p_search" class="hide">
+  <section>
+    <h2>Trials <span id="s_sub" style="text-transform:none;letter-spacing:0;font-weight:400"></span></h2>
+    <div class="chart wide" style="overflow-x:auto"><div id="s_table"></div>
+      <div class="note" id="s_note"></div></div>
+  </section>
+  <section id="s_charts">
+    <h2>Elo by training length</h2>
+    <div class="charts">
+      <div class="chart wide"><div class="t">Gauntlet Elo at each rung <span id="sn_rungs"></span></div><canvas id="c_srung" style="height:240px"></canvas>
+        <div class="legend" id="s_rung_leg"></div>
+        <div class="note">Each trial is rated at every rung it reaches (log env steps). Dashed: the original farm2 run's own snapshots in the gauntlet, i.e. what the farm2 recipe reached at that many steps. Labelled: baselines and trials promoted past the first rung; hover any point for its trial.</div></div>
+    </div>
+  </section>
+  <section id="s_imp_box">
+    <h2>What matters: Elo at the first rung vs each setting</h2>
+    <div class="smalls" id="s_imp"></div>
+    <div class="note">One dot per trial rated at the first rung. A slope or a cluster hints that the setting matters; scattered = it doesn't (yet). Log x axis where the search samples on a log scale.</div>
+  </section>
+  <section>
+    <h2>Search log</h2>
+    <div class="feed" id="s_log"></div>
+  </section>
+</main>
+<main id="p_game">
+  <section>
+    <h2>Live matches <span id="subset" style="text-transform:none;letter-spacing:0;font-weight:400"></span></h2>
+    <div class="arenas" id="arenas"></div>
+  </section>
+
+  <section>
+    <h2>Skill</h2>
+    <div class="charts">
+      <div class="chart wide" id="h2h_box"><div class="t">Head-to-head</div>
+        <div class="note" id="h2hnow" style="margin:2px 0 8px"></div>
+        <canvas id="c_h2h"></canvas>
+        <div class="legend"><span><i class="sw" style="background:var(--accent)"></i><span id="h2h_l_same">vs ref at the same env steps</span></span><span><i class="sw" style="background:var(--b1)"></i><span id="h2h_l_latest">vs ref latest</span></span><span><i class="sw" style="background:var(--v2)"></i><span id="h2h_l_hier">vs manager</span></span></div>
+        <div class="note"><span id="h2h_what">Goal difference per match</span> for the latest policy against fixed opponents (eval_h2h.py: 32 matches per point, sides swapped, 7 goals / 5 min, a tie at the end of time is a draw). Above 0 = the latest policy wins. Dots: rounds; lines: average of the last 5.</div>
+      </div>
+      <div class="chart wide" id="rec_box"><div class="t">Learning rate: vs its recent selves <span id="recnow"></span></div>
+        <canvas id="c_rec"></canvas>
+        <div class="note">Share of <span id="rec_what">goals</span> scored by the latest policy in league games against snapshots at most <span id="rec_age">125</span> updates old (the 5 newest). Above 50% = it is still getting better than it was a few million steps ago; a rising line would mean learning speeds up, a line sinking to 50% that it has stopped improving. Dots: each 25-update bucket; line: goal-weighted average of the last 8.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Training <span id="refnote" style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--muted)"></span></h2>
+    <div class="charts">
+      <div class="chart"><div class="t">Self-play match style <span id="n_style"></span></div><canvas id="c_style"></canvas>
+        <div class="legend"><span><i class="sw" style="background:var(--accent)"></i>goals per match</span><span><i class="sw" style="background:var(--b2)"></i>kills per match</span></div>
+        <div class="note">Style, not skill: both riders are the current policy (or a snapshot of it).</div></div>
+      <div class="chart"><div class="t">Time on the good side of the ball <span id="n_pos"></span></div><canvas id="c_pos"></canvas>
+        <div class="note">you–ball–goal; the current policy's live riders in training. Pit time is in the title.</div></div>
+      <div class="chart" id="rot_box"><div class="t">Pole passes through vertical <span id="n_rot"></span></div><canvas id="c_rot"></canvas>
+        <div class="legend"><span><i class="sw" style="background:var(--accent)"></i>backward (over the top toward own goal) / min</span><span><i class="sw" style="background:var(--b2)"></i>forward / min</span></div>
+        <div class="note" id="rot_note"></div></div>
+      <div class="chart"><div class="t">Throughput (env steps/s) <span id="n_sps"></span></div><canvas id="c_sps"></canvas></div>
+      <div class="chart"><div class="t">Policy std (exploration) <span id="n_std"></span></div><canvas id="c_std"></canvas>
+        <div class="note">Action noise; floored by --min-std.</div></div>
+      <div class="chart"><div class="t">Value loss <span id="n_vl"></span></div><canvas id="c_vl"></canvas>
+        <div class="note">How well the critic predicts returns; a sudden jump means something changed (rules, opponents).</div></div>
+    </div>
+  </section>
+
+  <section class="row2">
+    <div>
+      <h2>Where play happens</h2>
+      <div class="chart"><div class="t">Ball position across all games <span id="n_heat"></span></div><canvas id="c_heat"></canvas>
+        <div class="legend"><span><i class="sw" style="background:var(--ball)"></i>ball</span><span><i class="sw" style="background:var(--v1)"></i>cyan rider (attacks →)</span><span><i class="sw" style="background:var(--b1)"></i>yellow rider (attacks ←)</span></div>
+        <div class="note" id="air"></div></div>
+    </div>
+    <div>
+      <h2>Events</h2>
+      <div class="feed" id="feed"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C = {};
+let refLog = {};
+['--v1','--v2','--b1','--b2','--ball','--pole','--ground','--sky','--line','--muted','--text','--accent','--bad','--panel2'].forEach(k => C[k.slice(2)] = css(k));
+
+function fitCanvas(cv) {
+  const r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+  const w = Math.max(1, Math.round(r.width * d)), h = Math.max(1, Math.round(r.height * d));
+  if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+  const g = cv.getContext('2d'); g.setTransform(d, 0, 0, d, 0, 0); return [g, r.width, r.height];
+}
+const fmt = (v, d = 2) => v == null || Number.isNaN(v) ? '–' : Number(v).toFixed(d);
+const fmtS = n => n >= 1e6 ? +(n / 1e6).toPrecision(3) + 'M' : fmtN(n);  // 10M, 31.5M: short step counts
+const fmtN = n => n >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : n >= 1e3 ? (n / 1e3).toFixed(1) + 'k' : String(Math.round(n));
+
+// ---------------------------------------------------------------- arenas
+const cards = {};
+let runPaused = false;
+let terrain = null, terrainArena = null, showAll = location.search.includes('all=1'),
+    showTrain = location.search.includes('train=1'), spectating = false;
+async function loadTerrain(arena) {
+  if (!arena || arena === terrainArena) return;
+  terrainArena = arena;
+  try {
+    const g = await (await fetch('/api/terrain?arena=' + arena)).json();
+    const ground = [], walls = [];
+    (g.bodies || []).forEach(b => b.polys.forEach(p => {
+      if (p.sensor) return;
+      if (b.tag === 'ground') ground.push(p.v);
+      if (b.tag === 'wall') walls.push(p.v);  // solid blocks behind each goal; their inner face is the goal line
+    }));
+    const faces = walls.map(v => { const xs = v.map(q => q[0]); return Math.min(...xs) > 0 ? Math.min(...xs) : Math.max(...xs); });
+    terrain = ground.length ? { ground, walls, faces: faces.sort((a, b) => a - b) } : null;
+  } catch (e) { terrain = null; }
+}
+function card(idx, box = 'arenas') {
+  if (cards[idx]) return cards[idx];
+  const el = document.createElement('div'); el.className = 'card';
+  el.innerHTML = `<canvas></canvas><div class="cap"><span class="l"></span><span class="score"></span></div>`;
+  $(box).appendChild(el);
+  return cards[idx] = { el, cv: el.querySelector('canvas'), l: el.querySelector('.l'), s: el.querySelector('.score') };
+}
+
+function drawArena(c, m) {
+  const [g, W, H] = fitCanvas(c.cv);
+  g.fillStyle = C.sky; g.fillRect(0, 0, W, H);
+  if (!m.players) {
+    g.fillStyle = C.muted; g.font = '12px sans-serif'; g.textAlign = 'center';
+    g.fillText(m.alive ? 'loading / resetting…' : 'instance down', W / 2, H / 2); return;
+  }
+  const walls = terrain && terrain.faces.length ? terrain.faces : m.walls && m.walls.length ? m.walls : [-20.3, 20.3];
+  const half = Math.max(...walls.map(Math.abs)) + 3.0;
+  const s = W / (2 * half), yBottom = terrain ? 3.0 : 0.9, yTop = yBottom - H / s;
+  const X = x => (x + half) * s, Y = y => (y - yTop) * s;
+  if (terrain) {  // the arena's real Box2D ground polygons (pits, slopes, cliffs)
+    g.fillStyle = C.ground;
+    terrain.ground.forEach(v => { g.beginPath(); v.forEach(([x, y], i) => i ? g.lineTo(X(x), Y(y)) : g.moveTo(X(x), Y(y))); g.closePath(); g.fill(); });
+    g.fillStyle = '#2b3240';  // the goal walls' solid blocks
+    terrain.walls.forEach(v => { g.beginPath(); v.forEach(([x, y], i) => i ? g.lineTo(X(x), Y(y)) : g.moveTo(X(x), Y(y))); g.closePath(); g.fill(); });
+  } else {
+    g.fillStyle = C.ground; g.fillRect(0, Y(0), W, H - Y(0));
+  }
+  // goal walls: each wall wears the colour of the team that scores on it
+  walls.forEach(wx => {
+    g.fillStyle = wx > 0 ? C.v1 : C.b1; g.globalAlpha = 0.85;
+    g.fillRect(X(wx) - 2, Y(terrain ? -7.8 : -11), 4, Y(terrain ? 1.5 : 0) - Y(terrain ? -7.8 : -11)); g.globalAlpha = 1;
+  });
+  // zipline + ball
+  const tr = (m.trolley || []).sort((a, b) => a[1] - b[1]);
+  const trolley = tr[0], ball = m.ball;
+  if (trolley) {
+    g.strokeStyle = C.muted; g.lineWidth = 1; g.beginPath();
+    g.moveTo(X(walls[0]), Y(trolley[1] - 1.1)); g.lineTo(X(trolley[0]), Y(trolley[1]));
+    g.lineTo(X(walls[walls.length - 1]), Y(trolley[1] - 1.1)); g.stroke();
+  }
+  if (ball) {
+    if (trolley) { g.beginPath(); g.moveTo(X(trolley[0]), Y(trolley[1])); g.lineTo(X(ball.x), Y(ball.y)); g.stroke(); }
+    g.fillStyle = C.ball; g.beginPath(); g.arc(X(ball.x), Y(ball.y), Math.max(3, 0.45 * s), 0, 7); g.fill();
+  }
+  // riders
+  m.players.forEach(p => {
+    const col = p.id === 1 ? C.v1 : C.b1, col2 = p.id === 1 ? C.v2 : C.b2;
+    g.globalAlpha = p.ghost || p.dead ? 0.25 : 1;  // dead = killed, corpse waiting to respawn
+    // pole
+    g.strokeStyle = C.pole; g.lineWidth = Math.max(2.5, 0.22 * s); g.lineCap = 'round';
+    g.beginPath(); p.pole.forEach(([x, y], i) => i ? g.lineTo(X(x), Y(y)) : g.moveTo(X(x), Y(y))); g.stroke();
+    const tip = p.pole[p.pole.length - 1];
+    g.fillStyle = col2; g.beginPath(); g.arc(X(tip[0]), Y(tip[1]), Math.max(2, 0.14 * s), 0, 7); g.fill();
+    // body: torso line + head, rotated by the body angle
+    const ux = Math.sin(p.a), uy = -Math.cos(p.a);  // "up" in world coords (+y is down)
+    const hx = p.x + ux * 0.75, hy = p.y + uy * 0.75, fx = p.x - ux * 0.7, fy = p.y - uy * 0.7;
+    g.strokeStyle = col2; g.lineWidth = Math.max(4, 0.34 * s);
+    g.beginPath(); g.moveTo(X(fx), Y(fy)); g.lineTo(X(p.x), Y(p.y)); g.stroke();
+    g.strokeStyle = col; g.beginPath(); g.moveTo(X(p.x), Y(p.y)); g.lineTo(X(hx), Y(hy)); g.stroke();
+    g.fillStyle = '#f1c9a5'; g.beginPath(); g.arc(X(hx), Y(hy), Math.max(3.5, 0.3 * s), 0, 7); g.fill();
+    g.globalAlpha = 1;
+    if (m.names && m.names[1] !== m.names[2]) {  // who is who: the policy's name above its rider
+      g.font = '600 11px ui-sans-serif, sans-serif'; g.textAlign = 'center'; g.fillStyle = col;
+      const tw = g.measureText(m.names[p.id]).width / 2 + 3;  // keep the label inside the canvas
+      g.fillText(m.names[p.id], Math.min(W - tw, Math.max(tw, X(hx))), Math.max(12, Y(hy) - Math.max(8, 0.6 * s)));
+    }
+  });
+  // worker targets: dashed line = body target x, ring = pole-tip target (rider colours)
+  (m.targets || []).forEach(tg => {
+    const col = tg.id === 1 ? C.v1 : C.b1, col2 = tg.id === 1 ? C.v2 : C.b2;
+    const p = (m.players || []).find(q => q.id === tg.id);
+    g.lineWidth = tg.body_ok ? 3 : 1.5; g.setLineDash(tg.body_ok ? [] : [5, 4]);  // solid = body part satisfied
+    if (tg.body_x != null && tg.body_y != null) {  // air target (jump): a diamond at the point to pass through
+      const cx = X(tg.body_x), cy = Y(tg.body_y), rr = Math.max(5, 1.0 * s);
+      g.strokeStyle = col; g.globalAlpha = 0.95; g.setLineDash([]); g.lineWidth = tg.body_ok ? 3 : 2;
+      g.beginPath(); g.moveTo(cx, cy - rr); g.lineTo(cx + rr, cy); g.lineTo(cx, cy + rr); g.lineTo(cx - rr, cy); g.closePath(); g.stroke();
+      if (tg.body_ok) { g.fillStyle = col; g.globalAlpha = 0.45; g.fill(); }
+      if (p) { g.globalAlpha = 0.35; g.lineWidth = 1; g.setLineDash([5, 4]); g.beginPath(); g.moveTo(X(p.x), Y(p.y)); g.lineTo(cx, cy); g.stroke(); }
+    } else if (tg.body_x != null) {
+      g.strokeStyle = col; g.globalAlpha = 0.9;
+      g.beginPath(); g.moveTo(X(tg.body_x), Y(-10)); g.lineTo(X(tg.body_x), Y(2)); g.stroke();
+      if (p) { g.globalAlpha = 0.35; g.beginPath(); g.moveTo(X(p.x), Y(p.y)); g.lineTo(X(tg.body_x), Y(p.y)); g.stroke(); }
+    }
+    g.setLineDash([]);
+    if (tg.tip) {
+      g.strokeStyle = col2; g.globalAlpha = 0.95; g.lineWidth = 2;
+      g.beginPath(); g.arc(X(tg.tip[0]), Y(tg.tip[1]), Math.max(4, 1.0 * s), 0, 7); g.stroke();
+      if (tg.tip_ok) { g.fillStyle = col2; g.globalAlpha = 0.45; g.fill(); }  // filled = tip part satisfied
+      if (p && p.pole.length) { const tip = p.pole[p.pole.length - 1]; g.globalAlpha = 0.3; g.lineWidth = 1;
+        g.beginPath(); g.moveTo(X(tip[0]), Y(tip[1])); g.lineTo(X(tg.tip[0]), Y(tg.tip[1])); g.stroke(); }
+    }
+    g.globalAlpha = 1;
+    // time left on this target: small bar under the clock in the rider's colour
+    g.fillStyle = col; g.fillRect(tg.id === 1 ? 6 : W - 6 - 40 * tg.left, 6, 40 * tg.left, 3);
+  });
+  // clock
+  g.fillStyle = C.text; g.font = '600 11px ui-sans-serif, sans-serif'; g.textAlign = 'center';
+  g.fillText(Math.ceil(m.time_left ?? 0), W / 2, 14);
+}
+
+function renderLive(d) {
+  // a run whose trainer hasn't written status for 2 minutes is paused: say so instead of its last numbers
+  const age = Date.now() / 1000 - ((d.status && d.status.t) || 0);
+  runPaused = !!(d.status && d.status.t) && age > 120;
+  $('run').innerHTML = '· ' + (d.run || '') + (d.farm ? ' · farm' : '') +
+    (runPaused ? ` · <span style="color:var(--bad)">paused ${Math.round(age / 60)} min ago</span>` : '');
+  if (runPaused) { $('sps').textContent = '0'; $('hdot').className = 'dot off'; }
+  loadTerrain(d.arena || (d.farm ? 2 : null));
+  const alive = d.instances.filter(i => i.alive).length;
+  $('alive').textContent = d.farm ? d.n_matches : `${alive}/${d.instances.length}`;
+  $('alivelab').textContent = d.farm ? 'matches running' : 'games live';
+  spectating = !!d.spectator;
+  if (spectating) {
+    $('alive').textContent = d.instances.length; $('alivelab').textContent = 'exhibition matches';
+    $('subset').innerHTML = `· replays of matches recorded moments ago, played in real time; names above the riders (cyan attacks →, yellow attacks ←) · ` +
+      `<a href="/?train=1${location.hash}" style="color:var(--muted)">show training matches</a>`;
+  } else {
+    $('subset').innerHTML = d.farm ? (showAll ? `· all ${d.n_matches} · <a href="/?train=1${location.hash}" style="color:var(--muted)">show 2 per host</a>`
+      : `· 2 per host of ${d.n_matches} · <a href="/?train=1&all=1${location.hash}" style="color:var(--muted)">show all</a>`) : '';
+    if (d.farm) $('subset').innerHTML += ` · <a href="/${location.hash}" style="color:var(--muted)">watch exhibition matches</a>`;
+  }
+  $('hdot').className = 'dot' + (alive < d.instances.length || runPaused ? ' off' : '');
+  d.instances.forEach(m => {
+    const c = card(m.idx);
+    drawArena(c, m);
+    const k = m.players && m.players.every(p => p.stats) ? m.players.map(p => p.stats.kills) : null;
+    const st = k ? `kills <span style="color:var(--v1)">${k[0]}</span>–<span style="color:var(--b1)">${k[1]}</span>` : '';
+    let who = m.sudden_death ? 'sudden death' : 'self-play';
+    if (m.opp) who = `vs ${m.opp.replace('.pt', '')} as ${m.opp_agent === 1 ? 'cyan' : 'yellow'}`;
+    if (m.opp && m.sudden_death) who += ' · SD';
+    let extra = '';
+    if (m.spectator) {
+      const kinds = { ref: 'comparison', hier: 'comparison', league: 'league', self: 'self-play' };
+      const nm = (N, a) => `<b style="color:${a === 1 ? 'var(--v1)' : 'var(--b1)'}">${N[a]}</b>`;
+      if (m.names && m.names[1] !== m.names[2]) who = `${kinds[m.kind] || 'match'}`;
+      else if (m.league) who = 'league (no pool yet)';
+      else who = `self-play · ${m.run || ''}`;
+      if (m.sudden_death) who += ' · SD';
+      extra = ` <span class="tag">${m.speed}x</span>`;
+      if (m.names && m.names[1] !== m.names[2]) extra += ` ${nm(m.names, 1)} <span style="color:var(--muted)">vs</span> ${nm(m.names, 2)}`;
+      if (m.last) {
+        const L = m.last, N = L.names || { 1: 'left', 2: 'right' }, sc = L.score;
+        const res = sc[0] === sc[1] ? `draw ${sc[0]}–${sc[1]}` : N[1] === N[2] ? `${sc[0]}–${sc[1]}`
+          : `${sc[0] > sc[1] ? N[1] : N[2]} won ${Math.max(...sc)}–${Math.min(...sc)}`;
+        extra += ` <span style="color:var(--muted)">· last: ${res}</span>`;
+      }
+    }
+    c.l.innerHTML = `#${m.idx} <span class="tag ${m.opp || m.league ? 'league' : ''}" ${m.sudden_death ? 'style="color:#ff7b72;border-color:#8e2a26"' : ''}>${who}</span>${extra} ${st ? '· ' + st : ''}`;
+    c.s.innerHTML = m.score ? `<span style="color:var(--v1)">${m.score[0]}</span> : <span style="color:var(--b1)">${m.score[1]}</span>` : '';
+  });
+}
+
+// ---------------------------------------------------------------- charts
+function rolling(pts, k) {
+  const out = []; let acc = [], sum = 0;
+  pts.forEach(([x, y]) => { acc.push(y); sum += y; if (acc.length > k) sum -= acc.shift(); out.push([x, sum / acc.length]); });
+  return out;
+}
+function lineChart(id, series, o = {}) {
+  const cv = $(id); const [g, W, H] = fitCanvas(cv);
+  g.clearRect(0, 0, W, H);
+  const all = series.flatMap(s => s.data).filter(p => p[1] != null && isFinite(p[1]));
+  if (!all.length) { g.fillStyle = C.muted; g.font = '12px sans-serif'; g.fillText('waiting for data…', 8, H / 2); return; }
+  let x0 = Math.min(...all.map(p => p[0])), x1 = Math.max(...all.map(p => p[0]));
+  let y0 = Math.min(...all.map(p => p[1])), y1 = Math.max(...all.map(p => p[1]));
+  if (o.zero) { y0 = Math.min(y0, 0); y1 = Math.max(y1, 0); }
+  if (o.min0) y0 = Math.min(0, y0);
+  if (y1 - y0 < 1e-9) { y1 += 1; y0 -= o.min0 ? 0 : 1; }
+  const pad = (y1 - y0) * 0.08; y1 += pad; if (!o.min0) y0 -= pad;
+  if (x1 === x0) x1 = x0 + 1;
+  const L = 42, R = 8, T = 6, B = 18;
+  const X = x => L + (x - x0) / (x1 - x0) * (W - L - R), Y = y => T + (1 - (y - y0) / (y1 - y0)) * (H - T - B);
+  g.strokeStyle = C.line; g.lineWidth = 1; g.fillStyle = C.muted; g.font = '10px ui-sans-serif, sans-serif';
+  for (let i = 0; i <= 3; i++) {
+    const v = y0 + (y1 - y0) * i / 3, y = Y(v);
+    g.beginPath(); g.moveTo(L, y); g.lineTo(W - R, y); g.stroke();
+    g.textAlign = 'right';  // big numbers as 12k / 1.2M so they fit the margin
+    g.fillText(o.fmt ? o.fmt(v) : Math.abs(y1) >= 1000 ? fmtN(v) : fmt(v, Math.abs(y1 - y0) < 0.2 ? 3 : 2), L - 4, y + 3);
+  }
+  const xf = o.xfmt || fmtN;
+  for (let i = 0; i <= 3; i++) {  // x labels at the ends and two in between
+    const xv = x0 + (x1 - x0) * i / 3;
+    g.textAlign = i === 0 ? 'left' : i === 3 ? 'right' : 'center';
+    g.fillText(xf(xv) + (i === 3 ? (o.xl || '') : ''), i === 0 ? L : i === 3 ? W - R : X(xv), H - 4);
+  }
+  if (o.zero && y0 < 0 && y1 > 0) { g.strokeStyle = C.muted; g.setLineDash([4, 4]); g.beginPath(); g.moveTo(L, Y(0)); g.lineTo(W - R, Y(0)); g.stroke(); g.setLineDash([]); }
+  series.forEach(s => {
+    const pts = s.data.filter(p => p[1] != null && isFinite(p[1]));
+    if (s.bars) {
+      const span = o.bucket ? (x1 - x0) / o.bucket + 1 : Math.max(pts.length, 1);
+      const bw = Math.max(2, Math.min(18, (W - L - R) / span * 0.4));
+      g.fillStyle = s.color; g.globalAlpha = s.alpha ?? 0.8;
+      pts.forEach(([x, y]) => g.fillRect(X(x) - bw / 2 + (s.off || 0) * bw, Y(y), bw, Y(Math.max(y0, 0)) - Y(y)));
+      g.globalAlpha = 1; return;
+    }
+    g.strokeStyle = s.color; g.lineWidth = s.width || 1.5; g.globalAlpha = s.alpha ?? 1;
+    if (s.dash) g.setLineDash(s.dash);
+    if (s.dots) { g.fillStyle = s.color; pts.forEach(([x, y]) => { g.beginPath(); g.arc(X(x), Y(y), 2.5, 0, 7); g.fill(); }); }
+    if (s.noline) { g.globalAlpha = 1; return; }
+    // don't draw across gaps in the data (e.g. no league results for a while after a trainer restart):
+    // a jump in x of more than 15x the typical spacing starts a new segment
+    const dx = pts.slice(1).map((p, i) => p[0] - pts[i][0]).filter(d => d > 0).sort((a, b) => a - b);
+    const gap = dx.length > 10 ? 15 * dx[dx.length >> 1] : Infinity;
+    g.beginPath();
+    pts.forEach(([x, y], i) => (i && x - pts[i - 1][0] <= gap) ? g.lineTo(X(x), Y(y)) : g.moveTo(X(x), Y(y)));
+    g.stroke();
+    g.setLineDash([]); g.globalAlpha = 1;
+  });
+}
+
+function renderLog(rows) {
+  if (!rows.length) return;
+  const last = rows[rows.length - 1];
+  $('upd').textContent = last.update; $('steps').textContent = fmtN(last.steps);
+  $('sps').textContent = runPaused ? '0' : Math.round(last.sps); $('pool').textContent = last.pool_size;
+  $('gtime').textContent = (last.steps * 4 / 60 / 3600).toFixed(1) + ' h';
+  const S = k => rows.map(r => [r.steps, r[k]]);
+  // the reference run (e.g. farm1) at the same env steps: dashed grey
+  const RS = k => (refLog.rows || []).map(r => [r.steps, r[k]]).filter(p => p[1] != null);
+  const refSer = k => refLog.run ? [{ data: rolling(RS(k), 15), color: C.muted, width: 1.5, dash: [5, 4] }] : [];
+  $('refnote').innerHTML = refLog.run ? `dashed = <b>${refLog.run}</b> at the same env steps` : '';
+  const ser = (k, col, id, lab, o = {}) => {
+    const d = S(k).filter(p => p[1] != null);
+    lineChart(id, [...refSer(k), { data: d, color: col, alpha: 0.35, width: 1 }, { data: rolling(d, 15), color: col, width: 2 }], o);
+    const r = rolling(d, 15).slice(-1)[0]; $(lab).textContent = r ? fmt(r[1], o.dec ?? 2) : '';
+  };
+  { // self-play style: goals and kills per match on one axis (+ the reference run dashed), match length in the title
+    const G = rolling(S('goals_per_ep').filter(p => p[1] != null), 15), K = rolling(S('kills_per_ep').filter(p => p[1] != null), 15);
+    const RG = refLog.run ? [{ data: rolling(RS('goals_per_ep'), 15), color: C.accent, width: 1.2, dash: [5, 4], alpha: 0.6 },
+                             { data: rolling(RS('kills_per_ep'), 15), color: C.b2, width: 1.2, dash: [5, 4], alpha: 0.6 }] : [];
+    lineChart('c_style', [...RG, { data: G, color: C.accent, width: 2 }, { data: K, color: C.b2, width: 2 }], { min0: true });
+    const L = rolling(S('ep_len').filter(p => p[1] != null), 15).slice(-1)[0], g = G.slice(-1)[0], k = K.slice(-1)[0];
+    $('n_style').textContent = g && k ? `${g[1].toFixed(1)} goals · ${k[1].toFixed(1)} kills · ${L ? (L[1] * 4 / 60).toFixed(0) + ' s' : ''}` : '';
+  }
+  ser('sps', C.v2, 'c_sps', 'n_sps', { min0: true, dec: 0 });
+  if (rows.some(r => r.good_side != null)) {
+    const P = k => rolling(S(k).filter(p => p[1] != null).map(([x, y]) => [x, 100 * y]), 15);
+    const RP = k => refLog.run ? [{ data: rolling(RS(k).map(([x, y]) => [x, 100 * y]), 15), color: C.muted, width: 1.5, dash: [5, 4] }] : [];
+    const skip = d => d.filter(p => p[0] > 0.02 * last.steps);  // the first minutes swing 10-100%: they'd flatten the scale
+    lineChart('c_pos', [...RP('good_side').map(x => ({ ...x, data: skip(x.data) })), { data: skip(P('good_side')), color: C.accent, width: 2 }],
+              { fmt: v => v.toFixed(0) + '%' });
+    const g = P('good_side').slice(-1)[0], e = P('enemy_pit').slice(-1)[0], o = P('own_pit').slice(-1)[0];
+    $('n_pos').textContent = g ? `${g[1].toFixed(0)}% · in a pit: enemy ${e[1].toFixed(1)}% own ${o[1].toFixed(1)}%` : '';
+  }
+  ser('std', C.b1, 'c_std', 'n_std', { dec: 3 });
+  const hasRot = rows.some(r => r.back_passes_per_min != null);
+  $('rot_box').style.display = hasRot ? '' : 'none';
+  if (hasRot) {
+    const RB = rolling(S('back_passes_per_min').filter(p => p[1] != null), 15), RF = rolling(S('fwd_passes_per_min').filter(p => p[1] != null), 15);
+    lineChart('c_rot', [{ data: RB, color: C.accent, width: 2 }, { data: RF, color: C.b2, width: 2 }], { min0: true });
+    const b = RB.slice(-1)[0], f = RF.slice(-1)[0], w = last.rotation_w;
+    $('n_rot').textContent = b && f ? `back ${b[1].toFixed(1)} · fwd ${f[1].toFixed(1)} /min` : '';
+    $('rot_note').textContent = w ? `backward-rotation bonus now ${w.toFixed(4)} per radian (fading to 0)` : '';
+  }
+  ser('v_loss', C.muted, 'c_vl', 'n_vl', { dec: 4 });
+}
+
+function renderH2H(d) {
+  const list = d.rows || [], kill = d.metric === 'kill', key = kill ? 'kill_diff' : 'goal_diff';
+  $('h2h_box').style.display = list.length ? '' : 'none';
+  if (!list.length) return;
+  $('h2h_what').textContent = kill ? 'Kill difference per match (kills made minus deaths)' : 'Goal difference per match';
+  // once the reference run has no newer snapshots, "same env steps" is the reference's latest: drop those points
+  const refEnd = Math.max(0, ...list.filter(r => r.kind === 'same').map(r => r.opp_steps || 0));
+  const dup = r => r.kind === 'same' && r.opp_steps >= refEnd && r.steps > 1.05 * refEnd;
+  const by = k => list.filter(r => r.kind === k && !dup(r)).sort((a, b) => a.steps - b.steps);  // backfilled rounds arrive late
+  const pts = k => by(k).map(r => [r.steps, r[key]]);
+  if (kill && list.some(r => r.kills_per_min != null)) {  // a killer: kills made and own deaths per minute
+    const rs = by('latest').filter(r => r.kills_per_min != null), last = rs[rs.length - 1];
+    const K = rs.map(r => [r.steps, r.kills_per_min]), Dd = rs.map(r => [r.steps, r.deaths_per_min]);
+    lineChart('c_h2h', [{ data: K.map(p => [p[0], 1.59]), color: C.accent, width: 1, dash: [4, 4], alpha: 0.6 },
+                        { data: K.map(p => [p[0], 1.74]), color: C.bad, width: 1, dash: [4, 4], alpha: 0.6 },
+                        { data: K, color: C.accent, dots: true, noline: true, alpha: 0.45 }, { data: rolling(K, 5), color: C.accent, width: 2.2 },
+                        { data: Dd, color: C.bad, dots: true, noline: true, alpha: 0.45 }, { data: rolling(Dd, 5), color: C.bad, width: 2.2 }],
+              { min0: true, xl: ' steps', fmt: v => v.toFixed(1) });
+    $('h2h_what').textContent = 'Kills made (green) and own deaths (red) per minute';
+    $('h2h_l_same').textContent = 'kills per minute'; $('h2h_l_latest').textContent = 'deaths per minute (red)';
+    $('h2h_l_hier').textContent = 'dashed: farm2 vs farm2 (1.59 / 1.74)';
+    $('h2h_l_latest').previousElementSibling.style.background = C.bad;
+    $('h2h_l_hier').previousElementSibling.style.background = C.muted;
+    $('h2hnow').innerHTML = last ? `Latest round vs ${last.opp}: <span style="color:var(--accent)">${last.kills_per_min.toFixed(2)} kills/min</span> · ` +
+      `<span style="color:var(--bad)">${last.deaths_per_min.toFixed(2)} deaths/min</span> · ${last.kills.toFixed(1)} kills, ${last.deaths.toFixed(1)} deaths per match (${last.minutes.toFixed(1)} min)` : '';
+    return;
+  }
+  // each round is 32 matches (noise about ±0.3 goals/match): dots = rounds, line = average of the last 5
+  const ser = (k, col) => [{ data: pts(k), color: col, dots: true, noline: true, alpha: 0.45 },
+                           { data: rolling(pts(k), 5), color: col, width: 2.2 }];
+  lineChart('c_h2h', [...ser('same', C.accent), ...ser('latest', C.b1), ...ser('hier', C.v2)], { zero: true, xl: ' steps' });
+  const last = k => by(k).slice(-1)[0];  // the round at the most env steps
+  const txt = (r, col) => r ? `<span style="color:${col};white-space:nowrap">vs ${r.opp}${r.kind === 'same' ? ` (${fmtN(r.opp_steps)} steps)` : ''}: ${kill ? `${r.games} matches` : r.d == null ? `won ${r.w}/${r.games}` : `${r.w}–${r.d}–${r.l}`}, ${r[key] >= 0 ? '+' : ''}${r[key].toFixed(2)} ${kill ? 'kills' : 'goals'}/match</span>` : '';
+  const lsAll = list.filter(r => r.kind === 'same').sort((a, b) => a.steps - b.steps).slice(-1)[0];
+  const ls = lsAll && !dup(lsAll) ? last('same') : null, ll = last('latest'), lh = last('hier');
+  $('h2h_l_same').textContent = ls ? `vs ${ls.opp.split(' ')[0]} at the same env steps` : 'vs ref at the same env steps';
+  $('h2h_l_latest').textContent = ll ? `vs ${ll.opp}` : 'vs ref latest';
+  $('h2h_l_hier').textContent = lh ? `vs ${lh.opp} (its own frozen worker)` : 'vs manager';
+  // legend entries only for the opponents this run is evaluated against
+  [['h2h_l_same', by('same').length], ['h2h_l_latest', by('latest').length], ['h2h_l_hier', by('hier').length]]
+    .forEach(([id, n]) => { $(id).parentNode.style.display = n ? '' : 'none'; });
+  const ended = lsAll && dup(lsAll) ? `<span style="color:var(--muted)">(${lsAll.opp.split(' ')[0]} has no snapshots past ${fmtN(refEnd)} steps: "same steps" now = its latest)</span><br>` : '';
+  $('h2hnow').innerHTML = ended + (kill ? 'Latest round: ' : `Latest round (wins–draws–losses): `) + [txt(ls, 'var(--accent)'), txt(ll, 'var(--b1)'), txt(lh, 'var(--v2)')].filter(Boolean).join('<br>');
+}
+
+function renderRecent(d, rows) {
+  $('rec_box').style.display = d.rows.length ? '' : 'none';
+  if (!d.rows.length || !rows.length) return;
+  $('rec_age').textContent = d.age;
+  const what = d.metric === 'kill' ? 'kills' : 'goals';
+  $('rec_what').textContent = what;
+  // update -> env steps via the run's log (the log has one row per update)
+  const us = rows.map(r => r.update), st = rows.map(r => r.steps);
+  const steps = u => { let lo = 0, hi = us.length - 1; while (lo < hi) { const m = (lo + hi) >> 1; if (us[m] < u) lo = m + 1; else hi = m; } return st[lo]; };
+  const pts = d.rows.filter(r => r[2] >= 20).map(([u, g, n]) => [steps(u), 100 * g / n, n, g])
+    .filter(p => p[0] > 0.02 * st[st.length - 1]);  // the first minutes (vs a near-random pool) would flatten the scale
+  const avg = pts.map((p, i) => { const w = pts.slice(Math.max(0, i - 7), i + 1); const G = w.reduce((a, q) => a + q[3], 0), N = w.reduce((a, q) => a + q[2], 0); return [p[0], 100 * G / N]; });
+  lineChart('c_rec', [{ data: pts.map(p => [p[0], 50]), color: C.muted, width: 1, dash: [4, 4] },
+                      { data: pts.map(p => [p[0], p[1]]), color: C.accent, dots: true, noline: true, alpha: 0.4 },
+                      { data: avg, color: C.accent, width: 2.2 }], { xl: ' steps', fmt: v => v.toFixed(0) + '%' });
+  const last = avg.slice(-1)[0], nn = pts.slice(-8).reduce((a, q) => a + q[2], 0);
+  $('recnow').innerHTML = last ? `<span style="color:var(--accent)">${last[1].toFixed(1)}% of ${nn} ${what}</span>` : '';
+}
+
+function renderEvents(e) {
+  $('ngoal').textContent = e.counts.goal || 0; $('nkill').textContent = e.counts.kill || 0;
+  $('ncrash').textContent = e.counts.crash || 0;
+  const now = Date.now() / 1000;
+  const ago = t => { const s = now - t; return s < 60 ? `${s | 0}s` : s < 3600 ? `${(s / 60) | 0}m` : `${(s / 3600).toFixed(1)}h`; };
+  $('feed').innerHTML = e.recent.length ? e.recent.map(v => {
+    let what = '';
+    if (v.type === 'crash') what = `instance #${v.instance} relaunched — ${String(v.why || '').slice(0, 60)}`;
+    else {
+      const team = v.winner === 1 ? '<b style="color:var(--v1)">cyan</b>' : '<b style="color:var(--b1)">yellow</b>';
+      const cur = v.opp ? (v.opp_agent === v.winner ? ` (snapshot ${v.opp.replace('.pt', '')})` : ' (current policy)') : '';
+      what = `#${v.instance} ${team}${cur}${v.score ? ` · ${v.score[0]}:${v.score[1]}` : ''}`;
+    }
+    return `<div class="ev"><span class="when">${ago(v.t)} ago</span><span class="ty ${v.type}">${v.type}</span><span>${what}</span></div>`;
+  }).join('') : '<div class="note">no goals or kills yet</div>';
+  const rate = e.rate10m;
+}
+
+function renderHeat(h) {
+  const cv = $('c_heat'); const [g, W, H] = fitCanvas(cv);
+  g.clearRect(0, 0, W, H);
+  const n = h.ball.length, bw = W / n;
+  const mx = a => Math.max(1, ...a);
+  const rows = [['ball', h.ball, C.ball], ['rider1', h.rider1, C.v1], ['rider2', h.rider2, C.b1]];
+  const rh = (H - 22) / 3;
+  rows.forEach(([_, arr, col], r) => {
+    const m = mx(arr);
+    arr.forEach((v, i) => { g.fillStyle = col; g.globalAlpha = 0.08 + 0.92 * v / m; g.fillRect(i * bw, 4 + r * rh, bw + 0.5, rh - 4); });
+  });
+  g.globalAlpha = 1; g.fillStyle = C.muted; g.font = '10px sans-serif';
+  g.textAlign = 'left'; g.fillText(`−${h.range} m (yellow scores here)`, 2, H - 4);
+  g.textAlign = 'right'; g.fillText(`+${h.range} m (cyan scores here)`, W - 2, H - 4);
+  g.textAlign = 'center'; g.fillText('0', W / 2, H - 4);
+  g.strokeStyle = C.muted; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(W / 2, 2); g.lineTo(W / 2, H - 16); g.stroke(); g.setLineDash([]);
+  $('n_heat').textContent = fmtN(h.samples) + ' samples';
+  $('air').textContent = `Airborne time: cyan ${(100 * h.airborne[1]).toFixed(1)}%, yellow ${(100 * h.airborne[2]).toFixed(1)}% — vaulting is how kills happen, so watch this climb.`;
+}
+
+async function j(u) { const r = await fetch(u); return r.json(); }
+async function liveLoop() {
+  if (PANEL_TABS.includes(tab) && tab !== 'worker') { setTimeout(liveLoop, 500); return; }
+  if (tab === 'worker') {
+    try { renderWorkerLive(await j('/api/worker/live')); } catch (e) {}
+    setTimeout(liveLoop, 33);
+    return;
+  }
+  const q = [showTrain ? 'train=1' : '', showAll ? 'all=1' : ''].filter(Boolean).join('&');
+  try { renderLive(await j(api('/api/live' + (q ? '?' + q : '')))); } catch (e) {}
+  setTimeout(liveLoop, spectating ? 33 : 100);  // exhibition matches move in real time: ~30 fps
+}
+// ---------------------------------------------------------------- worker tab
+// tabs: Farm (flat run) and Manager (hierarchical run) share the game view, each fed by its own run
+// on the server (?h=farm|manager); Worker has its own section
+// game-view tabs = the server's hubs (/api/runs): farm, killer, manager and any --tab KEY=RUN extras
+const PANEL_TABS = ['worker', 'pbt', 'mods', 'gauntlet', 'search'];  // tabs with their own panel (no game view)
+const hashTab = () => { const h = location.hash.slice(1); return h && (h === 'worker' || $('tab_' + h)) ? h : 'farm'; };
+let tab = hashTab();
+const gameRun = () => (tab === 'worker' ? 'farm' : tab);  // the game-view tabs are the server's hubs
+function api(u) { return u + (u.includes('?') ? '&' : '?') + 'h=' + gameRun(); }
+function setTab(t) {
+  const switched = t !== tab;
+  tab = t;
+  PANEL_TABS.forEach(k => $('p_' + k).classList.toggle('hide', t !== k));
+  $('p_game').classList.toggle('hide', PANEL_TABS.includes(t));
+  document.querySelectorAll('nav.tabs a').forEach(a => a.classList.toggle('on', a.id === 'tab_' + t));
+  document.querySelectorAll('header .stat').forEach(e => e.classList.toggle('hide', PANEL_TABS.includes(t)));  // game-run stats
+  if (switched) {  // another run in the game view: drop its match cards
+    Object.keys(cards).forEach(k => { if (cards[k].el.parentNode && cards[k].el.parentNode.id === 'arenas') { cards[k].el.remove(); delete cards[k]; } });
+  }
+}
+window.addEventListener('hashchange', () => { setTab(hashTab()); slowLoop(); });
+setTab(tab);
+j('/api/runs').then(r => {
+  Object.keys(r).filter(k => !$('tab_' + k)).forEach(k => {  // extra runs: a tab each, before Worker
+    if (k === 'pbt' || k === 'search' || k === 'gauntlet') return;
+    const a = document.createElement('a'); a.href = '#' + k; a.id = 'tab_' + k;
+    $('tab_worker').parentNode.insertBefore(a, $('tab_worker'));
+    a.textContent = k[0].toUpperCase() + k.slice(1) + (k === r[k] ? '' : ' · ' + r[k]);
+  });
+  if (r.pbt) { $('tab_pbt').classList.remove('hide'); $('tab_pbt').textContent = 'PBT · ' + r.pbt; }
+  if (r.gauntlet) $('tab_gauntlet').classList.remove('hide');
+  if (r.search) { $('tab_search').classList.remove('hide'); $('tab_search').textContent = 'Search · ' + r.search; }
+  if (location.hash.slice(1) in r || location.hash === '#pbt' || location.hash === '#mods') setTab(location.hash.slice(1));
+  $('tab_farm').textContent = 'Farm · ' + r.farm;
+  if (r.manager) $('tab_manager').textContent = 'Manager · ' + r.manager; else $('tab_manager').classList.add('hide');
+  if (r.killer) $('tab_killer').textContent = 'Killer · ' + r.killer; else $('tab_killer').classList.add('hide');
+}).catch(() => {});
+
+// ---------------------------------------------------------------- Mods & play tab
+const MODE_LABELS = { force_snake: 'snake poles', force_pencil: 'pencil poles', force_christmas: 'Christmas',
+  force_chinese_new_year: 'Chinese New Year', unlock_hidden_character: 'unlock the hidden character', physics_debug: 'physics debug overlay' };
+let modsInit = false;
+function renderMods(d) {
+  const st = d.state || d;
+  if (!st.modes) return;
+  $('run').innerHTML = '· mods & play';
+  $('mods_bin').textContent = '· ' + st.binary;
+  if (!modsInit) {  // fill the form once; later refreshes only update the status lines
+    $('m_score').value = st.score; $('m_minutes').value = st.minutes;
+    $('m_modes').innerHTML = Object.keys(MODE_LABELS).map(k => `<label style="margin-right:14px"><input type="checkbox" id="mm_${k}" ${st.modes[k] ? 'checked' : ''}> ${MODE_LABELS[k]}</label>`).join('');
+    $('p_bot').innerHTML = st.bots.map(b => `<option ${b === 'farm2' ? 'selected' : ''}>${b}</option>`).join('');
+    modsInit = true;
+  }
+  $('play_state').textContent = st.playing ? '· a game is running' : '';
+  $('p_recs').textContent = `Recorded so far: ${st.recordings.matches} matches, ${st.recordings.minutes} min.`;
+  if (d.output) $('m_out').textContent = d.output;
+}
+$('m_apply').onclick = async () => {
+  $('m_out').textContent = 'applying…';
+  const q = new URLSearchParams({ score: $('m_score').value, minutes: $('m_minutes').value });
+  Object.keys(MODE_LABELS).forEach(k => q.set(k, $('mm_' + k).checked ? '1' : '0'));
+  renderMods(await j('/api/mods/apply?' + q));
+};
+$('m_restore').onclick = async () => { $('m_out').textContent = 'restoring…'; modsInit = false; renderMods(await j('/api/mods/restore')); };
+$('p_start').onclick = async () => {
+  const q = new URLSearchParams({ bot: $('p_bot').value, side: $('p_side').value, windowed: $('p_win').value, record: $('p_rec').checked ? '1' : '0' });
+  const r = await j('/api/play/start?' + q); $('m_out').textContent = r.error || ('started: ' + r.cmd); renderMods(r);
+};
+$('p_stop').onclick = async () => renderMods(await j('/api/play/stop'));
+
+// ---------------------------------------------------------------- PBT tab
+const GENES = [['lr', 'learning rate', 5], ['ent_coef', 'entropy bonus', 4], ['min_std', 'std floor', 3], ['gamma', 'discount γ', 4],
+               ['kill', 'kill weight', 2], ['position', 'position weight', 3], ['ball_progress', 'ball progress weight', 4],
+               ['rotation_bonus', 'backward-rotation bonus', 4], ['rotation_anneal', 'bonus fade (steps)', 0], ['goal_spawn', 'random spawn after goals', 2]];
+function renderPBT(d) {
+  if (!d || !d.members) { $('pbt_sub').textContent = 'no population'; return; }
+  const cols = [C.accent, C.b1, C.v2, C.v1, C.b2, C.muted];
+  const ms = d.members, gens = d.generations || [], lastG = gens[gens.length - 1];
+  const age = Date.now() / 1000 - Math.max(...ms.map(m => (m.status && m.status.t) || 0));
+  $('run').innerHTML = `· ${d.name} · population of ${ms.length} · generation ${d.generation}` + (age > 120 ? ` · <span style="color:var(--bad)">paused ${Math.round(age / 60)} min ago</span>` : '');
+  $('pbt_sub').textContent = `· generation ${d.generation}` + (lastG ? ` · last tournament ${new Date(lastG.t * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : ' · first tournament after 45 min of training');
+  const f = (v, dec) => v == null ? '–' : (+v).toFixed(dec);
+  const fv = v => v == null ? '–' : `<span style="color:${v >= 0 ? 'var(--accent)' : 'var(--bad)'}">${v >= 0 ? '+' : ''}${(+v).toFixed(2)}</span>`;
+  let h = '<table style="width:100%;border-collapse:collapse;font-size:12px"><tr style="color:var(--muted);text-align:right">' +
+    ['member', 'parent', 'env steps', 'steps/s', 'fitness', 'vs farm2', 'vs farm3', ...GENES.map(g => g[1]), 'random pole', 'sees score'].map((c, i) => `<th style="padding:4px 6px;${i < 2 ? 'text-align:left' : ''}">${c}</th>`).join('') + '</tr>';
+  ms.forEach((m, i) => {
+    const g = m.genome, s = m.status || {}, fit = lastG && lastG.fitness[m.id], va = lastG && lastG.vs_anchor[m.id];
+    h += `<tr style="text-align:right;border-top:1px solid var(--line)"><td style="text-align:left;padding:4px 6px"><b style="color:${cols[i]}">${m.id}</b></td>` +
+      `<td style="text-align:left">${m.parent ? m.parent + ' (gen ' + m.born_gen + ')' : '–'}</td><td>${s.steps ? fmtN(s.steps) : '–'}</td><td>${s.sps ? Math.round(s.sps) : '–'}</td>` +
+      `<td>${fv(fit)}</td><td>${fv(va && va.farm2)}</td><td>${fv(va && va.farm3)}</td>` +
+      GENES.map(([k, , dec]) => `<td>${k === 'rotation_anneal' ? fmtN(g[k]) : k === 'lr' || k === 'ent_coef' ? (+g[k]).toExponential(1) : f(g[k], dec)}</td>`).join('') +
+      `<td>${g.random_pole ? 'yes' : 'no'}</td><td>${g.mask_match_info ? 'no' : 'yes'}</td></tr>`;
+  });
+  $('pbt_table').innerHTML = h + '</table>';
+  const leg = ms.map((m, i) => `<span><i class="sw" style="background:${cols[i]}"></i>${m.id}</span>`).join('');
+  $('fit_leg').innerHTML = leg;
+  const xf = { xfmt: v => 'gen ' + v.toFixed(0), zero: true };
+  const ser = key => ms.map((m, i) => ({ data: gens.map(G => [G.gen, key(G, m.id)]).filter(p => p[1] != null), color: cols[i], width: 2, dots: true }));
+  lineChart('c_fit', ser((G, id) => G.fitness[id]), xf);
+  lineChart('c_fa2', ser((G, id) => G.vs_anchor[id] && G.vs_anchor[id].farm2), xf);
+  lineChart('c_fa3', ser((G, id) => G.vs_anchor[id] && G.vs_anchor[id].farm3), xf);
+  const box = $('pbt_genes');
+  if (!box.children.length) GENES.forEach(([k, lab]) => {
+    const dv = document.createElement('div'); dv.className = 'chart';
+    dv.innerHTML = `<div class="t">${lab}</div><canvas id="g_${k}"></canvas>`; box.appendChild(dv);
+  });
+  GENES.forEach(([k, , dec]) => lineChart('g_' + k, ms.map((m, i) => ({ data: gens.map(G => [G.gen, G.genomes[m.id][k]]).concat([[d.generation, m.genome[k]]]), color: cols[i], width: 2, dots: true })),
+    { xfmt: v => 'gen ' + v.toFixed(0), fmt: v => k === 'rotation_anneal' ? fmtN(v) : k === 'lr' || k === 'ent_coef' ? v.toExponential(1) : v.toFixed(dec) }));
+  const ch = gens.filter(G => G.change).reverse();
+  $('pbt_log').innerHTML = ch.length ? ch.map(G => `<div class="ev"><span class="when">gen ${G.gen}</span><span class="ty goal">copy</span><span><b>${G.change.replaced}</b> took over <b>${G.change.by}</b>'s weights (fitness ${fv(G.fitness[G.change.replaced])} vs ${fv(G.fitness[G.change.by])})</span></div>`).join('')
+    : '<div class="ev"><span>no replacements yet</span></div>';
+}
+
+// ---------------------------------------------------------------- XY chart (log x, point labels, hover tips)
+// series: [{pts: [{x, y, label, tip}], color, width, dash, line, r}]; o: {logx, xticks, xfmt, yfmt, cats}
+function xyChart(id, series, o = {}) {
+  const cv = $(id); const [g, W, H] = fitCanvas(cv);
+  g.clearRect(0, 0, W, H); cv._hits = [];
+  const all = series.flatMap(s => s.pts).filter(p => p.y != null && isFinite(p.y) && p.x != null && (!o.logx || p.x > 0));
+  if (!all.length) { g.fillStyle = C.muted; g.font = '12px sans-serif'; g.fillText('waiting for data…', 8, H / 2); return; }
+  const tx = v => o.logx ? Math.log10(v) : v;
+  let x0 = Math.min(...all.map(p => tx(p.x))), x1 = Math.max(...all.map(p => tx(p.x)));
+  let y0 = Math.min(...all.map(p => p.y)), y1 = Math.max(...all.map(p => p.y));
+  if (o.cats) { x0 = -0.5; x1 = o.cats.length - 0.5; }
+  if (x1 - x0 < 1e-9) { x0 -= o.logx ? 0.1 : Math.abs(x0) * 0.1 || 1; x1 += o.logx ? 0.1 : Math.abs(x1) * 0.1 || 1; }
+  else if (!o.cats) { const px = (x1 - x0) * 0.05; x0 -= px; x1 += px; }
+  if (y1 - y0 < 1e-9) { y0 -= 50; y1 += 50; }
+  const pad = (y1 - y0) * 0.1; y0 -= pad; y1 += pad;
+  const L = 42, R = o.right || 8, T = 8, B = 18;
+  const X = x => L + (tx(x) - x0) / (x1 - x0) * (W - L - R), Y = y => T + (1 - (y - y0) / (y1 - y0)) * (H - T - B);
+  const Xc = c => L + (c - x0) / (x1 - x0) * (W - L - R);
+  g.strokeStyle = C.line; g.lineWidth = 1; g.fillStyle = C.muted; g.font = '10px ui-sans-serif, sans-serif';
+  for (let i = 0; i <= 3; i++) {
+    const v = y0 + (y1 - y0) * i / 3, y = Y(v);
+    g.beginPath(); g.moveTo(L, y); g.lineTo(W - R, y); g.stroke();
+    g.textAlign = 'right'; g.fillText(o.yfmt ? o.yfmt(v) : Math.round(v), L - 4, y + 3);
+  }
+  let ticks = o.xticks;
+  if (o.cats) ticks = o.cats.map((_, i) => i);
+  else if (!ticks && o.logx) {  // 1-2-5 steps inside the range, thinned to at most 5
+    ticks = [];
+    for (let e = Math.floor(x0); e <= Math.ceil(x1); e++) [1, 2, 5].forEach(m => { const v = m * 10 ** e; if (tx(v) >= x0 && tx(v) <= x1) ticks.push(v); });
+    while (ticks.length > 5) ticks = ticks.filter((_, i) => i % 2 === 0);
+    if (ticks.length < 2) ticks = [0.15, 0.5, 0.85].map(f => 10 ** (x0 + (x1 - x0) * f));  // a narrow range: 3 even ticks
+  } else if (!ticks) ticks = [0.15, 0.5, 0.85].map(f => x0 + (x1 - x0) * f);
+  g.textAlign = 'center';
+  ticks.forEach(v => g.fillText(o.cats ? o.cats[v] : (o.xfmt || fmtN)(v), o.cats ? Xc(v) : X(v), H - 4));
+  const XX = p => o.cats ? Xc(p.x) + (p.jit || 0) : X(p.x);
+  series.forEach(s => {
+    const pts = s.pts.filter(p => p.y != null && isFinite(p.y) && (!o.logx || p.x > 0));
+    g.strokeStyle = s.color; g.fillStyle = s.color; g.lineWidth = s.width || 1.5; g.globalAlpha = s.alpha ?? 1;
+    if (s.line && pts.length > 1) {
+      if (s.dash) g.setLineDash(s.dash);
+      g.beginPath(); pts.forEach((p, i) => i ? g.lineTo(XX(p), Y(p.y)) : g.moveTo(XX(p), Y(p.y))); g.stroke(); g.setLineDash([]);
+    }
+    pts.forEach(p => {
+      g.beginPath(); g.arc(XX(p), Y(p.y), s.r || 3, 0, 7); g.fill();
+      if (p.tip) cv._hits.push([XX(p), Y(p.y), p.tip]);
+    });
+    g.globalAlpha = 1;
+    g.font = '600 10px ui-sans-serif, sans-serif'; g.textAlign = 'left';
+    pts.filter(p => p.label).forEach(p => {  // the label beside its point, kept inside the plot
+      const tw = g.measureText(p.label).width, x = Math.min(W - tw - 2, XX(p) + 5);
+      g.fillText(p.label, x, Math.max(10, Y(p.y) - 4));
+    });
+  });
+  if (!cv._hover) {  // nearest point within 8 px -> the canvas tooltip
+    cv._hover = true;
+    cv.addEventListener('mousemove', e => {
+      const r = cv.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+      let best = null, bd = 64;
+      (cv._hits || []).forEach(([x, y, t]) => { const d = (x - mx) ** 2 + (y - my) ** 2; if (d < bd) { bd = d; best = t; } });
+      cv.title = best || '';
+    });
+  }
+}
+
+// ---------------------------------------------------------------- Gauntlet tab
+const gdCol = v => v == null ? '' : `background:rgba(${v >= 0 ? '126,231,135' : '255,123,114'},${(Math.min(1, Math.abs(v) / 4) * 0.7).toFixed(2)})`;
+const sgn = (v, d = 2) => v == null ? '' : (v >= 0 ? '+' : '') + (+v).toFixed(d);
+const gdTxt = v => v == null ? '' : `<span style="color:${v >= 0 ? 'var(--accent)' : 'var(--bad)'}">${sgn(v)}</span>`;
+function gauntletPairs(d) {  // latest result per pairing, both views: key "a|b" -> row from a's view
+  const P = {};
+  (d.games || []).forEach(r => {
+    const k = r.a + '|' + r.b, kb = r.b + '|' + r.a;
+    if (P[k] && P[k].t >= r.t) return;
+    P[k] = r;
+    P[kb] = { ...r, a: r.b, b: r.a, w: r.l, l: r.w, goal_diff: -r.goal_diff, kill_diff: r.kill_diff == null ? null : -r.kill_diff,
+              kills_per_min: r.deaths_per_min, deaths_per_min: r.kills_per_min };
+  });
+  return P;
+}
+function renderGauntlet(d) {
+  if (!d || !d.members) { $('g_sub').textContent = 'no gauntlet yet (gauntlet.py init)'; return; }
+  const M = d.members, P = gauntletPairs(d), pr = d.pairings;
+  const names = Object.keys(M).sort((a, b) => (M[b].elo ?? -1e9) - (M[a].elo ?? -1e9));
+  const full = pr.played >= pr.total;
+  $('run').innerHTML = `· gauntlet · ${names.length} members · ` + (full ? 'round robin complete' : `round robin ${pr.played}/${pr.total}`);
+  $('g_sub').textContent = full ? `· all ${pr.total} member pairings played` :
+    `· round robin ${pr.played}/${pr.total} pairings (${Math.round(100 * pr.played / pr.total)}%)` + (d.filling ? ' · filling now' : ' · not running');
+  const elos = names.map(n => M[n].elo).filter(v => v != null), lo = Math.min(...elos), hi = Math.max(...elos);
+  const bar = e => e == null ? '' : `<i class="ebar" style="width:${(6 + 80 * (e - lo) / Math.max(1, hi - lo)).toFixed(0)}px"></i>`;
+  const nOpp = n => names.filter(o => o !== n && !(M[n].kind === 'hier' && M[o].kind === 'hier')).length;
+  const vs = (n, o) => n === o ? '' : gdTxt(P[n + '|' + o] && P[n + '|' + o].goal_diff);
+  let h = '<table class="grid fit"><tr><th class="l">#</th><th class="l">member</th><th>env steps</th><th class="l">Elo</th><th>vs farm2</th><th>vs farm3</th><th>pairings played</th></tr>';
+  names.forEach((n, i) => {
+    const m = M[n], np = names.filter(o => P[n + '|' + o]).length;
+    h += `<tr><td class="l" style="color:var(--muted)">${i + 1}</td><td class="l"><b>${n}</b>${m.kind === 'hier' ? ' <span class="tag">hierarchical</span>' : ''}</td>` +
+      `<td>${m.steps ? fmtN(m.steps) : '–'}</td><td class="l">${m.elo == null ? '–' : Math.round(m.elo)}${bar(m.elo)}</td>` +
+      `<td>${vs(n, 'farm2')}</td><td>${vs(n, 'farm3')}</td><td style="color:var(--muted)">${np}/${nOpp(n)}</td></tr>`;
+  });
+  $('g_members').innerHTML = h + '</table>';
+  // candidates: Elo with the members held fixed
+  const cn = Object.keys(d.candidates || {}).sort((a, b) => (d.candidates[b].elo ?? -1e9) - (d.candidates[a].elo ?? -1e9));
+  $('g_cand_box').classList.toggle('hide', !cn.length);
+  if (cn.length) {
+    h = '<table class="grid fit"><tr><th class="l">candidate</th><th>env steps</th><th class="l">Elo</th><th>vs farm2</th><th>vs farm3</th><th>members played</th><th class="l">rated</th></tr>';
+    cn.forEach(n => {
+      const c = d.candidates[n];
+      h += `<tr><td class="l"><b>${n}</b>${c.rating ? ' <span class="st rating">rating…</span>' : ''}</td><td>${c.steps ? fmtN(c.steps) : '–'}</td>` +
+        `<td class="l">${c.elo == null ? '–' : Math.round(c.elo)}${c.rating ? ' <span style="color:var(--muted)">(so far)</span>' : bar(c.elo)}</td>` +
+        `<td>${vs(n, 'farm2')}</td><td>${vs(n, 'farm3')}</td><td style="color:var(--muted)">${c.played}/${names.length}</td>` +
+        `<td class="l" style="color:var(--muted)">${c.t ? new Date(c.t * 1000).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : ''}</td></tr>`;
+    });
+    $('g_cands').innerHTML = h + '</table>';
+  }
+  // head-to-head matrix, rows and columns by Elo
+  h = '<table class="grid h2h"><tr><th></th>' + names.map(n => `<th class="v">${n}</th>`).join('') + '</tr>';
+  names.forEach(a => {
+    h += `<tr><th class="l">${a}</th>` + names.map(b => {
+      if (a === b) return '<td style="background:var(--panel2)"></td>';
+      if (M[a].kind === 'hier' && M[b].kind === 'hier') return '<td style="color:var(--muted)">–</td>';
+      const r = P[a + '|' + b];
+      if (!r) return '<td></td>';
+      const tip = `${a} vs ${b}: ${r.w}-${r.d}-${r.l} (W-D-L of ${r.games}), goals ${sgn(r.goal_diff)} per match` +
+        (r.kills_per_min != null ? `, kills ${fmt(r.kills_per_min, 1)} vs ${fmt(r.deaths_per_min, 1)} per min` : '');
+      return `<td title="${tip}" style="${gdCol(r.goal_diff)}">${sgn(r.goal_diff, 1)}</td>`;
+    }).join('') + '</tr>';
+  });
+  $('g_matrix').innerHTML = h + '</table>';
+  // exploitability
+  const ex = d.exploit || [];
+  $('g_ex_box').classList.toggle('hide', !ex.length);
+  if (ex.length) {
+    h = '<table class="grid fit"><tr><th class="l">target</th><th>exploiter steps</th><th>exploiter vs target (goals)</th><th>W-D-L</th><th class="l">when</th></tr>';
+    ex.slice().reverse().forEach(r => {
+      h += `<tr><td class="l"><b>${r.target}</b></td><td>${fmtN(r.steps)}</td><td style="${gdCol(r.goal_diff)}">${sgn(r.goal_diff)}</td>` +
+        `<td>${r.w}-${r.d}-${r.l}</td><td class="l" style="color:var(--muted)">${new Date(r.t * 1000).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</td></tr>`;
+    });
+    $('g_exploit').innerHTML = h + '</table>';
+  }
+}
+
+// ---------------------------------------------------------------- Search tab
+// [key, label, log scale, format]; the continuous settings search.py samples
+const SPACE = [['lr', 'learning rate', 1, v => v.toExponential(1)], ['ent_coef', 'entropy bonus', 1, v => v.toExponential(1)],
+  ['min_std', 'std floor', 1, v => v.toFixed(2)], ['init_std', 'initial std', 1, v => v.toFixed(2)],
+  ['horizon', 'horizon (steps, γ = 1 − 1/h)', 1, v => v.toFixed(0)], ['lam', 'GAE λ', 0, v => v.toFixed(2)],
+  ['kill', 'kill weight', 0, v => v.toFixed(2)], ['position', 'position weight', 0, v => v.toFixed(3)],
+  ['ball_progress', 'ball progress weight', 1, v => v.toFixed(4)], ['rotation_bonus', 'backward-rotation bonus', 0, v => v.toFixed(4)],
+  ['rotation_anneal', 'bonus fade (steps)', 1, fmtS], ['goal_spawn', 'random spawn after goals', 0, v => v.toFixed(2)],
+  ['league_frac', 'league share', 0, v => v.toFixed(2)]];
+const BASE_COL = { farm2: '--b1', pbt1_m1: '--v2' };
+function renderSearch(d) {
+  const started = d && d.started;
+  ['s_charts', 's_imp_box'].forEach(k => $(k).classList.toggle('hide', !started));
+  $('s_log').innerHTML = (d.log || []).length ? `<div class="logline">${d.log.slice().reverse().map(l => l.replace(/&/g, '&amp;').replace(/</g, '&lt;')).join('\n')}</div>`
+    : '<div class="note">no driver output yet</div>';
+  if (!started) {
+    $('run').innerHTML = `· ${d.name || 'search'} · not started`;
+    $('s_sub').textContent = '';
+    $('s_table').innerHTML = '<div class="note" style="font-size:13px;padding:8px 0">Search not started — begins after the gauntlet round robin.</div>';
+    $('s_note').textContent = '';
+    return;
+  }
+  const R = d.rungs, T = d.trials, keys = Object.keys(T);
+  const rl = R.map(fmtS);
+  const best = t => { const e = Object.entries(t.elo).filter(([, v]) => v != null).map(([r, v]) => [+r, v]); return e.length ? e.reduce((a, b) => b[0] > a[0] || (b[0] === a[0] && b[1] > a[1]) ? b : a) : [-1, -1e9]; };
+  keys.sort((a, b) => { const A = best(T[a]), B = best(T[b]); return B[0] - A[0] || B[1] - A[1] || +a - +b; });
+  const cnt = {}; keys.forEach(k => cnt[T[k].state] = (cnt[T[k].state] || 0) + 1);
+  const order = ['training', 'rating', 'waiting', 'queued', 'pruned', 'done', 'failed'];
+  const summary = order.filter(s => cnt[s]).map(s => `${cnt[s]} ${s}`).join(' · ');
+  $('run').innerHTML = `· ${d.name} · ${keys.length} trials · ${summary}`;
+  $('s_sub').textContent = `· batch ${d.batches} · ${summary}`;
+  const top = R.map((_, r) => Math.max(...keys.map(k => T[k].elo[r] ?? -1e9)));
+  const status = t => {
+    const L = t.live || {};
+    if (t.state === 'training') { const r = R.find(x => x > (L.steps || 0)) || R[R.length - 1];
+      return `<span class="st training">training</span> ${fmtS(L.steps || 0)} → ${fmtS(r)}${L.sps ? ' · ' + fmtN(L.sps) + ' steps/s' : ''}`; }
+    if (t.state === 'rating') return `<span class="st rating">rating</span> ${t.rating.played}/${t.rating.of} members`;
+    return `<span class="st ${t.state}">${t.state}</span>`;
+  };
+  const pf = (v, f) => v == null ? '–' : f(v);
+  let h = '<table class="grid"><tr><th class="l">trial</th><th class="l">baseline</th>' + rl.map(r => `<th>Elo ${r}</th>`).join('') +
+    '<th class="l">status</th><th>lr</th><th>entropy</th><th>std floor / init</th><th>horizon</th><th>λ</th><th>kill</th><th>position</th>' +
+    '<th>ball prog.</th><th>rotation bonus / fade</th><th>goal spawn</th><th>league</th><th class="l">options</th></tr>';
+  keys.forEach(k => {
+    const t = T[k], p = t.params, bc = BASE_COL[t.baseline];
+    h += `<tr${t.state === 'pruned' ? ' style="opacity:.6"' : ''}><td class="l"><b${bc ? ` style="color:var(${bc})"` : ''}>t${k}</b></td><td class="l">${t.baseline || ''}</td>` +
+      R.map((_, r) => { const e = t.elo[r]; return `<td>${e == null ? '' : e === top[r] ? `<b style="color:var(--accent)">${Math.round(e)}</b>` : Math.round(e)}</td>`; }).join('') +
+      `<td class="l">${status(t)}</td><td>${pf(p.lr, v => v.toExponential(1))}</td><td>${pf(p.ent_coef, v => v.toExponential(1))}</td>` +
+      `<td>${pf(p.min_std, v => v.toFixed(2))} / ${pf(p.init_std, v => v.toFixed(2))}</td><td>${pf(p.horizon, v => v.toFixed(0))}</td>` +
+      `<td>${pf(p.lam, v => v.toFixed(2))}</td><td>${pf(p.kill, v => v.toFixed(2))}</td><td>${pf(p.position, v => v.toFixed(3))}</td>` +
+      `<td>${pf(p.ball_progress, v => v.toFixed(4))}</td><td>${pf(p.rotation_bonus, v => v.toFixed(4))} / ${pf(p.rotation_anneal, fmtS)}</td>` +
+      `<td>${pf(p.goal_spawn, v => v.toFixed(2))}</td><td>${pf(p.league_frac, v => v.toFixed(2))}</td>` +
+      `<td class="l" style="color:var(--muted)">${[p.random_pole ? 'random pole' : '', p.mask_match_info ? 'no score/clock' : ''].filter(Boolean).join(', ')}</td></tr>`;
+  });
+  $('s_table').innerHTML = h + '</table>';
+  $('s_note').textContent = `Successive halving: every trial trains to ${rl[0]} env steps and is rated in the gauntlet (Elo with the members held fixed; farm2 latest = 1500); ` +
+    `once the whole rung is rated the best 1/${d.eta} continue to ${rl.slice(1).join(', then ')}. Waiting = rated, the rest of its rung isn't yet; pruned = its rung is done and it wasn't promoted; queued = waiting for a free training slot. ` +
+    `Optuna (TPE) picks each new trial's settings from how the earlier ones scored at ${rl[0]}. Green = best at that rung.`;
+  // Elo vs env steps: one line per trial, baselines in colour, the original farm2's snapshots as reference
+  const tipOf = (k, t, r) => `t${k}${t.baseline ? ' (' + t.baseline + ' baseline)' : ''} · ${rl[r]}: Elo ${Math.round(t.elo[r])}`;
+  const ser = keys.map(k => {
+    const t = T[k], bc = BASE_COL[t.baseline], promoted = Object.keys(t.elo).length > 1;
+    const pts = R.map((x, r) => ({ x, y: t.elo[r], tip: t.elo[r] != null ? tipOf(k, t, r) : null })).filter(p => p.y != null);
+    if (pts.length && (bc || promoted)) pts[pts.length - 1].label = t.baseline ? `t${k} ${t.baseline}` : `t${k}`;
+    return { pts, color: bc ? css(bc) : promoted ? C.accent : C.muted, alpha: bc || promoted ? 1 : 0.55, width: bc ? 2.5 : 1.5, line: true, r: bc ? 3.5 : 2.5 };
+  });
+  const f2 = Object.entries(d.ref || {}).filter(([n, m]) => n.startsWith('farm2@') && m.elo != null && m.steps <= R[R.length - 1] * 1.3)
+    .map(([n, m]) => ({ x: m.steps, y: m.elo, label: n, tip: `${n} (gauntlet member): Elo ${Math.round(m.elo)}` })).sort((a, b) => a.x - b.x);
+  xyChart('c_srung', [{ pts: f2, color: C.text, alpha: 0.5, width: 1, dash: [4, 4], line: true, r: 2 }, ...ser],
+    { logx: true, xticks: R, xfmt: fmtS, right: 70 });
+  $('s_rung_leg').innerHTML = Object.entries(BASE_COL).map(([n, c]) => `<span><i class="sw" style="background:var(${c})"></i>${n} baseline</span>`).join('') +
+    `<span><i class="sw" style="background:var(--accent)"></i>promoted past ${rl[0]}</span><span><i class="sw" style="background:var(--muted)"></i>stopped at ${rl[0]}</span>` +
+    `<span><i class="sw" style="background:var(--text);opacity:.5"></i>farm2 snapshots</span>`;
+  $('sn_rungs').textContent = keys.filter(k => T[k].elo[0] != null).length + ` rated at ${rl[0]}`;
+  // importance hints: Elo at the first rung vs each setting (small multiples)
+  const box = $('s_imp');
+  if (!box.children.length) SPACE.concat([['random_pole', 'random pole length'], ['mask_match_info', 'score / clock hidden']]).forEach(([k, lab]) => {
+    const dv = document.createElement('div'); dv.className = 'chart';
+    dv.innerHTML = `<div class="t">${lab}</div><canvas id="si_${k}"></canvas>`; box.appendChild(dv);
+  });
+  const rated = keys.filter(k => T[k].elo[0] != null);
+  const dots = (k, xf) => rated.map(n => ({ x: xf(T[n].params[k]), y: T[n].elo[0], n })).map(p => ({ ...p, b: T[p.n].baseline }));
+  const toSer = pts => [{ pts: pts.filter(p => !p.b), color: C.accent, alpha: 0.75, r: 3 },
+    ...Object.entries(BASE_COL).map(([b, c]) => ({ pts: pts.filter(p => p.b === b), color: css(c), r: 4 }))];
+  SPACE.forEach(([k, , log, f]) => {
+    const pts = dots(k, v => v).map(p => ({ ...p, tip: `t${p.n}${p.b ? ' (' + p.b + ')' : ''}: ${k} ${f(p.x)} → Elo ${Math.round(p.y)}` }));
+    xyChart('si_' + k, toSer(pts), { logx: !!log, xfmt: f });
+  });
+  ['random_pole', 'mask_match_info'].forEach(k => {
+    const pts = dots(k, v => v ? 1 : 0).map((p, i) => ({ ...p, jit: ((i * 7919) % 17 - 8) * 1.5,
+      tip: `t${p.n}${p.b ? ' (' + p.b + ')' : ''}: ${p.x ? 'yes' : 'no'} → Elo ${Math.round(p.y)}` }));
+    xyChart('si_' + k, toSer(pts), { cats: ['no', 'yes'] });
+  });
+}
+
+function renderWorkerLive(d) {
+  { // header: the worker run's own status and throughput (the game-run stats are hidden on this tab)
+    const s = d.status || {}, age = Date.now() / 1000 - (s.t || 0);
+    $('run').innerHTML = `· ${d.run} · worker · update ${s.update ?? '–'} · <b>${s.sps ? Math.round(s.sps) : '–'}</b> steps/s` +
+      (s.t && age > 120 ? ` · <span style="color:var(--bad)">paused ${Math.round(age / 60)} min ago</span>` : '');
+  }
+  loadTerrain(2);  // the worker trains on the same map (level 1 = menu arena 2)
+  const st = d.status || {};
+  const wage = Date.now() / 1000 - (st.t || 0);
+  $('w_sub').innerHTML = `· run ${d.run} · update ${st.update ?? '–'} · ${fmtN(st.steps || 0)} steps` +
+    (st.t && wage > 120 ? ` · <span style="color:var(--bad)">training paused ${Math.round(wage / 60)} min ago</span> (live matches use its last checkpoint)` : '');
+  if (!d.instances.length) {
+    $('w_arenas').innerHTML = '<div class="note">no worker checkpoint yet (runs/' + d.run + '/ckpt.pt appears after 25 updates)</div>';
+    return;
+  }
+  d.instances.forEach(m => {
+    const c = card(m.idx, 'w_arenas');
+    drawArena(c, m);
+    const t = m.tally || {}, n = (t.reached || 0) + (t.missed || 0);
+    c.l.innerHTML = `#${m.idx} <span class="tag">worker</span> <span class="tag">${m.speed}x</span>` +
+      (n ? ` · reached here ${t.reached}/${n} (${Math.round(100 * t.reached / n)}%)` : '');
+    c.s.innerHTML = '';
+  });
+}
+function renderWorkerLog(rows) {
+  if (!rows.length) return;
+  const last = rows[rows.length - 1], xs = r => r.steps;
+  $('w_upd').textContent = `· update ${last.update} · ${fmtN(last.steps)} steps · ${Math.round(last.sps)} steps/s`;
+  const ser = (k, color, k2 = 25) => ({ color, data: rolling(rows.map(r => [xs(r), r[k]]).filter(p => p[1] != null), k2) });
+  const pct = { fmt: v => Math.round(100 * v) + '%', min0: true };
+  const B = [['-40_-10', '10+ m behind', '#ff7b72'], ['-10_-5', '5–10 m behind', '#f0a35e'], ['-5_-1', '1–5 m behind', '#d8c26a'],
+             ['1_5', '1–5 m ahead', '#b5e07a'], ['5_10', '5–10 m ahead', '#7ee787'], ['10_40', '10+ m ahead', '#3fb9a8']];
+  lineChart('w_bucket', B.map(([k, , c]) => ser('body_' + k, c)), pct);
+  $('w_bucket_legend').innerHTML = B.map(([, n, c]) => `<span><i class="sw" style="background:${c}"></i>${n}</span>`).join('');
+  $('wn_bucket').textContent = B.map(([k, n]) => last['body_' + k] != null ? `${n.split(' ')[0]}${n.includes('behind') ? '↓' : '↑'} ${Math.round(100 * last['body_' + k])}%` : '').filter(Boolean).join(' · ');
+  lineChart('w_succ', [ser('success', C.text), ser('success_body', C.accent), ser('success_air', C.v1), ser('success_tip', C.b1), ser('success_both', C.v2)], pct);
+  $('wn_succ').textContent = last.success != null ? Math.round(100 * last.success) + '%' : '';
+  lineChart('w_time', [ser('time_-40_-10', '#ff7b72'), ser('time_-10_-5', '#f0a35e'), ser('time_5_10', '#7ee787'), ser('time_10_40', '#3fb9a8')], { min0: true, fmt: v => v.toFixed(1) + 's' });
+  lineChart('w_air', [ser('air_h_1.5_3.0', '#b5e07a'), ser('air_h_3.0_4.5', '#3fb9a8'), ser('air_h_4.5_6.0', '#58a6ff'), ser('air_h_6.0_7.5', '#d2a8ff')], pct);
+  $('wn_air').textContent = last.success_air != null ? `all air targets ${Math.round(100 * last.success_air)}%` : '';
+  lineChart('w_death', [ser('deaths_per_min', C.b2)], { min0: true }); $('wn_death').textContent = fmt(last.deaths_per_min, 2);
+  lineChart('w_rew', [ser('reward', C.accent)], {}); $('wn_rew').textContent = fmt(last.reward, 3);
+  lineChart('w_std', [{ color: C.b1, data: rows.map(r => [xs(r), r.std]) }], { min0: true }); $('wn_std').textContent = fmt(last.std, 3);
+  lineChart('w_sps', [ser('sps', C.v2, 5)], { min0: true }); $('wn_sps').textContent = Math.round(last.sps);
+}
+
+async function slowLoop() {
+  if (tab === 'mods') {
+    try { renderMods(await j('/api/mods')); } catch (e) {}
+    clearTimeout(slowLoop.t); slowLoop.t = setTimeout(slowLoop, 5000);
+    return;
+  }
+  if (tab === 'pbt') {
+    try { renderPBT(await j('/api/pbt')); } catch (e) {}
+    clearTimeout(slowLoop.t); slowLoop.t = setTimeout(slowLoop, 10000);
+    return;
+  }
+  if (tab === 'gauntlet' || tab === 'search') {  // ratings move slowly: every 15 s, only while the tab is open
+    const t0 = tab;
+    try { const d = await j('/api/' + t0); if (tab === t0) (t0 === 'gauntlet' ? renderGauntlet : renderSearch)(d); } catch (e) { console.error(e); }
+    clearTimeout(slowLoop.t); slowLoop.t = setTimeout(slowLoop, 15000);
+    return;
+  }
+  if (tab === 'worker') {
+    try { renderWorkerLog(await j('/api/worker/log')); } catch (e) {}
+    clearTimeout(slowLoop.t); slowLoop.t = setTimeout(slowLoop, 5000);
+    return;
+  }
+  try { refLog = await j(api('/api/ref_log')); } catch (e) { refLog = {}; }
+  let logRows = [];
+  try { logRows = await j(api('/api/log')); renderLog(logRows); } catch (e) {}
+  try { renderRecent(await j(api('/api/vs_recent')), logRows); } catch (e) {}
+  try { renderH2H(await j(api('/api/h2h'))); } catch (e) {}
+  try { renderEvents(await j(api('/api/events'))); } catch (e) {}
+  try { renderHeat(await j(api('/api/heat'))); } catch (e) {}
+  clearTimeout(slowLoop.t); slowLoop.t = setTimeout(slowLoop, 5000);
+}
+liveLoop(); slowLoop();
+window.addEventListener('resize', () => slowLoop());
+</script>
+</body>
+</html>

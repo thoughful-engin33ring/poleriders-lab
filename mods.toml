@@ -1,0 +1,73 @@
+# Super Pole Riders mods (written by the patcher GUI; editing by hand works too). Commented = vanilla.
+# Apply: python3 prmod.py apply   (or the GUI)
+
+[limits]   # raised automatically by the match format when you go above 7 goals / 5 min
+# score_limit_max = 7   # highest selectable Pole Riders score limit
+# duration_max_minutes = 5   # highest selectable round length, in minutes
+
+[gameplay]
+# gravity = 20   # downward acceleration (Box2D units)
+# kick_ball_strength = 1400   # impulse applied to the ball on a kick / hammer hit
+# kick_player_strength = 700   # knockback when a player is kicked / hammered
+# pole_swing_torque = 440   # how hard the stick rotates the pole
+# pole_push_force = 10   # push force along the pole
+# spin_speed_factor = 12   # rider spin speed multiplier
+# standard_pole_length = 780.4   # pole length in pixels (levels 1-4)
+# rainbow_pole_length = 740.4   # pole length in pixels (Rainbow Highway)
+# death_delay = 3   # seconds before a knocked-out player respawns
+# player_linear_damping = 0.33   # air drag on riders
+# ball_damping = 1.1   # air drag on the ball
+# pole_angular_damping = 0.4   # rotational drag on poles
+# pole_linear_damping = 0.2   # drag on poles
+
+[ball]
+# density = 4.2   # ball mass per area (heavier = harder to knock)
+# friction = 0.1
+# restitution = 0.9   # bounciness (1.0 = perfectly elastic)
+
+[player]
+# density = 1.1
+# friction = 0.8
+# restitution = 0   # bounciness
+# hitbox_width = 48   # pixels
+# hitbox_height = 100   # pixels
+# stick_deadzone = 0.2   # analog stick dead zone
+
+[pole]
+# width = 16   # pixels
+# density = 0.2
+# friction = 0.4
+# restitution = 0   # bounciness
+
+[level1]
+# spawn_boost = 50   # upward kick given to the ball when it spawns
+# ground_friction = 0.5
+# ground_restitution = 0.3   # ground bounciness
+
+[level2]
+# spawn_boost = 80   # upward kick given to the ball when it spawns
+# ground_friction = 0.5
+# ground_restitution = 0.3   # ground bounciness
+
+[level3]
+# spawn_boost = 55   # upward kick given to the ball when it spawns
+# ground_friction = 0.5
+# ground_restitution = 0.3   # ground bounciness
+
+[level4]
+# spawn_boost = 150   # upward kick given to the ball when it spawns
+# ground_friction = 0.5
+# ground_restitution = 0.3   # ground bounciness
+
+[level5]
+# spawn_boost = 70   # upward kick given to the ball when it spawns
+# ground_friction = 0.6
+# ground_restitution = 0.3   # ground bounciness
+
+[modes]
+# force_snake = false   # snake poles (vanilla: 1 in 10,000 matches)
+# force_pencil = false   # pencil poles (vanilla: ~1 in 900 matches)
+# force_christmas = false   # Christmas mode (vanilla: only on Dec 25)
+# force_chinese_new_year = false   # Chinese New Year mode (vanilla: only around the lunar new year)
+# unlock_hidden_character = false   # the hidden 8th Pole Riders character (short pole) is always selectable (vanilla: scroll past the last character three times)
+# physics_debug = false   # draw Box2D collision shapes over the game (developer overlay)

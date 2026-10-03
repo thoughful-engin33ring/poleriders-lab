@@ -1,0 +1,10 @@
+Baseline before the past-the-ball fixes (farm1 ckpt ~update 5900, 2026-09-30; runs/farm1/ckpt_before_pastball.pt)
+analysis/past_ball.py, 64 matches x 6000 steps, native self-play:
+live time: past the ball 38%, good side 58%
+  while past the ball: conceded 2.58/min, scored 0.01/min
+  while good side    : conceded 0.01/min, scored 1.58/min
+while past the ball: run cmd mean +0.20 (1-3 m), -0.04 (3-8 m), +0.28 (8+ m); vx +1.23 / +1.24 / +0.94 m/s (still going forward)
+2991 spells past the ball: p50 2.5 s, p75 6.7 s, p90 12.9 s; ended regained 29%, conceded 27%, died 36%
+  spells > 3 s: 48% of spells, 91% of past-the-ball time; of those, conceded 49%
+counterfactual (ball mirrored in front): run cmd +0.23 -> -0.19 (wrong direction); value -0.335 -> -0.604
+Changes applied after this: position potential range 3 m -> 10 m, position weight 0.05 -> 0.1, action std floor 0.1 (was ~0.05)

@@ -1,0 +1,5 @@
+# Allow score limits up to 20 and rounds up to 15 minutes.
+# After applying, pick the values in the in-game options, or set config.ini [poleriders] scorelimit / duration.
+[limits]
+score_limit_max = 20
+duration_max_minutes = 15

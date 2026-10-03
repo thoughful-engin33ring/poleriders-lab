@@ -1,0 +1,412 @@
+Human vs bot concept report (2026-10-03 04:26): 16 real-game matches from 16 play logs (farm2-family: 9, search: 4, t20@300M: 3). Concepts: concepts.py (docs/strategy.md); rows resampled to one per 4 game ticks (1/15 s) by the match clock.
+Value = the human's own goal diff over the next 10 s after the moment minus the human's average over the pool (correlational; n = events, or entries for states; '*' = n < 20: a hint, not a finding).
+Touches: KICKS exact (game stats, stomp kills removed); other touches INFERRED from ball velocity jumps near a rider (second_touch, flung_own_goal, committed/at_mercy's ball part).
+
+== Data sanity
+  excluded 20261002-150439_m1.jsonl (match 1): no result row with score 3-1 after the log started (format 180 s, pads kinds [1, 3, 2, 0]): a test match, opponent unknown
+  excluded 20261002-181628_m5.jsonl (match 5): aborted: the log ends after 2 s of play, score [0, 0]
+  excluded 20261003-034354_m4.jsonl (match 4): aborted: the log ends after 3 s of play, score [0, 0]
+  log                        opp              src       score result play s tk/snap  fd/v  goals h/b (stats)  kills h/b concept|game kicks h/b jump@kick stick act
+  20261002-152412_m1.jsonl   farm2            gauntlet  7-3    7-3      269     2.0  1.00   7/3  (7+0og/3+0og)   6/5  | 6/5        69/64       0.94      0.62
+  20261002-153549_m1.jsonl   farm2@200M       gauntlet  7-2    7-2      202     2.0  1.00   7/2  (6+1og/2+0og)   6/1  | 6/1        53/37       0.98      0.60
+  20261002-153926_m2.jsonl   farm2            gauntlet  7-5    7-5      272     2.0  1.00   7/5  (6+1og/4+1og)   9/2  | 9/2        67/58       0.95      0.60
+  20261002-154414_m3.jsonl   farm2@200M       gauntlet  7-1    7-1      287     2.0  1.00   7/1  (7+0og/0+1og)   4/3  | 4/3        84/62       0.96      0.63
+  20261002-154927_m4.jsonl   farm2            gauntlet  7-2    7-2      254     2.0  1.00   7/2  (6+1og/2+0og)   5/3  | 5/3        72/61       0.95      0.62
+  20261002-155357_m5.jsonl   farm2@200M       gauntlet  7-1    7-1      251     2.0  1.00   7/1  (7+0og/0+1og)   9/1  | 9/1        64/44       0.96      0.63
+  20261002-155830_m6.jsonl   farm2            gauntlet  7-5    7-5      250     2.0  1.00   7/5  (6+1og/4+1og)   7/7  | 7/7        62/52       0.90      0.60
+  20261002-160256_m7.jsonl   farm2@200M       gauntlet  6-4    6-4      302     2.0  1.00   6/4  (5+1og/4+0og)   2/2  | 2/2        90/65       0.94      0.63
+  20261002-160814_m8.jsonl   farm2            gauntlet  7-6    7-6      267     2.0  1.00   7/6  (6+1og/5+1og)   5/9  | 5/9        65/68       0.94      0.60
+  20261002-175801_m1.jsonl   t27 (21M steps)  series    7-2    7-2      256     2.0  1.00   7/2  (6+1og/2+0og)   8/4  | 8/4        61/37       0.96      0.57
+  20261002-180238_m2.jsonl   t2 (21M steps)   series    6-3    6-3      301     2.0  1.00   6/3  (6+0og/3+0og)  10/9  |10/9        74/63       0.96      0.57
+  20261002-180755_m3.jsonl   t7 (20M steps)   series    7-0    7-0      225     2.0  1.00   7/0  (6+1og/0+0og)   2/2  | 2/2        75/43       0.96      0.58
+  20261002-181156_m4.jsonl   t24 (20M steps)  series    7-1    7-1      257     2.0  1.00   7/1  (7+0og/0+1og)  10/3  |10/3        78/67       0.96      0.61
+  20261003-032948_m1.jsonl   t20_300M (300M s series    1-7    1-7      192     2.0  1.00   1/7  (1+0og/7+0og)   5/5  | 5/5        42/49       0.93      0.65
+  20261003-033315_m2.jsonl   t20_300M (300M s series    5-5    5-5      302     2.0  1.00   5/5  (5+0og/5+0og)  11/0  |11/0        73/76       0.92      0.68
+  20261003-033847_m3.jsonl   t20_300M (300M s series    4-7    4-7      295     2.0  1.00   4/7  (4+0og/5+2og)   6/6  | 6/6        65/61       0.95      0.61
+  cadence: the logs hold a snapshot every 4 rendered frames = 2 game ticks (120 Hz display); resampled step lengths (ticks): 2: 1.2%, 3: 7.9%, 4: 81.6%, 5: 8.4%, 6: 0.9%; finite-difference / reported velocity 1.00-1.00 (1.00 = rows are 1/15 s apart)
+  ranges: rider x -25.2..23.4 m, ball y 3.0..8.3 m (zipline), pole tip distance p1-p99 4.15-5.58 m
+  touches: 2001 ball kicks (167 stomp-kill 'kicks' removed), 1404 inferred non-kick touches, 198 ball velocity jumps with nobody within 1.3 m; kicks that show as a velocity jump near the kicker: 0.95
+
+== Concepts pooled: states = share of in-play time / entries per min; events = per min
+                              human (all)        bot (all) human vs farm2-f bot farm2-family  human vs search       bot search human vs t20@300     bot t20@300M farm2 sim self-play        human value (n)
+  good_side                80.8%   8.08/m   81.0%   7.91/m   80.5%   8.31/m   81.4%   7.59/m   85.1%   6.99/m   77.8%   8.09/m   76.4%   8.83/m   84.0%   8.60/m   83.8%   7.32/m    +0.06+-0.02 (548)
+  near_ball                31.2%  25.01/m   29.0%  25.62/m   31.6%  25.53/m   26.8%  25.97/m   27.3%  23.74/m   30.0%  25.01/m   34.8%  25.11/m   34.6%  25.41/m   29.7%  25.82/m    -0.07+-0.01 (1682)
+  tip_behind_ball          18.9%  22.64/m   15.0%  23.66/m   18.6%  22.91/m   13.0%  23.83/m   18.4%  22.70/m   15.3%  22.82/m   20.0%  21.76/m   20.6%  24.27/m   15.6%  25.70/m    +0.03+-0.01 (1516)
+  tip_past_ball            12.3%  12.37/m   14.1%  14.81/m   13.0%  13.53/m   13.8%  15.82/m    8.8%   9.47/m   14.7%  13.46/m   14.8%  12.70/m   13.9%  13.54/m   14.2%  16.50/m    -0.22+-0.02 (833)
+  sit_right_far            54.6%  22.71/m   56.8%  23.07/m   54.2%  23.16/m   58.8%  23.19/m   59.7%  22.76/m   54.2%  21.84/m   49.1%  21.30/m   54.0%  24.34/m   55.7%  23.29/m    +0.07+-0.01 (1527)
+  sit_right_close          20.4%  25.64/m   20.9%  26.48/m   21.3%  26.27/m   19.4%  26.48/m   18.1%  24.20/m   20.4%  25.65/m   20.8%  25.64/m   26.1%  27.62/m   21.6%  25.37/m    -0.06+-0.01 (1725)
+  sit_A                     4.2%   2.74/m    5.5%   2.27/m    4.0%   2.55/m    5.6%   2.32/m    3.1%   1.91/m    5.7%   2.20/m    6.3%   4.41/m    4.9%   2.21/m    3.8%   2.13/m    -0.37+-0.04 (186)
+  sit_B                    12.3%   7.47/m   11.3%   6.79/m   12.9%   7.29/m   10.7%   6.32/m    9.3%   5.72/m   13.5%   7.74/m   14.5%  10.35/m   10.0%   6.92/m    9.0%   5.61/m    -0.28+-0.02 (511)
+  sit_both_wrong            0.8%   0.72/m    0.8%   0.72/m    1.0%   0.92/m    1.0%   0.92/m    0.4%   0.40/m    0.4%   0.40/m    0.5%   0.53/m    0.6%   0.53/m    1.3%   1.16/m    +0.40+-0.10 (47)
+  opp_out                   7.7%   1.51/m    4.8%   0.92/m    6.6%   1.35/m    4.5%   0.84/m    9.5%   1.73/m    5.7%   1.10/m    8.8%   1.67/m    4.4%   0.91/m    8.7%   1.63/m    +0.31+-0.04 (101)
+  opp_wrong_side           17.0%   6.07/m   17.8%   6.11/m   16.9%   5.84/m   18.3%   6.22/m   18.9%   6.76/m   13.3%   4.85/m   14.7%   5.86/m   22.3%   7.46/m   14.0%   5.26/m    +0.37+-0.03 (396)
+  airborne                 65.0%  26.57/m   67.8%  31.64/m   63.4%  26.93/m   72.2%  31.47/m   66.9%  25.30/m   66.1%  32.35/m   67.1%  27.16/m   56.3%  31.19/m   72.6%  30.82/m    -0.00+-0.01 (1785)
+  pole_planted             25.2%  37.35/m   22.1%  32.15/m   26.1%  37.30/m   22.9%  33.38/m   26.4%  38.99/m   20.9%  31.60/m   20.7%  35.30/m   21.4%  29.21/m   24.1%  32.19/m    +0.02+-0.01 (2511)
+  in_pit                    1.9%   1.88/m    2.2%   2.84/m    1.9%   1.76/m    2.7%   3.31/m    1.3%   1.56/m    2.5%   3.35/m    2.6%   2.66/m    0.4%   0.76/m    2.8%   2.67/m    -0.28+-0.05 (124)
+  pole_fwd_down            38.0%  29.18/m   31.9%  33.92/m   38.1%  28.97/m   32.7%  34.96/m   39.3%  29.17/m   29.9%  35.82/m   36.0%  29.82/m   32.1%  28.30/m   33.1%  31.35/m    +0.01+-0.01 (1962)
+  pole_fwd_up              24.3%  28.77/m   38.4%  37.39/m   25.0%  29.00/m   40.1%  36.72/m   21.8%  27.90/m   36.9%  40.38/m   25.4%  29.21/m   35.0%  35.45/m   38.8%  32.25/m    -0.04+-0.01 (1931)
+  pole_back_up             19.6%  28.74/m   19.3%  29.18/m   19.7%  29.07/m   16.3%  28.39/m   19.9%  29.35/m   22.3%  29.81/m   18.9%  26.93/m   24.3%  30.74/m   16.4%  27.96/m    +0.01+-0.01 (1929)
+  pole_back_down           18.1%  27.43/m   10.5%  24.02/m   17.2%  27.21/m   10.9%  25.18/m   19.1%  29.06/m   10.9%  23.57/m   19.7%  25.94/m    8.5%  21.15/m   11.6%  25.31/m    +0.02+-0.01 (1843)
+  backswing_in_flight      11.2%  25.32/m    6.4%  22.17/m   11.0%  24.51/m    5.9%  21.89/m   11.2%  24.38/m    6.9%  22.70/m   11.8%  28.99/m    7.5%  22.29/m    4.5%  16.93/m    -0.02+-0.01 (1711)
+  pole_on_opp               6.8%   9.86/m    5.8%   8.13/m    5.7%   9.91/m    4.4%   8.08/m    5.6%   9.13/m    4.6%   6.93/m   11.9%  10.65/m   11.3%   9.89/m    4.5%   6.97/m    -0.11+-0.03 (659)
+  opp_pole_on_me            5.6%   8.13/m    7.1%   9.86/m    4.3%   8.08/m    5.8%   9.91/m    4.5%   6.93/m    5.8%   9.13/m   10.8%   9.89/m   12.5%  10.65/m    4.5%   6.97/m    -0.17+-0.03 (541)
+  pole_over_opp_head        3.2%   5.67/m    2.6%   5.05/m    2.8%   5.20/m    2.5%   4.87/m    3.0%   5.37/m    1.9%   5.14/m    4.7%   7.46/m    3.8%   5.48/m    2.2%   3.60/m    -0.00+-0.03 (381)
+  opp_on_my_pole            2.0%   4.46/m    1.7%   3.00/m    2.1%   4.38/m    1.0%   2.65/m    1.7%   4.39/m    1.2%   2.37/m    2.1%   4.79/m    4.7%   4.87/m    1.4%   2.71/m    -0.22+-0.04 (304)
+  on_opp_pole               1.7%   3.00/m    2.0%   4.46/m    1.0%   2.65/m    2.1%   4.38/m    1.1%   2.37/m    1.8%   4.39/m    4.5%   4.87/m    2.2%   4.79/m    1.4%   2.71/m    +0.03+-0.04 (199)
+  tip_peek                  8.4%  12.60/m    8.9%  15.25/m    9.6%  13.91/m    9.6%  17.00/m    6.7%  10.40/m    7.6%  12.65/m    7.4%  11.56/m    8.6%  13.47/m   10.4%  17.34/m    -0.12+-0.02 (851)
+  rhythmic_pressing         0.6%   0.65/m    0.6%   0.46/m    0.5%   0.54/m    0.1%   0.15/m    0.4%   0.29/m    0.6%   0.35/m    1.2%   1.45/m    2.1%   1.52/m    0.3%   0.26/m    -0.61+-0.08 (45)
+  committed                44.4%  54.76/m   45.2%  57.16/m   43.6%  55.12/m   48.5%  60.49/m   45.8%  54.01/m   44.7%  55.92/m   45.0%  54.70/m   35.7%  48.84/m   45.7%  60.24/m    -0.00+-0.01 (3679)
+  at_mercy                  6.6%  17.42/m    8.1%  19.81/m    5.4%  15.29/m    9.1%  21.99/m    7.2%  19.70/m    7.1%  16.64/m    9.4%  20.77/m    6.3%  17.50/m    5.5%  16.20/m    +0.04+-0.02 (1154)
+  high_energy              26.9%  34.61/m   25.3%  37.45/m   26.2%  34.71/m   26.4%  38.50/m   28.5%  34.14/m   25.2%  35.87/m   26.9%  34.92/m   21.7%  36.37/m   25.3%  36.80/m    +0.01+-0.01 (2324)
+  mutual_pole_contact       2.9%   2.96/m    3.0%   2.96/m    1.7%   2.32/m    1.8%   2.32/m    2.2%   3.41/m    2.2%   3.41/m    7.5%   4.26/m    7.9%   4.26/m                   -    -0.23+-0.05 (200)
+  interlocked               2.2%   0.44/m    2.2%   0.44/m    1.0%   0.25/m    1.0%   0.25/m    1.5%   0.40/m    1.5%   0.40/m    6.5%   1.07/m    6.8%   1.07/m                   -    -0.25+-0.11 (31)
+  interlock_let_go          0.1%   0.23/m    0.0%   0.10/m    0.0%   0.10/m    0.0%   0.00/m    0.2%   0.29/m    0.0%   0.00/m    0.2%   0.53/m    0.1%   0.53/m                   -    +0.10+-0.13 (16)*
+  open_goal                10.6%   3.64/m    7.5%   2.97/m   10.3%   3.62/m    7.8%   2.93/m   12.2%   3.99/m    6.6%   2.72/m    9.6%   3.27/m    8.0%   3.42/m                   -    +0.54+-0.03 (235)
+  still                     9.5%  28.91/m    4.3%  19.96/m    9.3%  29.46/m    3.2%  17.30/m    9.4%  26.23/m    4.0%  18.95/m   10.3%  30.81/m    7.9%  29.21/m                   -    -0.04+-0.01 (1924)
+  goal_for                    1.42/m (99)      0.77/m (54)      1.58/m (62)      0.74/m (29)      1.56/m (27)       0.35/m (6)      0.76/m (10)      1.45/m (19)            1.02/m     +0.90+-0.03 (86)
+  goal_against                0.77/m (54)      1.42/m (99)      0.74/m (29)      1.58/m (62)       0.35/m (6)      1.56/m (27)      1.45/m (19)      0.76/m (10)            1.02/m     -1.11+-0.03 (52)
+  kill                       1.51/m (105)      0.89/m (62)      1.35/m (53)      0.84/m (33)      1.73/m (30)      1.04/m (18)      1.67/m (22)      0.84/m (11)            1.61/m     +0.35+-0.05 (101)
+  death                       0.89/m (62)     1.51/m (105)      0.84/m (33)      1.35/m (53)      1.04/m (18)      1.73/m (30)      0.84/m (11)      1.67/m (22)            1.61/m     -0.45+-0.07 (59)
+  back_pass                  5.78/m (403)     6.31/m (440)     5.96/m (234)     4.08/m (160)      5.20/m (90)     7.34/m (127)      6.01/m (79)    11.64/m (153)            3.58/m     -0.04+-0.03 (388)
+  fwd_pass                  21.72/m (1514)    28.11/m (1959)    22.19/m (871)    27.42/m (1076)    21.32/m (369)    28.19/m (488)    20.85/m (274)    30.05/m (395)           26.78/m     +0.04+-0.01 (1460)
+  vault                     20.72/m (1444)    22.15/m (1544)    20.97/m (823)    23.24/m (912)    21.03/m (364)    21.60/m (374)    19.55/m (257)    19.63/m (258)           24.06/m     +0.04+-0.01 (1395)
+  pogo_vault                 2.81/m (196)     1.91/m (133)     2.70/m (106)     2.70/m (106)      2.66/m (46)      1.04/m (18)      3.35/m (44)       0.68/m (9)            2.07/m     +0.01+-0.04 (188)
+  jump_over_ball              0.65/m (45)      0.22/m (15)      0.56/m (22)       0.20/m (8)       0.40/m (7)       0.29/m (5)      1.22/m (16)       0.15/m (2)            0.22/m     -0.25+-0.08 (43)
+  pushed_opp_wrong_side       0.42/m (29)      0.52/m (36)      0.48/m (19)      0.59/m (23)       0.35/m (6)       0.17/m (3)       0.30/m (4)      0.76/m (10)            0.42/m     +0.26+-0.12 (27)
+  tip_got_behind_ball        2.07/m (144)     2.09/m (146)      2.14/m (84)      1.63/m (64)      1.44/m (25)      1.79/m (31)      2.66/m (35)      3.88/m (51)            2.93/m     -0.13+-0.04 (139)
+  catapult                    0.77/m (54)      0.39/m (27)      0.74/m (29)      0.36/m (14)      0.92/m (16)       0.46/m (8)       0.68/m (9)       0.38/m (5)            0.48/m     -0.17+-0.09 (53)
+  peek_touch                  0.50/m (35)      0.56/m (39)      0.48/m (19)      0.56/m (22)       0.35/m (6)       0.35/m (6)      0.76/m (10)      0.84/m (11)            0.47/m     -0.14+-0.11 (35)
+  takeoff                   23.83/m (1661)    28.32/m (1974)    24.18/m (949)    28.18/m (1106)    22.59/m (391)    29.06/m (503)    24.42/m (321)    27.77/m (365)           27.39/m     +0.03+-0.01 (1599)
+  fast_takeoff              12.14/m (846)     7.49/m (522)    12.46/m (489)     7.90/m (310)    12.02/m (208)     6.12/m (106)    11.34/m (149)     8.06/m (106)            7.16/m     +0.05+-0.02 (817)
+  lunge_at_opp                0.29/m (20)      0.22/m (15)       0.23/m (9)       0.23/m (9)       0.06/m (1)       0.29/m (5)      0.76/m (10)       0.08/m (1)            0.21/m     -0.27+-0.15 (19)*
+  lunge_from_pit               0.04/m (3)       0.01/m (1)       0.05/m (2)       0.03/m (1)       0.00/m (0)       0.00/m (0)       0.08/m (1)       0.00/m (0)            0.04/m     -0.44+-0.27 (3)*
+  overcommit                   0.13/m (9)       0.10/m (7)       0.03/m (1)       0.13/m (5)       0.06/m (1)       0.12/m (2)       0.53/m (7)       0.00/m (0)            0.09/m     -0.36+-0.23 (8)*
+  overcommit_opp_still         0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)            0.00/m             n/a (0)*
+  got_flung                   0.39/m (27)      0.79/m (55)      0.36/m (14)      0.74/m (29)       0.46/m (8)      0.98/m (17)       0.38/m (5)       0.68/m (9)            0.48/m     +0.07+-0.13 (23)
+  flung_own_goal               0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)       0.00/m (0)            0.00/m             n/a (0)*
+  second_touch               4.71/m (328)     6.67/m (465)     4.38/m (172)     7.70/m (302)      4.27/m (74)     6.30/m (109)      6.24/m (82)      4.11/m (54)           10.69/m     -0.06+-0.03 (323)
+  second_kick                2.98/m (208)     3.72/m (259)     2.88/m (113)     3.95/m (155)      3.00/m (52)      4.39/m (76)      3.27/m (43)      2.13/m (28)            2.99/m     -0.04+-0.04 (203)
+  impale_plant                0.77/m (54)       0.06/m (4)      0.76/m (30)       0.08/m (3)      0.81/m (14)       0.06/m (1)      0.76/m (10)       0.00/m (0)            0.05/m     -0.20+-0.07 (53)
+  impale_brake                0.46/m (32)       0.03/m (2)      0.43/m (17)       0.05/m (2)       0.46/m (8)       0.00/m (0)       0.53/m (7)       0.00/m (0)            0.04/m     -0.11+-0.06 (32)
+  pole_interlock              0.33/m (23)      0.33/m (23)       0.15/m (6)       0.15/m (6)       0.29/m (5)       0.29/m (5)      0.91/m (12)      0.91/m (12)                   -    -0.20+-0.12 (23)
+  let_go_escape                0.10/m (7)       0.01/m (1)       0.00/m (0)       0.00/m (0)       0.12/m (2)       0.00/m (0)       0.38/m (5)       0.08/m (1)                   -    +0.03+-0.24 (7)*
+  open_goal_conversion        1.15/m (80)      0.47/m (33)      1.20/m (47)      0.38/m (15)      1.33/m (23)       0.29/m (5)      0.76/m (10)      0.99/m (13)                   -    +0.92+-0.03 (69)
+  aim_back_pass              1.91/m (133)     9.56/m (666)      2.06/m (81)     6.83/m (268)      1.04/m (18)     8.72/m (151)      2.59/m (34)    18.79/m (247)                   -    -0.16+-0.05 (128)
+  ball_kick                 16.23/m (1131)    13.43/m (936)    16.33/m (641)    13.40/m (526)    17.56/m (304)    12.59/m (218)    14.15/m (186)    14.61/m (192)                   -    +0.07+-0.02 (1090)
+  ball_touch                22.80/m (1589)    21.79/m (1519)    23.04/m (904)    21.48/m (843)    22.88/m (396)    20.97/m (363)    21.99/m (289)    23.81/m (313)                   -    +0.04+-0.01 (1537)
+  (human baseline goal diff next 10 s: +0.109; bot -0.064; sim columns: analysis/concepts_report_v2 (touch-based concepts there use exact touches: second_touch not comparable with the inferred ones here))
+
+== Value for the human by opponent group (goal diff next 10 s minus the pool's average; n; * = n < 20)
+                                   farm2-family                 search               t20@300M
+  good_side                         +0.06 (321)            +0.04 (115)            +0.05 (112)
+  near_ball                         -0.06 (963)            -0.05 (398)            -0.08 (321)
+  tip_behind_ball                   +0.04 (859)            +0.03 (377)            +0.04 (280)
+  tip_past_ball                     -0.19 (513)            -0.21 (160)            -0.25 (160)
+  sit_right_far                     +0.07 (874)            +0.03 (378)            +0.07 (275)
+  sit_right_close                   -0.05 (994)            -0.01 (403)            -0.11 (328)
+  sit_A                              -0.42 (99)             -0.31 (33)             -0.22 (54)
+  sit_B                             -0.29 (284)             -0.27 (97)            -0.24 (130)
+  sit_both_wrong                     +0.36 (35)             +0.12 (6)*             +0.87 (6)*
+  opp_out                            +0.35 (51)             +0.19 (29)             +0.38 (21)
+  opp_wrong_side                    +0.37 (213)            +0.34 (108)             +0.37 (75)
+  airborne                         -0.00 (1018)            -0.01 (422)            +0.01 (345)
+  pole_planted                     +0.02 (1414)            +0.01 (647)            -0.02 (450)
+  in_pit                             -0.33 (67)             -0.17 (25)             -0.18 (32)
+  pole_fwd_down                    +0.01 (1096)            -0.00 (486)            +0.03 (380)
+  pole_fwd_up                      -0.03 (1093)            -0.01 (467)            -0.10 (371)
+  pole_back_up                     +0.00 (1096)            -0.00 (487)            +0.03 (346)
+  pole_back_down                   +0.02 (1027)            +0.02 (482)            +0.04 (334)
+  backswing_in_flight               -0.03 (934)            -0.02 (409)            -0.03 (368)
+  pole_on_opp                       -0.18 (370)            +0.11 (153)            -0.04 (136)
+  opp_pole_on_me                    -0.31 (298)            +0.09 (119)            -0.03 (124)
+  pole_over_opp_head                -0.05 (194)             +0.28 (91)             -0.07 (96)
+  opp_on_my_pole                    -0.23 (167)             -0.18 (75)             -0.20 (62)
+  on_opp_pole                        -0.09 (97)             +0.32 (41)             +0.15 (61)
+  tip_peek                          -0.10 (531)            -0.16 (174)            -0.17 (146)
+  rhythmic_pressing                  -0.62 (21)             -0.41 (5)*            -0.55 (19)*
+  committed                        +0.00 (2082)            -0.03 (899)            +0.02 (698)
+  at_mercy                          +0.07 (570)            +0.07 (321)            +0.04 (263)
+  high_energy                      +0.00 (1310)            -0.02 (569)            +0.06 (445)
+  mutual_pole_contact                -0.53 (86)             +0.11 (59)             -0.00 (55)
+  interlocked                       -0.73 (10)*             +0.28 (7)*            -0.02 (14)*
+  interlock_let_go                   +0.07 (4)*             +0.22 (5)*             +0.09 (7)*
+  open_goal                         +0.58 (129)             +0.45 (64)             +0.56 (42)
+  still                            -0.05 (1103)            +0.03 (428)            -0.09 (393)
+  goal_for                           +0.89 (53)             +0.79 (23)            +1.09 (10)*
+  goal_against                       -1.13 (29)             -1.04 (6)*            -0.97 (17)*
+  kill                               +0.30 (51)             +0.35 (29)             +0.47 (21)
+  death                              -0.54 (32)            -0.44 (17)*            -0.21 (10)*
+  back_pass                         -0.05 (226)             +0.02 (87)             -0.07 (75)
+  fwd_pass                          +0.05 (835)            +0.03 (357)            +0.04 (268)
+  vault                             +0.04 (792)            +0.01 (352)            +0.06 (251)
+  pogo_vault                        +0.04 (100)             -0.01 (45)             -0.00 (43)
+  jump_over_ball                     -0.28 (21)             -0.21 (7)*            -0.11 (15)*
+  pushed_opp_wrong_side             +0.22 (17)*             +0.46 (6)*             +0.09 (4)*
+  tip_got_behind_ball                -0.15 (82)             -0.12 (24)             -0.03 (33)
+  catapult                           -0.20 (29)            -0.07 (15)*             -0.24 (9)*
+  peek_touch                        -0.03 (19)*             -0.04 (6)*            -0.31 (10)*
+  takeoff                           +0.02 (912)            +0.03 (377)            +0.04 (310)
+  fast_takeoff                      +0.04 (470)            +0.02 (203)            +0.11 (144)
+  lunge_at_opp                       -0.02 (9)*             +0.79 (1)*             -0.46 (9)*
+  lunge_from_pit                     -0.63 (2)*                    n/a             +0.09 (1)*
+  overcommit                         -0.13 (1)*             +0.79 (1)*             -0.41 (6)*
+  overcommit_opp_still                      n/a                    n/a                    n/a
+  got_flung                         -0.23 (10)*             +0.29 (8)*             +0.29 (5)*
+  flung_own_goal                            n/a                    n/a                    n/a
+  second_touch                      +0.03 (170)             -0.15 (72)             -0.08 (81)
+  second_kick                       -0.03 (111)             -0.19 (51)             +0.09 (41)
+  impale_plant                       -0.27 (30)            -0.21 (13)*            -0.01 (10)*
+  impale_brake                      -0.13 (17)*             -0.21 (8)*             +0.09 (7)*
+  pole_interlock                     -0.63 (6)*             +0.19 (5)*            +0.01 (12)*
+  let_go_escape                             n/a             +0.29 (2)*             +0.09 (5)*
+  open_goal_conversion               +0.92 (40)            +0.79 (19)*            +1.09 (10)*
+  aim_back_pass                      -0.13 (79)            -0.08 (16)*             -0.18 (33)
+  ball_kick                         +0.06 (613)            +0.04 (294)            +0.11 (183)
+  ball_touch                        +0.04 (873)            -0.01 (381)            +0.07 (283)
+
+== Biggest differences human - bot (paired over matches; t = mean diff / its se; 'h>b' = matches where the human is higher)
+  concept                kind    human     bot  ratio      t    h>b  meaning
+  pole_fwd_up            state   24.3%   38.4%   0.63  -16.2   0/16  pole forward-up
+  pole_back_down         state   18.1%   10.5%   1.73  +11.3  16/16  pole back-down
+  backswing_in_flight    state   11.2%    6.4%   1.74  +11.0  16/16  backward (CCW) swing in flight: prolong / fine-tune a jump
+  still                  state    9.5%    4.3%   2.21  +10.6  16/16  doing nothing: body < 2 m/s and pole turning < 1.5 rad/s (overcommit_opp_still's test)
+  fast_takeoff           event   12.14    7.49   1.62  +10.5  16/16  jump at >= 14 m/s
+  fwd_pass               event   21.72   28.11   0.77   -7.2   0/16  pole over the top forward
+  pole_fwd_down          state   38.0%   31.9%   1.19   +7.2  15/16  pole forward-down (normal low carry)
+  takeoff                event   23.83   28.32   0.84   -7.0   0/16  every jump
+  impale_plant           event    0.77    0.06  13.50   +6.7  14/16  impale attempt (flying backward, tip into the floor back-down)
+  impale_brake           event    0.46    0.03  16.00   +6.4  14/16  impale that shed >= 3 m/s
+  aim_back_pass          event    1.91    9.56   0.20   -6.1   0/16  stick sweeps the pole aim backward over the top
+  pole_planted           state   25.2%   22.1%   1.14   +4.7  14/16  tip on the floor (slingshot loading)
+  open_goal              state   10.6%    7.5%   1.41   +4.6  13/16  open goal: he's dead / > 5.5 m on his wrong side
+  opp_pole_on_me         state    5.6%    7.1%   0.79   -4.5   1/16  his pole on me
+  tip_behind_ball        state   18.9%   15.0%   1.26   +4.1  13/16  near the ball, tip hooked to push it on (round 3: the tip decides)
+  got_flung              event    0.39    0.79   0.49   -4.0   1/16  thrown off his pole
+  ball_kick              event   16.23   13.43   1.21   +3.9  13/16  ball kicks (exact, game stats)
+  pole_on_opp            state    6.8%    5.8%   1.19   +3.9  15/16  my pole on the opponent (pressing)
+  catapult               event    0.77    0.39   2.00   +3.8  11/16  the throw: flung him off my pole
+  open_goal_conversion   event    1.15    0.47   2.42   +3.5  13/16  scored from an open goal
+  jump_over_ball         event    0.65    0.22   3.00   +3.4  10/16  A option 1: long jump over the ball
+  second_touch           event    4.71    6.67   0.71   -3.2   4/16  hit the ball second (INFERRED touches)
+  opp_out                state    7.7%    4.8%   1.62   +2.9  13/16  kill window: opponent dead / respawning
+  interlock_let_go       state    0.1%    0.0%   7.39   +2.9   8/16  interlocked with my pole servo off (stick centred)
+  kill                   event    1.51    0.89   1.69   +2.8  10/16  kill
+  death                  event    0.89    1.51   0.59   -2.8   1/16  death
+  sit_both_wrong         state    0.8%    0.8%   0.97   -2.6   3/16  both riders past the ball
+  vault                  event   20.72   22.15   0.94   -2.6   4/16  slingshot vault
+  pogo_vault             event    2.81    1.91   1.47   +2.3  12/16  landing on the pole into the next vault
+  mutual_pole_contact    state    2.9%    3.0%   0.97   -2.3   3/16  each pole on the other rider (now)
+
+== Opponent groups: farm2-family (9 matches) vs search (4) — Welch t over matches  (few matches: |t| < 3 is noise)
+  concept                human vs farm2-f  human vs search      t   bot farm2-fami     bot search      t
+  pogo_vault                         2.70             2.66   +0.2             2.70           1.04   +5.2
+  at_mercy                           5.4%             7.2%   -2.0             9.1%           7.1%   +4.3
+  pushed_opp_wrong_side              0.48             0.35   +0.7             0.59           0.17   +4.0
+  near_ball                         31.6%            27.3%   +3.3            26.8%          30.0%   -2.1
+  tip_past_ball                     13.0%             8.8%   +3.2            13.8%          14.7%   -0.6
+  pole_fwd_down                     38.1%            39.3%   -1.2            32.7%          29.9%   +2.7
+  sit_B                             12.9%             9.3%   +2.7            10.7%          13.5%   -1.1
+  tip_peek                           9.6%             6.7%   +2.6             9.6%           7.6%   +2.0
+  pole_back_up                      19.7%            19.9%   -0.0            16.3%          22.3%   -2.5
+  sit_both_wrong                     1.0%             0.4%   +2.5             1.0%           0.4%   +2.5
+  aim_back_pass                      2.06             1.04   +2.4             6.83           8.72   -1.1
+  interlock_let_go                   0.0%             0.2%   -2.4             0.0%           0.0%   +0.0
+  opp_wrong_side                    16.9%            18.9%   -0.6            18.3%          13.3%   +2.3
+  sit_right_close                   21.3%            18.1%   +2.3            19.4%          20.4%   -1.7
+  sit_right_far                     54.2%            59.7%   -2.2            58.8%          54.2%   +1.2
+  goal_for                           1.58             1.56   +0.1             0.74           0.35   +2.2
+  goal_against                       0.74             0.35   +2.2             1.58           1.56   +0.1
+  pole_fwd_up                       25.0%            21.8%   +2.1            40.1%          36.9%   +1.5
+  good_side                         80.5%            85.1%   -2.0            81.4%          77.8%   +0.9
+  airborne                          63.4%            66.9%   -1.4            72.2%          66.1%   +1.8
+  fast_takeoff                      12.46            12.02   +0.7             7.90           6.12   +1.7
+  in_pit                             1.9%             1.3%   +1.7             2.7%           2.5%   +0.3
+  tip_got_behind_ball                2.14             1.44   +1.7             1.63           1.79   -0.5
+  let_go_escape                      0.00             0.12   -1.7             0.00           0.00   +0.0
+
+== Opponent groups: t20@300M (3 matches) vs not t20@300M (13) — Welch t over matches  (few matches: |t| < 3 is noise)
+  concept                human vs t20@300 human vs not t20      t     bot t20@300M bot not t20@30      t
+  still                             10.3%             9.3%   +0.7             7.9%           3.5%  +10.0
+  pole_back_down                    19.7%            17.7%   +1.0             8.5%          10.9%   -9.8
+  interlocked                        6.5%             1.1%   +7.2             6.8%           1.2%   +8.6
+  second_touch                       6.24             4.35   +1.7             4.11           7.27   -8.5
+  tip_behind_ball                   20.0%            18.6%   +0.4            20.6%          13.7%   +8.2
+  opp_pole_on_me                    10.8%             4.4%   +4.2            12.5%           5.8%   +7.6
+  aim_back_pass                      2.59             1.75   +1.5            18.79           7.41   +7.5
+  mutual_pole_contact                7.5%             1.9%   +5.9             7.9%           1.9%   +7.3
+  at_mercy                           9.4%             5.9%   +7.2             6.3%           8.5%   -3.2
+  on_opp_pole                        4.5%             1.0%   +7.2             2.2%           2.0%   +0.7
+  airborne                          67.1%            64.5%   +1.8            56.3%          70.4%   -7.1
+  overcommit                         0.53             0.04   +6.9             0.00           0.12   -2.0
+  committed                         45.0%            44.2%   +0.6            35.7%          47.4%   -6.4
+  in_pit                             2.6%             1.7%   +1.4             0.4%           2.6%   -6.4
+  pole_on_opp                       11.9%             5.7%   +5.9            11.3%           4.5%   +5.1
+  pole_planted                      20.7%            26.2%   -5.6            21.4%          22.3%   -1.5
+  opp_on_my_pole                     2.1%             1.9%   +0.6             4.7%           1.0%   +5.6
+  second_kick                        3.27             2.92   +1.1             2.13           4.08   -5.2
+  sit_right_close                   20.8%            20.3%   -0.0            26.1%          19.7%   +5.0
+  back_pass                          6.01             5.73   +0.7            11.64           5.07   +4.9
+  pole_back_up                      18.9%            19.8%   -1.5            24.3%          18.1%   +4.8
+  pogo_vault                         3.35             2.69   +1.5             0.68           2.19   -4.4
+  goal_for                           0.76             1.57   -4.2             1.45           0.62   +2.5
+  goal_against                       1.45             0.62   +2.5             0.76           1.57   -4.2
+
+== Outcomes (pooled; P = probability within 5 s)
+  [all] human: P(goal for / against 5 s) baseline 0.113 / 0.059
+    lunges 20 (3 from the pit) -> overcommits 9 (45%), P(goal against) after an overcommit 0.25, opponent still in 0
+    kills 105: P(goal for) after 0.36; deaths 62: P(goal against) after 0.22
+    energy median 98 J/kg (quartiles 16, 98, 174), high-energy share 27%; value by energy <35/35-100/100-165/>165: -0.01 (n=18218), -0.02 (n=10851), +0.02 (n=12552), +0.01 (n=15446)
+    energy lead median -2; value by lead <-70/-70-0/0-70/>70: -0.08 (n=15139), -0.05 (n=12015), +0.00 (n=10418), +0.03 (n=15119)
+    take-off speed median 14.1 m/s (quartiles 9.0, 14.1, 16.5); value by <9/9-11.9/11.9-14.1/>14.1: +0.01 (n=400), -0.05 (n=196), +0.01 (n=201), +0.05 (n=802)
+    second_kick: n=208, P(ball moving my way 0.5 s later) 0.96, P(goal for / against 5 s) 0.02 / 0.04
+    second_touch (inferred): n=328, P(ball moving my way 0.5 s later) 0.73, P(goal for / against 5 s) 0.05 / 0.07
+    impale plants 54, brakes 32
+    still (doing nothing) 9.5% of in-play time, 59% of it while the opponent is airborne; share of each situation spent still: right_far 7.8%, right_close 8.6%, A 9.8%, B 16.3%, both_wrong 10.7%, opp_out 13.0%
+  [all] bot: P(goal for / against 5 s) baseline 0.070 / 0.092
+    lunges 15 (1 from the pit) -> overcommits 7 (47%), P(goal against) after an overcommit 0.17, opponent still in 0
+    kills 62: P(goal for) after 0.22; deaths 105: P(goal against) after 0.36
+    energy median 99 J/kg (quartiles 27, 99, 167), high-energy share 25%; value by energy <35/35-100/100-165/>165: -0.06 (n=15416), +0.01 (n=12461), +0.03 (n=13341), +0.02 (n=14069)
+    energy lead median +2; value by lead <-70/-70-0/0-70/>70: -0.07 (n=15119), -0.04 (n=10718), +0.00 (n=11715), +0.03 (n=15139)
+    take-off speed median 11.3 m/s (quartiles 7.9, 11.3, 14.2); value by <9/9-11.9/11.9-14.1/>14.1: +0.01 (n=608), +0.03 (n=449), +0.02 (n=351), +0.04 (n=500)
+    second_kick: n=259, P(ball moving my way 0.5 s later) 0.94, P(goal for / against 5 s) 0.02 / 0.02
+    second_touch (inferred): n=465, P(ball moving my way 0.5 s later) 0.68, P(goal for / against 5 s) 0.03 / 0.04
+    impale plants 4, brakes 2
+    still (doing nothing) 4.3% of in-play time, 54% of it while the opponent is airborne; share of each situation spent still: right_far 3.1%, right_close 4.0%, A 10.2%, B 7.7%, both_wrong 4.1%, opp_out 5.1%
+  [all] kicks human 1131 / bot 936; second kicks per kick of the other: human 0.22 (208/936), bot 0.23 (259/1131)
+  [farm2-family] human: P(goal for / against 5 s) baseline 0.123 / 0.056
+    lunges 9 (2 from the pit) -> overcommits 1 (11%), P(goal against) after an overcommit 0.00, opponent still in 0
+    kills 53: P(goal for) after 0.31; deaths 33: P(goal against) after 0.28
+    energy median 95 J/kg (quartiles 13, 95, 171), high-energy share 26%; value by energy <35/35-100/100-165/>165: -0.00 (n=10763), -0.03 (n=5965), +0.02 (n=6932), +0.00 (n=8482)
+    energy lead median -6; value by lead <-70/-70-0/0-70/>70: -0.09 (n=9290), -0.04 (n=7031), +0.01 (n=5968), +0.04 (n=7753)
+    take-off speed median 14.2 m/s (quartiles 9.2, 14.2, 16.4); value by <9/9-11.9/11.9-14.1/>14.1: +0.04 (n=219), -0.09 (n=109), +0.02 (n=126), +0.05 (n=458)
+    second_kick: n=113, P(ball moving my way 0.5 s later) 0.96, P(goal for / against 5 s) 0.03 / 0.05
+    second_touch (inferred): n=172, P(ball moving my way 0.5 s later) 0.75, P(goal for / against 5 s) 0.08 / 0.05
+    impale plants 30, brakes 17
+    still (doing nothing) 9.3% of in-play time, 65% of it while the opponent is airborne; share of each situation spent still: right_far 7.6%, right_close 7.8%, A 9.7%, B 16.8%, both_wrong 8.2%, opp_out 13.6%
+  [farm2-family] bot: P(goal for / against 5 s) baseline 0.069 / 0.102
+    lunges 9 (1 from the pit) -> overcommits 5 (56%), P(goal against) after an overcommit 0.00, opponent still in 0
+    kills 33: P(goal for) after 0.28; deaths 53: P(goal against) after 0.31
+    energy median 105 J/kg (quartiles 38, 105, 171), high-energy share 27%; value by energy <35/35-100/100-165/>165: -0.10 (n=7579), +0.02 (n=7413), +0.04 (n=8102), +0.03 (n=8381)
+    energy lead median +6; value by lead <-70/-70-0/0-70/>70: -0.09 (n=7753), -0.05 (n=6184), -0.01 (n=6815), +0.04 (n=9290)
+    take-off speed median 11.4 m/s (quartiles 8.4, 11.4, 14.5); value by <9/9-11.9/11.9-14.1/>14.1: +0.03 (n=323), +0.05 (n=256), +0.03 (n=194), +0.01 (n=296)
+    second_kick: n=155, P(ball moving my way 0.5 s later) 0.95, P(goal for / against 5 s) 0.03 / 0.02
+    second_touch (inferred): n=302, P(ball moving my way 0.5 s later) 0.68, P(goal for / against 5 s) 0.04 / 0.04
+    impale plants 3, brakes 2
+    still (doing nothing) 3.2% of in-play time, 48% of it while the opponent is airborne; share of each situation spent still: right_far 3.0%, right_close 2.5%, A 4.2%, B 4.6%, both_wrong 4.7%, opp_out 5.5%
+  [farm2-family] kicks human 641 / bot 526; second kicks per kick of the other: human 0.21 (113/526), bot 0.24 (155/641)
+  [search] human: P(goal for / against 5 s) baseline 0.123 / 0.025
+    lunges 1 (0 from the pit) -> overcommits 1 (100%), P(goal against) after an overcommit 0.00, opponent still in 0
+    kills 30: P(goal for) after 0.41; deaths 18: P(goal against) after 0.12
+    energy median 99 J/kg (quartiles 18, 99, 181), high-energy share 29%; value by energy <35/35-100/100-165/>165: +0.02 (n=4332), -0.01 (n=2719), +0.01 (n=2966), -0.02 (n=4037)
+    energy lead median +0; value by lead <-70/-70-0/0-70/>70: -0.06 (n=3540), -0.04 (n=2821), -0.02 (n=2558), +0.04 (n=3799)
+    take-off speed median 14.3 m/s (quartiles 9.5, 14.3, 17.0); value by <9/9-11.9/11.9-14.1/>14.1: +0.11 (n=83), -0.00 (n=44), -0.06 (n=49), +0.02 (n=201)
+    second_kick: n=52, P(ball moving my way 0.5 s later) 0.96, P(goal for / against 5 s) 0.00 / 0.02
+    second_touch (inferred): n=74, P(ball moving my way 0.5 s later) 0.78, P(goal for / against 5 s) 0.03 / 0.03
+    impale plants 14, brakes 8
+    still (doing nothing) 9.4% of in-play time, 57% of it while the opponent is airborne; share of each situation spent still: right_far 8.1%, right_close 8.7%, A 11.2%, B 15.3%, both_wrong 14.0%, opp_out 12.3%
+  [search] bot: P(goal for / against 5 s) baseline 0.033 / 0.101
+    lunges 5 (0 from the pit) -> overcommits 2 (40%), P(goal against) after an overcommit 0.50, opponent still in 0
+    kills 18: P(goal for) after 0.12; deaths 30: P(goal against) after 0.41
+    energy median 97 J/kg (quartiles 25, 97, 166), high-energy share 25%; value by energy <35/35-100/100-165/>165: -0.08 (n=3921), -0.01 (n=2948), +0.05 (n=3208), +0.05 (n=3427)
+    energy lead median +0; value by lead <-70/-70-0/0-70/>70: -0.08 (n=3799), -0.03 (n=2602), -0.01 (n=2777), +0.02 (n=3540)
+    take-off speed median 11.0 m/s (quartiles 7.8, 11.0, 13.6); value by <9/9-11.9/11.9-14.1/>14.1: -0.07 (n=163), +0.03 (n=120), -0.01 (n=100), +0.08 (n=104)
+    second_kick: n=76, P(ball moving my way 0.5 s later) 0.93, P(goal for / against 5 s) 0.01 / 0.01
+    second_touch (inferred): n=109, P(ball moving my way 0.5 s later) 0.74, P(goal for / against 5 s) 0.01 / 0.03
+    impale plants 1, brakes 0
+    still (doing nothing) 4.0% of in-play time, 66% of it while the opponent is airborne; share of each situation spent still: right_far 2.5%, right_close 4.9%, A 5.7%, B 8.3%, both_wrong 1.8%, opp_out 4.1%
+  [search] kicks human 304 / bot 218; second kicks per kick of the other: human 0.24 (52/218), bot 0.25 (76/304)
+  [t20@300M] human: P(goal for / against 5 s) baseline 0.069 / 0.111
+    lunges 10 (1 from the pit) -> overcommits 7 (70%), P(goal against) after an overcommit 0.33, opponent still in 0
+    kills 22: P(goal for) after 0.38; deaths 11: P(goal against) after 0.20
+    energy median 103 J/kg (quartiles 24, 103, 173), high-energy share 27%; value by energy <35/35-100/100-165/>165: -0.07 (n=3123), +0.00 (n=2167), +0.02 (n=2654), +0.06 (n=2927)
+    energy lead median +12; value by lead <-70/-70-0/0-70/>70: -0.11 (n=2309), -0.08 (n=2163), -0.00 (n=1892), +0.02 (n=3567)
+    take-off speed median 13.4 m/s (quartiles 8.1, 13.4, 16.6); value by <9/9-11.9/11.9-14.1/>14.1: -0.05 (n=98), +0.05 (n=43), +0.01 (n=26), +0.11 (n=143)
+    second_kick: n=43, P(ball moving my way 0.5 s later) 0.93, P(goal for / against 5 s) 0.02 / 0.05
+    second_touch (inferred): n=82, P(ball moving my way 0.5 s later) 0.67, P(goal for / against 5 s) 0.00 / 0.14
+    impale plants 10, brakes 7
+    still (doing nothing) 10.3% of in-play time, 44% of it while the opponent is airborne; share of each situation spent still: right_far 8.0%, right_close 10.9%, A 9.2%, B 15.8%, both_wrong 22.0%, opp_out 12.9%
+  [t20@300M] bot: P(goal for / against 5 s) baseline 0.124 / 0.049
+    lunges 1 (0 from the pit) -> overcommits 0 (0%), P(goal against) after an overcommit n/a, opponent still in 0
+    kills 11: P(goal for) after 0.20; deaths 22: P(goal against) after 0.38
+    energy median 78 J/kg (quartiles 9, 78, 153), high-energy share 22%; value by energy <35/35-100/100-165/>165: -0.01 (n=3916), -0.01 (n=2100), +0.02 (n=2031), +0.00 (n=2261)
+    energy lead median -12; value by lead <-70/-70-0/0-70/>70: -0.06 (n=3567), -0.04 (n=1932), +0.04 (n=2123), +0.07 (n=2309)
+    take-off speed median 11.3 m/s (quartiles 7.1, 11.3, 14.6); value by <9/9-11.9/11.9-14.1/>14.1: +0.06 (n=122), -0.02 (n=73), +0.08 (n=57), +0.06 (n=100)
+    second_kick: n=28, P(ball moving my way 0.5 s later) 0.89, P(goal for / against 5 s) 0.00 / 0.00
+    second_touch (inferred): n=54, P(ball moving my way 0.5 s later) 0.62, P(goal for / against 5 s) 0.06 / 0.04
+    impale plants 0, brakes 0
+    still (doing nothing) 7.9% of in-play time, 53% of it while the opponent is airborne; share of each situation spent still: right_far 4.5%, right_close 6.3%, A 38.1%, B 16.7%, both_wrong 3.4%, opp_out 5.5%
+  [t20@300M] kicks human 186 / bot 192; second kicks per kick of the other: human 0.22 (43/192), bot 0.15 (28/186)
+
+== Per match (consistency; the user: less engaged in some matches; 'stick' = share of 1/15 s steps in which the human's sticks moved)
+  -- states: share of in-play time, human/bot %
+  log             opp        score  min stick   good_side tip_behind_ tip_past_ba       sit_A       sit_B     opp_out pole_fwd_up pole_back_d backswing_i pole_on_opp    at_mercy       still
+  152412_m1.jsonl farm2       7-3   4.5  0.62       87/81       22/13       11/15         2/6        9/10         7/6       23/39       17/12        10/4         2/2        6/10         9/4
+  153549_m1.jsonl farm2@200M  7-2   3.4  0.60       81/77       17/12       13/17         4/4       11/17         9/2       23/40       19/12        14/6         6/4         5/8         9/3
+  153926_m2.jsonl farm2       7-5   4.5  0.60       75/83       18/13       15/10         7/4       15/10         8/3       26/37       16/10        12/6         9/8         6/7        11/7
+  154414_m3.jsonl farm2@200M  7-1   4.8  0.63       84/78       17/12       11/16         2/6       12/12         5/4       25/43       18/11        11/7         6/4         5/8         7/3
+  154927_m4.jsonl farm2       7-2   4.2  0.62       82/86       20/15       14/12         4/2       13/11         7/4       27/40       17/11        10/6         5/3         5/9        10/3
+  155357_m5.jsonl farm2@200M  7-1   4.2  0.63       72/82       21/13       12/14         6/6       18/10        11/2       24/40       21/11        13/7         6/5        4/10         8/2
+  155830_m6.jsonl farm2       7-5   4.2  0.60       81/80       17/14       13/12         4/8        11/9         9/9       27/38       15/11         9/5         6/6         6/9        11/3
+  160256_m7.jsonl farm2@200M  6-4   5.0  0.63       80/83       17/12       16/14         4/7        15/9         1/2       24/42       17/11         9/7         5/4        6/11         8/2
+  160814_m8.jsonl farm2       7-6   4.5  0.60       82/81       19/13       10/14         5/6       12/11        5/10       25/41       15/10        12/5         6/3         5/9        11/2
+  175801_m1.jsonl t27 (21M s  7-2   4.3  0.57       83/75       18/20       10/14         2/6       11/18        11/6       24/34        20/9        14/9         7/4        10/7        10/6
+  180238_m2.jsonl t2 (21M st  6-3   5.0  0.57       82/73       18/13        6/16         7/8        9/11        11/9       18/36       21/12        12/6         8/6         6/7         8/3
+  180755_m3.jsonl t7 (20M st  7-0   3.7  0.58       89/76       19/13       10/17         1/6       10/17         3/2       24/42       16/11         9/7         6/5         7/8        11/4
+  181156_m4.jsonl t24 (20M s  7-1   4.3  0.61       88/88       18/16       10/12         2/3         7/9        12/5       21/36       19/12        10/6         1/3         6/7         8/3
+  032948_m1.jsonl t20_300M (  1-7   3.2  0.65       75/88       16/21       11/10         7/5        17/7        10/8       24/35        19/9        13/8       12/12         9/5         9/7
+  033315_m2.jsonl t20_300M (  5-5   5.0  0.68       76/83       23/19       14/13         7/7        13/9        10/0       25/33        23/9        12/7        10/9         9/7        11/8
+  033847_m3.jsonl t20_300M (  4-7   4.9  0.61       78/82       20/22       18/17         5/3       15/13         7/6       26/36        17/8        11/8       14/13        10/6        11/8
+  -- events per minute, human/bot
+  log             opp        score  min stick     takeoff fast_takeof   back_pass        kill       death lunge_at_op  overcommit   ball_kick second_kick    catapult jump_over_b impale_plan
+  152412_m1.jsonl farm2       7-3   4.5  0.62   22.8/27.2    12.3/6.7     6.0/2.9     1.3/1.1     1.1/1.3     0.0/0.7     0.0/0.4   15.6/14.9     3.8/4.5     0.4/0.2     0.2/0.0     0.2/0.2
+  153549_m1.jsonl farm2@200M  7-2   3.4  0.60   24.7/28.2    14.6/7.7     5.9/3.9     1.8/0.3     0.3/1.8     0.0/0.6     0.0/0.0   16.1/11.0     3.9/2.7     1.2/0.3     0.3/0.3     1.2/0.0
+  153926_m2.jsonl farm2       7-5   4.5  0.60   24.9/27.1    12.1/7.1     6.0/4.6     2.0/0.4     0.4/2.0     0.4/0.0     0.0/0.0   15.9/13.5     3.1/4.9     0.7/0.7     1.1/0.0     0.9/0.2
+  154414_m3.jsonl farm2@200M  7-1   4.8  0.63   25.1/32.2   13.4/10.2     5.0/5.2     0.8/0.6     0.6/0.8     0.6/0.6     0.0/0.6   18.6/13.4     2.7/4.2     1.3/0.2     0.4/0.0     0.4/0.2
+  154927_m4.jsonl farm2       7-2   4.2  0.62   24.1/28.8    11.8/9.0     3.8/3.5     1.2/0.7     0.7/1.2     0.2/0.0     0.0/0.0   17.0/14.6     2.4/5.0     0.9/0.5     0.5/0.2     1.2/0.0
+  155357_m5.jsonl farm2@200M  7-1   4.2  0.63   25.5/29.8    12.4/7.9     7.9/3.3     2.1/0.2     0.2/2.1     0.5/0.0     0.2/0.0   15.7/10.5     1.7/3.1     0.5/0.5     1.0/0.2     1.2/0.0
+  155830_m6.jsonl farm2       7-5   4.2  0.60   24.7/24.9    11.8/8.2     7.0/2.4     1.7/1.7     1.7/1.7     0.2/0.2     0.0/0.0   14.9/13.0     1.7/2.9     0.2/0.5     0.7/0.2     0.0/0.0
+  160256_m7.jsonl farm2@200M  6-4   5.0  0.63   25.8/27.8    12.7/8.0     5.6/4.0     0.4/0.4     0.4/0.4     0.0/0.0     0.0/0.0   18.1/13.1     3.0/4.4     0.8/0.4     0.6/0.6     1.0/0.0
+  160814_m8.jsonl farm2       7-6   4.5  0.60   20.0/27.2    11.4/6.3     6.7/6.5     1.1/2.0     2.0/1.1     0.0/0.0     0.0/0.0   14.6/15.9     3.8/3.6     0.7/0.0     0.2/0.2     0.9/0.0
+  175801_m1.jsonl t27 (21M s  7-2   4.3  0.57   20.9/27.2    11.0/4.0    4.7/14.5     1.9/0.9     0.9/1.9     0.0/0.5     0.0/0.0    14.5/8.9     1.4/3.5     1.2/0.5     0.5/0.0     0.5/0.0
+  180238_m2.jsonl t2 (21M st  6-3   5.0  0.57   22.5/30.3    11.3/8.8     6.8/4.0     2.0/1.8     1.8/2.0     0.0/0.2     0.0/0.2   16.3/12.9     2.4/4.2     1.0/0.8     0.4/0.4     1.2/0.0
+  180755_m3.jsonl t7 (20M st  7-0   3.7  0.58   24.6/32.8    13.1/5.9     5.3/6.4     0.5/0.5     0.5/0.5     0.3/0.5     0.3/0.3   21.1/12.5     2.9/5.9     1.1/0.0     0.5/0.5     0.5/0.3
+  181156_m4.jsonl t24 (20M s  7-1   4.3  0.61   22.7/26.2    12.9/5.4     3.7/4.9     2.3/0.7     0.7/2.3     0.0/0.0     0.0/0.0   18.9/15.9     5.4/4.2     0.5/0.5     0.2/0.2     0.9/0.0
+  032948_m1.jsonl t20_300M (  1-7   3.2  0.65   22.2/25.7    11.0/7.2    5.9/13.8     1.6/1.6     1.6/1.6     0.6/0.0     0.6/0.0   14.1/16.3     3.4/1.6     0.0/0.0     1.3/0.0     0.6/0.0
+  033315_m2.jsonl t20_300M (  5-5   5.0  0.68   27.2/27.4    13.5/8.7     6.4/9.9     2.2/0.0     0.0/2.2     1.0/0.0     0.6/0.0   14.9/15.1     3.4/2.6     1.2/0.6     0.6/0.2     1.0/0.0
+  033847_m3.jsonl t20_300M (  4-7   4.9  0.61   23.0/29.5     9.4/7.9    5.7/12.0     1.2/1.2     1.2/1.2     0.6/0.2     0.4/0.0   13.4/13.0     3.1/2.0     0.6/0.4     1.8/0.2     0.6/0.0
+  -- 2026-10-03 concepts — states: share of in-play time, human/bot %
+  log             opp        score  min stick mutual_pole interlocked interlock_l   open_goal       sit_A
+  152412_m1.jsonl farm2       7-3   4.5  0.62         0/0         0/0         0/0        11/5         2/6
+  153549_m1.jsonl farm2@200M  7-2   3.4  0.60         0/1         0/0         0/0        11/6         4/4
+  153926_m2.jsonl farm2       7-5   4.5  0.60         5/5         4/5         0/0        10/7         7/4
+  154414_m3.jsonl farm2@200M  7-1   4.8  0.63         2/2         2/2         0/0         9/4         2/6
+  154927_m4.jsonl farm2       7-2   4.2  0.62         0/1         0/0         0/0         9/9         4/2
+  155357_m5.jsonl farm2@200M  7-1   4.2  0.63         1/2         1/1         0/0       12/11         6/6
+  155830_m6.jsonl farm2       7-5   4.2  0.60         3/3         2/2         0/0       15/10         4/8
+  160256_m7.jsonl farm2@200M  6-4   5.0  0.63         2/2         1/1         0/0         6/7         4/7
+  160814_m8.jsonl farm2       7-6   4.5  0.60         1/1         0/0         0/0       11/12         5/6
+  175801_m1.jsonl t27 (21M s  7-2   4.3  0.57         2/2         1/1         0/0        13/7         2/6
+  180238_m2.jsonl t2 (21M st  6-3   5.0  0.57         4/4         3/3         0/0        16/9         7/8
+  180755_m3.jsonl t7 (20M st  7-0   3.7  0.58         2/2         1/1         0/0        11/4         1/6
+  181156_m4.jsonl t24 (20M s  7-1   4.3  0.61         0/0         0/0         0/0         9/6         2/3
+  032948_m1.jsonl t20_300M (  1-7   3.2  0.65         9/9         7/8         0/0       11/12         7/5
+  033315_m2.jsonl t20_300M (  5-5   5.0  0.68         6/7         5/6         0/0         9/6         7/7
+  033847_m3.jsonl t20_300M (  4-7   4.9  0.61         9/9         7/7         0/0        10/8         5/3
+  -- 2026-10-03 concepts — events per minute, human/bot
+  log             opp        score  min stick pole_interl let_go_esca open_goal_c aim_back_pa    fwd_pass
+  152412_m1.jsonl farm2       7-3   4.5  0.62     0.0/0.0     0.0/0.0     1.3/0.4     2.7/7.6   22.8/26.3
+  153549_m1.jsonl farm2@200M  7-2   3.4  0.60     0.0/0.0     0.0/0.0     0.6/0.6     1.8/7.4   19.6/26.5
+  153926_m2.jsonl farm2       7-5   4.5  0.60     0.4/0.4     0.0/0.0     1.3/0.7     2.6/6.2   20.3/26.0
+  154414_m3.jsonl farm2@200M  7-1   4.8  0.63     0.2/0.2     0.0/0.0     1.3/0.0     1.3/8.4   24.5/29.3
+  154927_m4.jsonl farm2       7-2   4.2  0.62     0.0/0.0     0.0/0.0     1.2/0.0     1.2/5.2   22.2/28.8
+  155357_m5.jsonl farm2@200M  7-1   4.2  0.63     0.2/0.2     0.0/0.0     1.4/0.2     1.9/6.4   23.1/24.3
+  155830_m6.jsonl farm2       7-5   4.2  0.60     0.2/0.2     0.0/0.0     1.4/0.7     1.7/6.7   23.5/25.4
+  160256_m7.jsonl farm2@200M  6-4   5.0  0.63     0.2/0.2     0.0/0.0     0.8/0.4     1.2/4.2   23.9/28.6
+  160814_m8.jsonl farm2       7-6   4.5  0.60     0.0/0.0     0.0/0.0     1.3/0.4     4.3/9.7   19.1/30.8
+  175801_m1.jsonl t27 (21M s  7-2   4.3  0.57     0.2/0.2     0.0/0.0     1.4/0.2    0.5/12.7   17.1/31.0
+  180238_m2.jsonl t2 (21M st  6-3   5.0  0.57     0.6/0.6     0.2/0.0     1.0/0.6     1.8/4.0   20.3/25.1
+  180755_m3.jsonl t7 (20M st  7-0   3.7  0.58     0.3/0.3     0.3/0.0     1.6/0.0    0.8/10.4   24.6/30.2
+  181156_m4.jsonl t24 (20M s  7-1   4.3  0.61     0.0/0.0     0.0/0.0     1.4/0.2     0.9/8.9   23.8/27.3
+  032948_m1.jsonl t20_300M (  1-7   3.2  0.65     1.6/1.6     0.3/0.0     0.3/1.9    2.8/21.9   21.0/32.2
+  033315_m2.jsonl t20_300M (  5-5   5.0  0.68     0.2/0.2     0.0/0.0     1.0/0.6    3.4/17.3   21.7/29.2
+  033847_m3.jsonl t20_300M (  4-7   4.9  0.61     1.2/1.2     0.8/0.2     0.8/0.8    1.6/18.3   19.9/29.5

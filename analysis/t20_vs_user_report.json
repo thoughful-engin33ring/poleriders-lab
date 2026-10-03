@@ -1,0 +1,5145 @@
+{
+ "generated": "2026-10-03 04:34",
+ "sim": {
+  "t20_sim": {
+   "steps": 300005376,
+   "ckpt": "/Users/tron/Projekty/poleriders-mod/runs/gauntlet/ckpt/t20_300M.pt",
+   "matches": 128
+  },
+  "farm2_sim": {
+   "steps": 427374080,
+   "ckpt": "/Users/tron/Projekty/poleriders-mod/runs/gauntlet/ckpt/farm2.pt",
+   "matches": 128
+  }
+ },
+ "groups": {
+  "user_t20": {
+   "label": "user vs t20 (real, 3)",
+   "minutes": 13.144444444444446,
+   "alive_minutes": 12.469999999999999,
+   "baseline_10s": {
+    "p_gf": 0.18990271087182395,
+    "p_ga": 0.17384528194956078,
+    "gd": 0.016057428922263153
+   },
+   "interlock": {
+    "n": 12,
+    "per_min": 0.9129332206255283,
+    "long_n": 6,
+    "long_per_min": 0.45646661031276414,
+    "share_of_time": 0.07075232459847844,
+    "dur_median_s": 2.8,
+    "dur_p90_s": 9.513333333333334,
+    "dur_max_s": 16.333333333333332,
+    "stacked_share": 0.3333333333333333,
+    "attacker_at_start": {
+     "me": 7,
+     "opp": 5,
+     "none": 0
+    },
+    "top": {
+     "me": 4,
+     "opp": 0,
+     "none": 8
+    },
+    "let_go": {
+     "me": 5,
+     "opp": 1
+    },
+    "attacker_still_good_2s": 0.6666666666666666,
+    "by_role": {
+     "attacker": {
+      "n": 12,
+      "kick_first": 0.5,
+      "gf5": 0.08333333333333333,
+      "ga5": 0.08333333333333333,
+      "gf10": 0.16666666666666666,
+      "ga10": 0.08333333333333333
+     },
+     "defender": {
+      "n": 12,
+      "kick_first": 0.3333333333333333,
+      "gf5": 0.08333333333333333,
+      "ga5": 0.08333333333333333,
+      "gf10": 0.08333333333333333,
+      "ga10": 0.16666666666666666
+     },
+     "neutral": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "by_top": {
+     "top": {
+      "n": 4,
+      "kick_first": 0.75,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.25,
+      "ga10": 0.0
+     },
+     "bottom": {
+      "n": 4,
+      "kick_first": 0.25,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.0,
+      "ga10": 0.25
+     },
+     "level": {
+      "n": 16,
+      "kick_first": 0.375,
+      "gf5": 0.125,
+      "ga5": 0.125,
+      "gf10": 0.125,
+      "ga10": 0.125
+     }
+    },
+    "let_go_vs_not": {
+     "released": {
+      "n": 6,
+      "kick_first": 0.5,
+      "gf5": 0.0,
+      "ga5": 0.16666666666666666,
+      "gf10": 0.16666666666666666,
+      "ga10": 0.16666666666666666
+     },
+     "released_attacker": {
+      "n": 3,
+      "kick_first": 1.0,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.3333333333333333,
+      "ga10": 0.0
+     },
+     "released_top": {
+      "n": 2,
+      "kick_first": 1.0,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.5,
+      "ga10": 0.0
+     },
+     "nobody_released": {
+      "n": 12,
+      "kick_first": 0.3333333333333333,
+      "gf5": 0.08333333333333333,
+      "ga5": 0.08333333333333333,
+      "gf10": 0.08333333333333333,
+      "ga10": 0.08333333333333333
+     },
+     "nobody_released_attacker": {
+      "n": 6,
+      "kick_first": 0.0,
+      "gf5": 0.0,
+      "ga5": 0.16666666666666666,
+      "gf10": 0.0,
+      "ga10": 0.16666666666666666
+     },
+     "nobody_released_top": {
+      "n": 1,
+      "kick_first": 0.0,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.0,
+      "ga10": 0.0
+     },
+     "other_released": {
+      "n": 6,
+      "kick_first": 0.5,
+      "gf5": 0.16666666666666666,
+      "ga5": 0.0,
+      "gf10": 0.16666666666666666,
+      "ga10": 0.16666666666666666
+     }
+    },
+    "by_who": {
+     "me": {
+      "let_go": 5,
+      "kick_first": 0.5,
+      "gf5": 0.0,
+      "ga5": 0.16666666666666666
+     },
+     "opp": {
+      "let_go": 1,
+      "kick_first": 0.3333333333333333,
+      "gf5": 0.16666666666666666,
+      "ga5": 0.0
+     }
+    }
+   },
+   "open_goal": {
+    "per_min": 2.20625528317836,
+    "all": {
+     "n": 29,
+     "converted": 0.3103448275862069,
+     "gf5": 0.27586206896551724,
+     "gf10": 0.41379310344827586,
+     "ga10": 0.06896551724137931,
+     "time_to_goal_median_s": 2.6,
+     "dur_median_s": 2.4
+    },
+    "dead": {
+     "n": 15,
+     "converted": 0.3333333333333333,
+     "gf5": 0.3333333333333333,
+     "gf10": 0.4,
+     "ga10": 0.06666666666666667,
+     "time_to_goal_median_s": 2.466666666666667,
+     "dur_median_s": 2.533333333333333
+    },
+    "out_of_position": {
+     "n": 14,
+     "converted": 0.2857142857142857,
+     "gf5": 0.21428571428571427,
+     "gf10": 0.42857142857142855,
+     "ga10": 0.07142857142857142,
+     "time_to_goal_median_s": 3.7333333333333334,
+     "dur_median_s": 1.5
+    },
+    "by_ball_to_goal": {
+     "<10 m": {
+      "n": 6,
+      "converted": 0.6666666666666666,
+      "gf5": 0.6666666666666666,
+      "gf10": 1.0,
+      "ga10": 0.0,
+      "time_to_goal_median_s": 2.066666666666667,
+      "dur_median_s": 2.466666666666667
+     },
+     "10-20 m (middle)": {
+      "n": 12,
+      "converted": 0.3333333333333333,
+      "gf5": 0.25,
+      "gf10": 0.4166666666666667,
+      "ga10": 0.08333333333333333,
+      "time_to_goal_median_s": 3.6,
+      "dur_median_s": 2.3666666666666667
+     },
+     ">=20 m (my half)": {
+      "n": 11,
+      "converted": 0.09090909090909091,
+      "gf5": 0.09090909090909091,
+      "gf10": 0.09090909090909091,
+      "ga10": 0.09090909090909091,
+      "time_to_goal_median_s": 4.466666666666667,
+      "dur_median_s": 1.9333333333333333
+     }
+    }
+   },
+   "sit_A": {
+    "entries_per_min": 2.890955198647506,
+    "all": {
+     "n": 38,
+     "dur_median_s": 0.8333333333333334,
+     "time_s": 44.733333333333334,
+     "gd10": -0.2894736842105263,
+     "gf10": 0.05263157894736842,
+     "ga10": 0.34210526315789475,
+     "escaped_3s": 0.6578947368421053,
+     "escaped_5s": 0.8157894736842105,
+     "ga10_before_escape": 0.02631578947368421,
+     "jump_over": 0.15789473684210525,
+     "interlocked_share": 0.05249955993663087,
+     "back_rot_share": 0.398141065555185,
+     "fwd_rot_share": 0.3112370887190583,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1,
+      "B": 24,
+      "both_wrong": 2,
+      "opp_out": 2,
+      "me_out": 8,
+      "end": 1
+     }
+    },
+    "close": {
+     "n": 37,
+     "dur_median_s": 0.8,
+     "time_s": 43.46666666666667,
+     "gd10": -0.2972972972972973,
+     "gf10": 0.05405405405405406,
+     "ga10": 0.35135135135135137,
+     "escaped_3s": 0.6756756756756757,
+     "escaped_5s": 0.8378378378378378,
+     "ga10_before_escape": 0.02702702702702703,
+     "jump_over": 0.16216216216216217,
+     "interlocked_share": 0.05391846696194522,
+     "back_rot_share": 0.38614203318754425,
+     "fwd_rot_share": 0.31964890192768153,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1,
+      "B": 23,
+      "both_wrong": 2,
+      "opp_out": 2,
+      "me_out": 8,
+      "end": 1
+     }
+    },
+    "far": {
+     "n": 1,
+     "dur_median_s": 1.2666666666666666,
+     "time_s": 1.2666666666666666,
+     "gd10": 0.0,
+     "gf10": 0.0,
+     "ga10": 0.0,
+     "escaped_3s": 0.0,
+     "escaped_5s": 0.0,
+     "ga10_before_escape": 0.0,
+     "jump_over": 0.0,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.8421052631578947,
+     "fwd_rot_share": 0.0,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 1,
+      "both_wrong": 0,
+      "opp_out": 0,
+      "me_out": 0,
+      "end": 0
+     }
+    },
+    "pole_back_ge30": {
+     "n": 23,
+     "dur_median_s": 1.3333333333333333,
+     "time_s": 34.666666666666664,
+     "gd10": -0.391304347826087,
+     "gf10": 0.043478260869565216,
+     "ga10": 0.43478260869565216,
+     "escaped_3s": 0.6086956521739131,
+     "escaped_5s": 0.7391304347826086,
+     "ga10_before_escape": 0.043478260869565216,
+     "jump_over": 0.2608695652173913,
+     "interlocked_share": 0.08673840337356406,
+     "back_rot_share": 0.6009252036094012,
+     "fwd_rot_share": 0.2383378815689618,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 16,
+      "both_wrong": 1,
+      "opp_out": 1,
+      "me_out": 4,
+      "end": 1
+     }
+    },
+    "pole_back_lt30": {
+     "n": 15,
+     "dur_median_s": 0.6,
+     "time_s": 10.066666666666666,
+     "gd10": -0.13333333333333333,
+     "gf10": 0.06666666666666667,
+     "ga10": 0.2,
+     "escaped_3s": 0.7333333333333333,
+     "escaped_5s": 0.9333333333333333,
+     "ga10_before_escape": 0.0,
+     "jump_over": 0.0,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.0872053872053872,
+     "fwd_rot_share": 0.423015873015873,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1,
+      "B": 8,
+      "both_wrong": 1,
+      "opp_out": 1,
+      "me_out": 4,
+      "end": 0
+     }
+    },
+    "share_of_time": 0.05978793548961953
+   },
+   "sit_B": {
+    "entries_per_min": 6.390532544378698,
+    "all": {
+     "n": 84,
+     "dur_median_s": 1.0333333333333332,
+     "time_s": 103.93333333333334,
+     "gd10": -0.36904761904761907,
+     "gf10": 0.023809523809523808,
+     "ga10": 0.39285714285714285,
+     "escaped_3s": 0.7023809523809523,
+     "escaped_5s": 0.8928571428571429,
+     "ga10_before_escape": 0.03571428571428571,
+     "jump_over": 0.11904761904761904,
+     "interlocked_share": 0.02931701867872081,
+     "back_rot_share": 0.341946605842428,
+     "fwd_rot_share": 0.39779849490195407,
+     "exit": {
+      "right_far": 0,
+      "right_close": 39,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 6,
+      "me_out": 8,
+      "end": 0
+     }
+    },
+    "close": {
+     "n": 62,
+     "dur_median_s": 0.9,
+     "time_s": 75.73333333333333,
+     "gd10": -0.3064516129032258,
+     "gf10": 0.03225806451612903,
+     "ga10": 0.3387096774193548,
+     "escaped_3s": 0.6935483870967742,
+     "escaped_5s": 0.8870967741935484,
+     "ga10_before_escape": 0.04838709677419355,
+     "jump_over": 0.16129032258064516,
+     "interlocked_share": 0.0397198317582669,
+     "back_rot_share": 0.34089208622583334,
+     "fwd_rot_share": 0.4380100412030916,
+     "exit": {
+      "right_far": 0,
+      "right_close": 29,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 3,
+      "me_out": 7,
+      "end": 0
+     }
+    },
+    "far": {
+     "n": 22,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 28.2,
+     "gd10": -0.5454545454545454,
+     "gf10": 0.0,
+     "ga10": 0.5454545454545454,
+     "escaped_3s": 0.7272727272727273,
+     "escaped_5s": 0.9090909090909091,
+     "ga10_before_escape": 0.0,
+     "jump_over": 0.0,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.3449184338528312,
+     "fwd_rot_share": 0.2844750462351119,
+     "exit": {
+      "right_far": 0,
+      "right_close": 10,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 3,
+      "me_out": 1,
+      "end": 0
+     }
+    },
+    "pole_back_ge30": {
+     "n": 48,
+     "dur_median_s": 1.2666666666666666,
+     "time_s": 66.2,
+     "gd10": -0.375,
+     "gf10": 0.020833333333333332,
+     "ga10": 0.3958333333333333,
+     "escaped_3s": 0.7291666666666666,
+     "escaped_5s": 0.9791666666666666,
+     "ga10_before_escape": 0.0,
+     "jump_over": 0.125,
+     "interlocked_share": 0.03579059829059829,
+     "back_rot_share": 0.4982988046593144,
+     "fwd_rot_share": 0.2993720995676323,
+     "exit": {
+      "right_far": 0,
+      "right_close": 25,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 2,
+      "me_out": 5,
+      "end": 0
+     }
+    },
+    "pole_back_lt30": {
+     "n": 36,
+     "dur_median_s": 0.7666666666666666,
+     "time_s": 37.733333333333334,
+     "gd10": -0.3611111111111111,
+     "gf10": 0.027777777777777776,
+     "ga10": 0.3888888888888889,
+     "escaped_3s": 0.6666666666666666,
+     "escaped_5s": 0.7777777777777778,
+     "ga10_before_escape": 0.08333333333333333,
+     "jump_over": 0.1111111111111111,
+     "interlocked_share": 0.020685579196217493,
+     "back_rot_share": 0.13347700741991272,
+     "fwd_rot_share": 0.5290336886810497,
+     "exit": {
+      "right_far": 0,
+      "right_close": 14,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 4,
+      "me_out": 3,
+      "end": 0
+     }
+    },
+    "share_of_time": 0.1389111645727524
+   },
+   "rotation_all": {
+    "n_steps": 11223,
+    "minutes": 12.47,
+    "w_back_share": 0.22943954379399448,
+    "w_fwd_share": 0.5222311324957676,
+    "w_median": -1.267199993133545,
+    "back_pass_per_min": 6.335204490777866,
+    "fwd_pass_per_min": 21.972734562951082,
+    "servo_off_share": 0.30063262942172325,
+    "aim_drives_back_share": 0.18193400433176202,
+    "aim_drives_fwd_share": 0.7677411135176455,
+    "aim_holds_share": 0.05032488215059243,
+    "aim_offset_p10_p50_p90": [
+     -161.53990478515624,
+     -104.50198364257812,
+     111.300927734375
+    ],
+    "aim_back_pass_per_min": 2.72654370489174,
+    "aim_fwd_pass_per_min": 18.444266238973537,
+    "aim_back_half_share": 0.5607083704930564
+   },
+   "rotation_A": {
+    "n_steps": 703,
+    "minutes": 0.7811111111111111,
+    "w_back_share": 0.4822190611664296,
+    "w_fwd_share": 0.3186344238975818,
+    "w_median": 0.7559999823570251,
+    "back_pass_per_min": 21.763869132290186,
+    "fwd_pass_per_min": 11.522048364153628,
+    "servo_off_share": 0.30725462304409673,
+    "aim_drives_back_share": 0.5441478439425051,
+    "aim_drives_fwd_share": 0.4004106776180698,
+    "aim_holds_share": 0.055441478439425054,
+    "aim_offset_p10_p50_p90": [
+     -132.9307861328125,
+     48.93634033203125,
+     137.28966064453127
+    ],
+    "aim_back_pass_per_min": 8.961593172119489,
+    "aim_fwd_pass_per_min": 6.401137980085348,
+    "aim_back_half_share": 0.4004106776180698
+   },
+   "rotation_interlocked": {
+    "n_steps": 724,
+    "minutes": 0.8044444444444444,
+    "w_back_share": 0.17679558011049723,
+    "w_fwd_share": 0.18646408839779005,
+    "w_median": -0.03360000252723694,
+    "back_pass_per_min": 2.4861878453038675,
+    "fwd_pass_per_min": 3.7292817679558015,
+    "servo_off_share": 0.03867403314917127,
+    "aim_drives_back_share": 0.07327586206896551,
+    "aim_drives_fwd_share": 0.9166666666666666,
+    "aim_holds_share": 0.010057471264367816,
+    "aim_offset_p10_p50_p90": [
+     -150.97210693359375,
+     -130.64344787597656,
+     -46.27809143066406
+    ],
+    "aim_back_pass_per_min": 2.4861878453038675,
+    "aim_fwd_pass_per_min": 1.2430939226519337,
+    "aim_back_half_share": 0.8146551724137931
+   }
+  },
+  "t20_real": {
+   "label": "t20 vs user (real, 3)",
+   "minutes": 13.144444444444446,
+   "alive_minutes": 11.898888888888887,
+   "baseline_10s": {
+    "p_gf": 0.18990271087182395,
+    "p_ga": 0.17384528194956078,
+    "gd": 0.016057428922263153
+   },
+   "interlock": {
+    "n": 0,
+    "per_min": 0.0,
+    "long_n": 0,
+    "long_per_min": 0.0,
+    "share_of_time": 0.0,
+    "dur_median_s": null,
+    "dur_p90_s": null,
+    "dur_max_s": null,
+    "stacked_share": null,
+    "attacker_at_start": {
+     "me": 0,
+     "opp": 0,
+     "none": 0
+    },
+    "top": {
+     "me": 0,
+     "opp": 0,
+     "none": 0
+    },
+    "let_go": {
+     "me": 0,
+     "opp": 0
+    },
+    "attacker_still_good_2s": null,
+    "by_role": {
+     "attacker": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "defender": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "neutral": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "by_top": {
+     "top": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "bottom": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "level": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "let_go_vs_not": {
+     "released": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "released_attacker": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "released_top": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "nobody_released": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "nobody_released_attacker": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "nobody_released_top": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "other_released": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "by_who": {
+     "me": {
+      "let_go": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null
+     },
+     "opp": {
+      "let_go": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null
+     }
+    }
+   },
+   "open_goal": {
+    "per_min": 2.2823330515638207,
+    "all": {
+     "n": 30,
+     "converted": 0.3,
+     "gf5": 0.3333333333333333,
+     "gf10": 0.4666666666666667,
+     "ga10": 0.03333333333333333,
+     "time_to_goal_median_s": 2.533333333333333,
+     "dur_median_s": 1.8333333333333335
+    },
+    "dead": {
+     "n": 9,
+     "converted": 0.2222222222222222,
+     "gf5": 0.2222222222222222,
+     "gf10": 0.4444444444444444,
+     "ga10": 0.0,
+     "time_to_goal_median_s": 3.4,
+     "dur_median_s": 3.3333333333333335
+    },
+    "out_of_position": {
+     "n": 21,
+     "converted": 0.3333333333333333,
+     "gf5": 0.38095238095238093,
+     "gf10": 0.47619047619047616,
+     "ga10": 0.047619047619047616,
+     "time_to_goal_median_s": 2.533333333333333,
+     "dur_median_s": 1.2666666666666666
+    },
+    "by_ball_to_goal": {
+     "<10 m": {
+      "n": 12,
+      "converted": 0.25,
+      "gf5": 0.3333333333333333,
+      "gf10": 0.4166666666666667,
+      "ga10": 0.0,
+      "time_to_goal_median_s": 1.0666666666666667,
+      "dur_median_s": 1.5
+     },
+     "10-20 m (middle)": {
+      "n": 13,
+      "converted": 0.46153846153846156,
+      "gf5": 0.46153846153846156,
+      "gf10": 0.6923076923076923,
+      "ga10": 0.0,
+      "time_to_goal_median_s": 2.7666666666666666,
+      "dur_median_s": 2.0
+     },
+     ">=20 m (my half)": {
+      "n": 5,
+      "converted": 0.0,
+      "gf5": 0.0,
+      "gf10": 0.0,
+      "ga10": 0.2,
+      "time_to_goal_median_s": null,
+      "dur_median_s": 1.6
+     }
+    }
+   },
+   "sit_A": {
+    "entries_per_min": 1.217244294167371,
+    "all": {
+     "n": 16,
+     "dur_median_s": 1.2999999999999998,
+     "time_s": 34.53333333333333,
+     "gd10": -0.625,
+     "gf10": 0.0,
+     "ga10": 0.625,
+     "escaped_3s": 0.25,
+     "escaped_5s": 0.6875,
+     "ga10_before_escape": 0.1875,
+     "jump_over": 0.125,
+     "interlocked_share": 0.37900641025641024,
+     "back_rot_share": 0.27039302763725176,
+     "fwd_rot_share": 0.29309556664508324,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 9,
+      "both_wrong": 2,
+      "opp_out": 1,
+      "me_out": 4,
+      "end": 0
+     }
+    },
+    "close": {
+     "n": 16,
+     "dur_median_s": 1.2999999999999998,
+     "time_s": 34.53333333333333,
+     "gd10": -0.625,
+     "gf10": 0.0,
+     "ga10": 0.625,
+     "escaped_3s": 0.25,
+     "escaped_5s": 0.6875,
+     "ga10_before_escape": 0.1875,
+     "jump_over": 0.125,
+     "interlocked_share": 0.37900641025641024,
+     "back_rot_share": 0.27039302763725176,
+     "fwd_rot_share": 0.29309556664508324,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 9,
+      "both_wrong": 2,
+      "opp_out": 1,
+      "me_out": 4,
+      "end": 0
+     }
+    },
+    "far": {
+     "n": 0,
+     "dur_median_s": null,
+     "time_s": 0.0,
+     "gd10": null,
+     "gf10": null,
+     "ga10": null,
+     "escaped_3s": null,
+     "escaped_5s": null,
+     "ga10_before_escape": null,
+     "jump_over": null,
+     "interlocked_share": null,
+     "back_rot_share": null,
+     "fwd_rot_share": null,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 0,
+      "me_out": 0,
+      "end": 0
+     }
+    },
+    "pole_back_ge30": {
+     "n": 4,
+     "dur_median_s": 0.9333333333333333,
+     "time_s": 4.2,
+     "gd10": -0.5,
+     "gf10": 0.0,
+     "ga10": 0.5,
+     "escaped_3s": 0.5,
+     "escaped_5s": 0.75,
+     "ga10_before_escape": 0.25,
+     "jump_over": 0.25,
+     "interlocked_share": 0.20833333333333334,
+     "back_rot_share": 0.5,
+     "fwd_rot_share": 0.2583333333333333,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 1,
+      "both_wrong": 1,
+      "opp_out": 1,
+      "me_out": 1,
+      "end": 0
+     }
+    },
+    "pole_back_lt30": {
+     "n": 12,
+     "dur_median_s": 1.5666666666666667,
+     "time_s": 30.333333333333332,
+     "gd10": -0.6666666666666666,
+     "gf10": 0.0,
+     "ga10": 0.6666666666666666,
+     "escaped_3s": 0.16666666666666666,
+     "escaped_5s": 0.6666666666666666,
+     "ga10_before_escape": 0.16666666666666666,
+     "jump_over": 0.08333333333333333,
+     "interlocked_share": 0.4358974358974359,
+     "back_rot_share": 0.1938573701830023,
+     "fwd_rot_share": 0.3046829777489999,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 8,
+      "both_wrong": 1,
+      "opp_out": 0,
+      "me_out": 3,
+      "end": 0
+     }
+    },
+    "share_of_time": 0.04837052946120086
+   },
+   "sit_B": {
+    "entries_per_min": 4.564666103127641,
+    "all": {
+     "n": 60,
+     "dur_median_s": 0.8666666666666667,
+     "time_s": 68.6,
+     "gd10": -0.18333333333333332,
+     "gf10": 0.1,
+     "ga10": 0.2833333333333333,
+     "escaped_3s": 0.7333333333333333,
+     "escaped_5s": 0.8333333333333334,
+     "ga10_before_escape": 0.06666666666666667,
+     "jump_over": 0.03333333333333333,
+     "interlocked_share": 0.13378963330576232,
+     "back_rot_share": 0.1992185985129809,
+     "fwd_rot_share": 0.4499368931120686,
+     "exit": {
+      "right_far": 0,
+      "right_close": 37,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 0,
+      "me_out": 5,
+      "end": 0
+     }
+    },
+    "close": {
+     "n": 40,
+     "dur_median_s": 0.9666666666666667,
+     "time_s": 48.8,
+     "gd10": -0.175,
+     "gf10": 0.125,
+     "ga10": 0.3,
+     "escaped_3s": 0.7,
+     "escaped_5s": 0.775,
+     "ga10_before_escape": 0.075,
+     "jump_over": 0.05,
+     "interlocked_share": 0.19860111662531016,
+     "back_rot_share": 0.18754240378052375,
+     "fwd_rot_share": 0.4545238710446478,
+     "exit": {
+      "right_far": 0,
+      "right_close": 22,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 0,
+      "me_out": 3,
+      "end": 0
+     }
+    },
+    "far": {
+     "n": 20,
+     "dur_median_s": 0.8666666666666667,
+     "time_s": 19.8,
+     "gd10": -0.2,
+     "gf10": 0.05,
+     "ga10": 0.25,
+     "escaped_3s": 0.8,
+     "escaped_5s": 0.95,
+     "ga10_before_escape": 0.05,
+     "jump_over": 0.0,
+     "interlocked_share": 0.004166666666666667,
+     "back_rot_share": 0.2225709879778952,
+     "fwd_rot_share": 0.4407629372469103,
+     "exit": {
+      "right_far": 0,
+      "right_close": 15,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 0,
+      "me_out": 2,
+      "end": 0
+     }
+    },
+    "pole_back_ge30": {
+     "n": 16,
+     "dur_median_s": 0.9333333333333333,
+     "time_s": 18.533333333333335,
+     "gd10": 0.0,
+     "gf10": 0.125,
+     "ga10": 0.125,
+     "escaped_3s": 0.6875,
+     "escaped_5s": 0.6875,
+     "ga10_before_escape": 0.0625,
+     "jump_over": 0.0,
+     "interlocked_share": 0.2148521505376344,
+     "back_rot_share": 0.4288810691009223,
+     "fwd_rot_share": 0.2452097439966362,
+     "exit": {
+      "right_far": 0,
+      "right_close": 10,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 0,
+      "me_out": 1,
+      "end": 0
+     }
+    },
+    "pole_back_lt30": {
+     "n": 44,
+     "dur_median_s": 0.8666666666666667,
+     "time_s": 50.06666666666667,
+     "gd10": -0.25,
+     "gf10": 0.09090909090909091,
+     "ga10": 0.3409090909090909,
+     "escaped_3s": 0.75,
+     "escaped_5s": 0.8863636363636364,
+     "ga10_before_escape": 0.06818181818181818,
+     "jump_over": 0.045454545454545456,
+     "interlocked_share": 0.1043123543123543,
+     "back_rot_share": 0.11570497284463857,
+     "fwd_rot_share": 0.5243831291540441,
+     "exit": {
+      "right_far": 0,
+      "right_close": 27,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 0,
+      "me_out": 4,
+      "end": 0
+     }
+    },
+    "share_of_time": 0.09608740311887198
+   },
+   "rotation_all": {
+    "n_steps": 10709,
+    "minutes": 11.898888888888887,
+    "w_back_share": 0.18974694182463347,
+    "w_fwd_share": 0.578485386123821,
+    "w_median": -1.9783999919891357,
+    "back_pass_per_min": 12.858343449435056,
+    "fwd_pass_per_min": 33.19637687926044,
+    "servo_off_share": 0.023811747128583433,
+    "aim_drives_back_share": 0.15152094891907403,
+    "aim_drives_fwd_share": 0.7224985651425292,
+    "aim_holds_share": 0.12598048593839678,
+    "aim_offset_p10_p50_p90": [
+     -165.22889099121093,
+     -100.60957717895508,
+     137.67888488769535
+    ],
+    "aim_back_pass_per_min": 20.758240732094503,
+    "aim_fwd_pass_per_min": 36.810159678774866,
+    "aim_back_half_share": 0.50526114405969
+   },
+   "rotation_A": {
+    "n_steps": 525,
+    "minutes": 0.5833333333333334,
+    "w_back_share": 0.21714285714285714,
+    "w_fwd_share": 0.2342857142857143,
+    "w_median": 0.25589999556541443,
+    "back_pass_per_min": 5.142857142857142,
+    "fwd_pass_per_min": 6.857142857142857,
+    "servo_off_share": 0.017142857142857144,
+    "aim_drives_back_share": 0.07170542635658915,
+    "aim_drives_fwd_share": 0.8023255813953488,
+    "aim_holds_share": 0.12596899224806202,
+    "aim_offset_p10_p50_p90": [
+     -147.5717315673828,
+     -125.35742568969727,
+     -0.7850875854492188
+    ],
+    "aim_back_pass_per_min": 6.857142857142857,
+    "aim_fwd_pass_per_min": 12.0,
+    "aim_back_half_share": 0.050387596899224806
+   },
+   "rotation_interlocked": {
+    "n_steps": 729,
+    "minutes": 0.81,
+    "w_back_share": 0.23868312757201646,
+    "w_fwd_share": 0.205761316872428,
+    "w_median": 0.29510000348091125,
+    "back_pass_per_min": 12.345679012345679,
+    "fwd_pass_per_min": 16.049382716049383,
+    "servo_off_share": 0.010973936899862825,
+    "aim_drives_back_share": 0.0638002773925104,
+    "aim_drives_fwd_share": 0.9153952843273232,
+    "aim_holds_share": 0.020804438280166437,
+    "aim_offset_p10_p50_p90": [
+     -159.497314453125,
+     -131.83203125,
+     -41.03631591796875
+    ],
+    "aim_back_pass_per_min": 3.7037037037037033,
+    "aim_fwd_pass_per_min": 9.876543209876543,
+    "aim_back_half_share": 0.2510402219140083
+   }
+  },
+  "user_early": {
+   "label": "user vs earlier bots (real, 13)",
+   "minutes": 56.55555555555555,
+   "alive_minutes": 53.41444444444444,
+   "baseline_10s": {
+    "p_gf": 0.18096345624293755,
+    "p_ga": 0.15613652071836842,
+    "gd": 0.024947614398086692
+   },
+   "interlock": {
+    "n": 11,
+    "per_min": 0.1944990176817289,
+    "long_n": 6,
+    "long_per_min": 0.10609037328094303,
+    "share_of_time": 0.012554027504911594,
+    "dur_median_s": 3.6666666666666665,
+    "dur_p90_s": 6.333333333333333,
+    "dur_max_s": 8.4,
+    "stacked_share": 0.36363636363636365,
+    "attacker_at_start": {
+     "me": 3,
+     "opp": 8,
+     "none": 0
+    },
+    "top": {
+     "me": 1,
+     "opp": 3,
+     "none": 7
+    },
+    "let_go": {
+     "me": 2,
+     "opp": 0
+    },
+    "attacker_still_good_2s": 0.9090909090909091,
+    "by_role": {
+     "attacker": {
+      "n": 11,
+      "kick_first": 0.7272727272727273,
+      "gf5": 0.36363636363636365,
+      "ga5": 0.0,
+      "gf10": 0.5454545454545454,
+      "ga10": 0.0
+     },
+     "defender": {
+      "n": 11,
+      "kick_first": 0.09090909090909091,
+      "gf5": 0.0,
+      "ga5": 0.36363636363636365,
+      "gf10": 0.0,
+      "ga10": 0.5454545454545454
+     },
+     "neutral": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "by_top": {
+     "top": {
+      "n": 4,
+      "kick_first": 0.5,
+      "gf5": 0.5,
+      "ga5": 0.0,
+      "gf10": 0.5,
+      "ga10": 0.0
+     },
+     "bottom": {
+      "n": 4,
+      "kick_first": 0.25,
+      "gf5": 0.0,
+      "ga5": 0.5,
+      "gf10": 0.0,
+      "ga10": 0.5
+     },
+     "level": {
+      "n": 14,
+      "kick_first": 0.42857142857142855,
+      "gf5": 0.14285714285714285,
+      "ga5": 0.14285714285714285,
+      "gf10": 0.2857142857142857,
+      "ga10": 0.2857142857142857
+     }
+    },
+    "let_go_vs_not": {
+     "released": {
+      "n": 2,
+      "kick_first": 0.5,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.5,
+      "ga10": 0.0
+     },
+     "released_attacker": {
+      "n": 1,
+      "kick_first": 1.0,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 1.0,
+      "ga10": 0.0
+     },
+     "released_top": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "nobody_released": {
+      "n": 18,
+      "kick_first": 0.4444444444444444,
+      "gf5": 0.2222222222222222,
+      "ga5": 0.2222222222222222,
+      "gf10": 0.2777777777777778,
+      "ga10": 0.2777777777777778
+     },
+     "nobody_released_attacker": {
+      "n": 9,
+      "kick_first": 0.7777777777777778,
+      "gf5": 0.4444444444444444,
+      "ga5": 0.0,
+      "gf10": 0.5555555555555556,
+      "ga10": 0.0
+     },
+     "nobody_released_top": {
+      "n": 4,
+      "kick_first": 0.5,
+      "gf5": 0.5,
+      "ga5": 0.0,
+      "gf10": 0.5,
+      "ga10": 0.0
+     },
+     "other_released": {
+      "n": 2,
+      "kick_first": 0.0,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.0,
+      "ga10": 0.5
+     }
+    },
+    "by_who": {
+     "me": {
+      "let_go": 2,
+      "kick_first": 0.18181818181818182,
+      "gf5": 0.0,
+      "ga5": 0.36363636363636365
+     },
+     "opp": {
+      "let_go": 0,
+      "kick_first": 0.6363636363636364,
+      "gf5": 0.36363636363636365,
+      "ga5": 0.0
+     }
+    }
+   },
+   "open_goal": {
+    "per_min": 2.8290766208251474,
+    "all": {
+     "n": 160,
+     "converted": 0.4,
+     "gf5": 0.45625,
+     "gf10": 0.65625,
+     "ga10": 0.0125,
+     "time_to_goal_median_s": 2.533333333333333,
+     "dur_median_s": 2.1333333333333333
+    },
+    "dead": {
+     "n": 55,
+     "converted": 0.2909090909090909,
+     "gf5": 0.32727272727272727,
+     "gf10": 0.509090909090909,
+     "ga10": 0.0,
+     "time_to_goal_median_s": 2.533333333333333,
+     "dur_median_s": 2.466666666666667
+    },
+    "out_of_position": {
+     "n": 105,
+     "converted": 0.45714285714285713,
+     "gf5": 0.5238095238095238,
+     "gf10": 0.7333333333333333,
+     "ga10": 0.01904761904761905,
+     "time_to_goal_median_s": 2.533333333333333,
+     "dur_median_s": 2.0
+    },
+    "by_ball_to_goal": {
+     "<10 m": {
+      "n": 69,
+      "converted": 0.5797101449275363,
+      "gf5": 0.6666666666666666,
+      "gf10": 0.855072463768116,
+      "ga10": 0.014492753623188406,
+      "time_to_goal_median_s": 2.166666666666667,
+      "dur_median_s": 1.8666666666666667
+     },
+     "10-20 m (middle)": {
+      "n": 46,
+      "converted": 0.43478260869565216,
+      "gf5": 0.5,
+      "gf10": 0.6739130434782609,
+      "ga10": 0.0,
+      "time_to_goal_median_s": 3.1,
+      "dur_median_s": 2.666666666666667
+     },
+     ">=20 m (my half)": {
+      "n": 45,
+      "converted": 0.08888888888888889,
+      "gf5": 0.08888888888888889,
+      "gf10": 0.3333333333333333,
+      "ga10": 0.022222222222222223,
+      "time_to_goal_median_s": 3.6666666666666665,
+      "dur_median_s": 2.4
+     }
+    }
+   },
+   "sit_A": {
+    "entries_per_min": 1.6267190569744598,
+    "all": {
+     "n": 92,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 114.73333333333333,
+     "gd10": -0.29347826086956524,
+     "gf10": 0.043478260869565216,
+     "ga10": 0.33695652173913043,
+     "escaped_3s": 0.5,
+     "escaped_5s": 0.7934782608695652,
+     "ga10_before_escape": 0.07608695652173914,
+     "jump_over": 0.13043478260869565,
+     "interlocked_share": 0.06450207853495352,
+     "back_rot_share": 0.46432516399404555,
+     "fwd_rot_share": 0.2776826383046853,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 58,
+      "both_wrong": 5,
+      "opp_out": 11,
+      "me_out": 18,
+      "end": 0
+     }
+    },
+    "close": {
+     "n": 90,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 113.66666666666667,
+     "gd10": -0.3111111111111111,
+     "gf10": 0.03333333333333333,
+     "ga10": 0.34444444444444444,
+     "escaped_3s": 0.5111111111111111,
+     "escaped_5s": 0.7888888888888889,
+     "ga10_before_escape": 0.07777777777777778,
+     "jump_over": 0.13333333333333333,
+     "interlocked_share": 0.06593545805795249,
+     "back_rot_share": 0.4693909757191657,
+     "fwd_rot_share": 0.27112609087307227,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 57,
+      "both_wrong": 5,
+      "opp_out": 10,
+      "me_out": 18,
+      "end": 0
+     }
+    },
+    "far": {
+     "n": 2,
+     "dur_median_s": 0.5333333333333333,
+     "time_s": 1.0666666666666667,
+     "gd10": 0.5,
+     "gf10": 0.5,
+     "ga10": 0.0,
+     "escaped_3s": 0.0,
+     "escaped_5s": 1.0,
+     "ga10_before_escape": 0.0,
+     "jump_over": 0.0,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.23636363636363636,
+     "fwd_rot_share": 0.5727272727272728,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 1,
+      "both_wrong": 0,
+      "opp_out": 1,
+      "me_out": 0,
+      "end": 0
+     }
+    },
+    "pole_back_ge30": {
+     "n": 67,
+     "dur_median_s": 1.2666666666666666,
+     "time_s": 96.13333333333334,
+     "gd10": -0.2835820895522388,
+     "gf10": 0.04477611940298507,
+     "ga10": 0.3283582089552239,
+     "escaped_3s": 0.43283582089552236,
+     "escaped_5s": 0.7761194029850746,
+     "ga10_before_escape": 0.07462686567164178,
+     "jump_over": 0.14925373134328357,
+     "interlocked_share": 0.08857001828680186,
+     "back_rot_share": 0.5940142540974122,
+     "fwd_rot_share": 0.21474772876709128,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 42,
+      "both_wrong": 4,
+      "opp_out": 10,
+      "me_out": 11,
+      "end": 0
+     }
+    },
+    "pole_back_lt30": {
+     "n": 25,
+     "dur_median_s": 0.7333333333333333,
+     "time_s": 18.6,
+     "gd10": -0.32,
+     "gf10": 0.04,
+     "ga10": 0.36,
+     "escaped_3s": 0.68,
+     "escaped_5s": 0.84,
+     "ga10_before_escape": 0.08,
+     "jump_over": 0.08,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.1167584025170232,
+     "fwd_rot_share": 0.4463481958654373,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 16,
+      "both_wrong": 1,
+      "opp_out": 1,
+      "me_out": 7,
+      "end": 0
+     }
+    },
+    "share_of_time": 0.03579972125725459
+   },
+   "sit_B": {
+    "entries_per_min": 5.304518664047152,
+    "all": {
+     "n": 300,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 369.8,
+     "gd10": -0.14,
+     "gf10": 0.09666666666666666,
+     "ga10": 0.23666666666666666,
+     "escaped_3s": 0.7166666666666667,
+     "escaped_5s": 0.89,
+     "ga10_before_escape": 0.02666666666666667,
+     "jump_over": 0.06,
+     "interlocked_share": 0.016196705282628985,
+     "back_rot_share": 0.3106476632786757,
+     "fwd_rot_share": 0.3931038337532871,
+     "exit": {
+      "right_far": 0,
+      "right_close": 171,
+      "B": 0,
+      "both_wrong": 1,
+      "opp_out": 21,
+      "me_out": 19,
+      "end": 0
+     }
+    },
+    "close": {
+     "n": 185,
+     "dur_median_s": 1.1333333333333333,
+     "time_s": 238.93333333333334,
+     "gd10": -0.13513513513513514,
+     "gf10": 0.10270270270270271,
+     "ga10": 0.23783783783783785,
+     "escaped_3s": 0.6594594594594595,
+     "escaped_5s": 0.8702702702702703,
+     "ga10_before_escape": 0.03783783783783784,
+     "jump_over": 0.0972972972972973,
+     "interlocked_share": 0.0262649274853443,
+     "back_rot_share": 0.28630883605638985,
+     "fwd_rot_share": 0.4294004299730414,
+     "exit": {
+      "right_far": 0,
+      "right_close": 95,
+      "B": 0,
+      "both_wrong": 1,
+      "opp_out": 15,
+      "me_out": 12,
+      "end": 0
+     }
+    },
+    "far": {
+     "n": 115,
+     "dur_median_s": 1.0,
+     "time_s": 130.86666666666667,
+     "gd10": -0.14782608695652175,
+     "gf10": 0.08695652173913043,
+     "ga10": 0.23478260869565218,
+     "escaped_3s": 0.808695652173913,
+     "escaped_5s": 0.9217391304347826,
+     "ga10_before_escape": 0.008695652173913044,
+     "jump_over": 0.0,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.34980142881017906,
+     "fwd_rot_share": 0.3347136572258562,
+     "exit": {
+      "right_far": 0,
+      "right_close": 76,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 6,
+      "me_out": 7,
+      "end": 0
+     }
+    },
+    "pole_back_ge30": {
+     "n": 150,
+     "dur_median_s": 1.1666666666666665,
+     "time_s": 195.26666666666668,
+     "gd10": -0.06666666666666667,
+     "gf10": 0.12,
+     "ga10": 0.18666666666666668,
+     "escaped_3s": 0.6466666666666666,
+     "escaped_5s": 0.8333333333333334,
+     "ga10_before_escape": 0.04666666666666667,
+     "jump_over": 0.09333333333333334,
+     "interlocked_share": 0.01395940609098504,
+     "back_rot_share": 0.48592995568827946,
+     "fwd_rot_share": 0.3036615020177402,
+     "exit": {
+      "right_far": 0,
+      "right_close": 75,
+      "B": 0,
+      "both_wrong": 1,
+      "opp_out": 10,
+      "me_out": 8,
+      "end": 0
+     }
+    },
+    "pole_back_lt30": {
+     "n": 150,
+     "dur_median_s": 0.9333333333333333,
+     "time_s": 174.53333333333333,
+     "gd10": -0.21333333333333335,
+     "gf10": 0.07333333333333333,
+     "ga10": 0.2866666666666667,
+     "escaped_3s": 0.7866666666666666,
+     "escaped_5s": 0.9466666666666667,
+     "ga10_before_escape": 0.006666666666666667,
+     "jump_over": 0.02666666666666667,
+     "interlocked_share": 0.01843400447427293,
+     "back_rot_share": 0.13536537086907202,
+     "fwd_rot_share": 0.48254616548883406,
+     "exit": {
+      "right_far": 0,
+      "right_close": 96,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 11,
+      "me_out": 11,
+      "end": 0
+     }
+    },
+    "share_of_time": 0.11538701558047137
+   },
+   "rotation_all": {
+    "n_steps": 48073,
+    "minutes": 53.41444444444445,
+    "w_back_share": 0.22349343706446445,
+    "w_fwd_share": 0.5301312587107108,
+    "w_median": -1.4371000528335571,
+    "back_pass_per_min": 6.065774967237326,
+    "fwd_pass_per_min": 23.214694319056434,
+    "servo_off_share": 0.39119672165248687,
+    "aim_drives_back_share": 0.20278812314210545,
+    "aim_drives_fwd_share": 0.7486247309256159,
+    "aim_holds_share": 0.048587145932278676,
+    "aim_offset_p10_p50_p90": [
+     -165.6037353515625,
+     -105.99453735351562,
+     124.64961547851564
+    ],
+    "aim_back_pass_per_min": 1.853431239989183,
+    "aim_fwd_pass_per_min": 19.039793647161606,
+    "aim_back_half_share": 0.5522602248265965
+   },
+   "rotation_A": {
+    "n_steps": 1794,
+    "minutes": 1.9933333333333332,
+    "w_back_share": 0.5178372352285395,
+    "w_fwd_share": 0.2530657748049052,
+    "w_median": 1.1586999893188477,
+    "back_pass_per_min": 23.578595317725753,
+    "fwd_pass_per_min": 9.03010033444816,
+    "servo_off_share": 0.2831661092530658,
+    "aim_drives_back_share": 0.5777604976671851,
+    "aim_drives_fwd_share": 0.3740279937791602,
+    "aim_holds_share": 0.04821150855365474,
+    "aim_offset_p10_p50_p90": [
+     -140.5490264892578,
+     66.67106628417969,
+     138.27381896972656
+    ],
+    "aim_back_pass_per_min": 9.03010033444816,
+    "aim_fwd_pass_per_min": 8.02675585284281,
+    "aim_back_half_share": 0.3740279937791602
+   },
+   "rotation_interlocked": {
+    "n_steps": 552,
+    "minutes": 0.6133333333333333,
+    "w_back_share": 0.2463768115942029,
+    "w_fwd_share": 0.18478260869565216,
+    "w_median": 0.21285000443458557,
+    "back_pass_per_min": 14.673913043478262,
+    "fwd_pass_per_min": 11.413043478260871,
+    "servo_off_share": 0.059782608695652176,
+    "aim_drives_back_share": 0.18882466281310212,
+    "aim_drives_fwd_share": 0.7880539499036608,
+    "aim_holds_share": 0.023121387283236993,
+    "aim_offset_p10_p50_p90": [
+     -157.001025390625,
+     -115.56771850585938,
+     134.1419250488281
+    ],
+    "aim_back_pass_per_min": 1.6304347826086958,
+    "aim_fwd_pass_per_min": 1.6304347826086958,
+    "aim_back_half_share": 0.47784200385356457
+   }
+  },
+  "bots_early": {
+   "label": "earlier bots vs user (real, 13)",
+   "minutes": 56.55555555555555,
+   "alive_minutes": 51.94555555555556,
+   "baseline_10s": {
+    "p_gf": 0.18096345624293755,
+    "p_ga": 0.15613652071836842,
+    "gd": 0.024947614398086692
+   },
+   "interlock": {
+    "n": 0,
+    "per_min": 0.0,
+    "long_n": 0,
+    "long_per_min": 0.0,
+    "share_of_time": 0.0,
+    "dur_median_s": null,
+    "dur_p90_s": null,
+    "dur_max_s": null,
+    "stacked_share": null,
+    "attacker_at_start": {
+     "me": 0,
+     "opp": 0,
+     "none": 0
+    },
+    "top": {
+     "me": 0,
+     "opp": 0,
+     "none": 0
+    },
+    "let_go": {
+     "me": 0,
+     "opp": 0
+    },
+    "attacker_still_good_2s": null,
+    "by_role": {
+     "attacker": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "defender": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "neutral": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "by_top": {
+     "top": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "bottom": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "level": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "let_go_vs_not": {
+     "released": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "released_attacker": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "released_top": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "nobody_released": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "nobody_released_attacker": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "nobody_released_top": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "other_released": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "by_who": {
+     "me": {
+      "let_go": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null
+     },
+     "opp": {
+      "let_go": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null
+     }
+    }
+   },
+   "open_goal": {
+    "per_min": 1.9980353634577606,
+    "all": {
+     "n": 113,
+     "converted": 0.11504424778761062,
+     "gf5": 0.1504424778761062,
+     "gf10": 0.2743362831858407,
+     "ga10": 0.061946902654867256,
+     "time_to_goal_median_s": 2.533333333333333,
+     "dur_median_s": 1.8666666666666667
+    },
+    "dead": {
+     "n": 33,
+     "converted": 0.21212121212121213,
+     "gf5": 0.24242424242424243,
+     "gf10": 0.42424242424242425,
+     "ga10": 0.06060606060606061,
+     "time_to_goal_median_s": 2.3333333333333335,
+     "dur_median_s": 2.3333333333333335
+    },
+    "out_of_position": {
+     "n": 80,
+     "converted": 0.075,
+     "gf5": 0.1125,
+     "gf10": 0.2125,
+     "ga10": 0.0625,
+     "time_to_goal_median_s": 2.8666666666666667,
+     "dur_median_s": 1.8
+    },
+    "by_ball_to_goal": {
+     "<10 m": {
+      "n": 14,
+      "converted": 0.42857142857142855,
+      "gf5": 0.42857142857142855,
+      "gf10": 0.7142857142857143,
+      "ga10": 0.0,
+      "time_to_goal_median_s": 2.2,
+      "dur_median_s": 2.033333333333333
+     },
+     "10-20 m (middle)": {
+      "n": 56,
+      "converted": 0.08928571428571429,
+      "gf5": 0.17857142857142858,
+      "gf10": 0.30357142857142855,
+      "ga10": 0.017857142857142856,
+      "time_to_goal_median_s": 2.533333333333333,
+      "dur_median_s": 1.8666666666666667
+     },
+     ">=20 m (my half)": {
+      "n": 43,
+      "converted": 0.046511627906976744,
+      "gf5": 0.023255813953488372,
+      "gf10": 0.09302325581395349,
+      "ga10": 0.13953488372093023,
+      "time_to_goal_median_s": 4.933333333333334,
+      "dur_median_s": 1.9333333333333333
+     }
+    }
+   },
+   "sit_A": {
+    "entries_per_min": 1.6797642436149314,
+    "all": {
+     "n": 95,
+     "dur_median_s": 1.6,
+     "time_s": 170.33333333333334,
+     "gd10": -0.7368421052631579,
+     "gf10": 0.031578947368421054,
+     "ga10": 0.7684210526315789,
+     "escaped_3s": 0.3684210526315789,
+     "escaped_5s": 0.6947368421052632,
+     "ga10_before_escape": 0.24210526315789474,
+     "jump_over": 0.06315789473684211,
+     "interlocked_share": 0.021052631578947368,
+     "back_rot_share": 0.24593068867304424,
+     "fwd_rot_share": 0.532279692735808,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 39,
+      "both_wrong": 16,
+      "opp_out": 4,
+      "me_out": 32,
+      "end": 4
+     }
+    },
+    "close": {
+     "n": 83,
+     "dur_median_s": 1.4666666666666666,
+     "time_s": 143.8,
+     "gd10": -0.7108433734939759,
+     "gf10": 0.03614457831325301,
+     "ga10": 0.7469879518072289,
+     "escaped_3s": 0.39759036144578314,
+     "escaped_5s": 0.7228915662650602,
+     "ga10_before_escape": 0.21686746987951808,
+     "jump_over": 0.07228915662650602,
+     "interlocked_share": 0.024096385542168676,
+     "back_rot_share": 0.22092086515701354,
+     "fwd_rot_share": 0.5445680423205924,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 37,
+      "both_wrong": 14,
+      "opp_out": 3,
+      "me_out": 26,
+      "end": 3
+     }
+    },
+    "far": {
+     "n": 12,
+     "dur_median_s": 1.9666666666666668,
+     "time_s": 26.533333333333335,
+     "gd10": -0.9166666666666666,
+     "gf10": 0.0,
+     "ga10": 0.9166666666666666,
+     "escaped_3s": 0.16666666666666666,
+     "escaped_5s": 0.5,
+     "ga10_before_escape": 0.4166666666666667,
+     "jump_over": 0.0,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.4189153013255899,
+     "fwd_rot_share": 0.44728527477438257,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 2,
+      "both_wrong": 2,
+      "opp_out": 1,
+      "me_out": 6,
+      "end": 1
+     }
+    },
+    "pole_back_ge30": {
+     "n": 40,
+     "dur_median_s": 2.2,
+     "time_s": 94.26666666666667,
+     "gd10": -0.925,
+     "gf10": 0.0,
+     "ga10": 0.925,
+     "escaped_3s": 0.25,
+     "escaped_5s": 0.675,
+     "ga10_before_escape": 0.25,
+     "jump_over": 0.025,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.39226808216636105,
+     "fwd_rot_share": 0.4572323833666793,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 15,
+      "both_wrong": 6,
+      "opp_out": 2,
+      "me_out": 16,
+      "end": 1
+     }
+    },
+    "pole_back_lt30": {
+     "n": 55,
+     "dur_median_s": 1.0,
+     "time_s": 76.06666666666666,
+     "gd10": -0.6,
+     "gf10": 0.05454545454545454,
+     "ga10": 0.6545454545454545,
+     "escaped_3s": 0.45454545454545453,
+     "escaped_5s": 0.7090909090909091,
+     "ga10_before_escape": 0.23636363636363636,
+     "jump_over": 0.09090909090909091,
+     "interlocked_share": 0.03636363636363636,
+     "back_rot_share": 0.1395034934051775,
+     "fwd_rot_share": 0.5868595540951743,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 24,
+      "both_wrong": 10,
+      "opp_out": 2,
+      "me_out": 16,
+      "end": 3
+     }
+    },
+    "share_of_time": 0.05465123740668649
+   },
+   "sit_B": {
+    "entries_per_min": 4.88015717092338,
+    "all": {
+     "n": 276,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 348.3333333333333,
+     "gd10": -0.4855072463768116,
+     "gf10": 0.036231884057971016,
+     "ga10": 0.5181159420289855,
+     "escaped_3s": 0.7210144927536232,
+     "escaped_5s": 0.8623188405797102,
+     "ga10_before_escape": 0.10869565217391304,
+     "jump_over": 0.028985507246376812,
+     "interlocked_share": 0.006190005646527386,
+     "back_rot_share": 0.2294892883599882,
+     "fwd_rot_share": 0.5904328723285373,
+     "exit": {
+      "right_far": 0,
+      "right_close": 145,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 12,
+      "me_out": 39,
+      "end": 5
+     }
+    },
+    "close": {
+     "n": 148,
+     "dur_median_s": 1.2,
+     "time_s": 202.46666666666667,
+     "gd10": -0.43243243243243246,
+     "gf10": 0.060810810810810814,
+     "ga10": 0.4864864864864865,
+     "escaped_3s": 0.7635135135135135,
+     "escaped_5s": 0.8648648648648649,
+     "ga10_before_escape": 0.10135135135135136,
+     "jump_over": 0.0472972972972973,
+     "interlocked_share": 0.011198791555934413,
+     "back_rot_share": 0.2538204047961934,
+     "fwd_rot_share": 0.5740780863275203,
+     "exit": {
+      "right_far": 0,
+      "right_close": 82,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 5,
+      "me_out": 18,
+      "end": 5
+     }
+    },
+    "far": {
+     "n": 128,
+     "dur_median_s": 0.9,
+     "time_s": 145.86666666666667,
+     "gd10": -0.546875,
+     "gf10": 0.0078125,
+     "ga10": 0.5546875,
+     "escaped_3s": 0.671875,
+     "escaped_5s": 0.859375,
+     "ga10_before_escape": 0.1171875,
+     "jump_over": 0.0078125,
+     "interlocked_share": 0.0003985969387755102,
+     "back_rot_share": 0.20135643498062594,
+     "fwd_rot_share": 0.6093430936422131,
+     "exit": {
+      "right_far": 0,
+      "right_close": 63,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 7,
+      "me_out": 21,
+      "end": 0
+     }
+    },
+    "pole_back_ge30": {
+     "n": 89,
+     "dur_median_s": 1.2,
+     "time_s": 119.0,
+     "gd10": -0.3595505617977528,
+     "gf10": 0.0449438202247191,
+     "ga10": 0.4044943820224719,
+     "escaped_3s": 0.8539325842696629,
+     "escaped_5s": 0.9325842696629213,
+     "ga10_before_escape": 0.056179775280898875,
+     "jump_over": 0.056179775280898875,
+     "interlocked_share": 0.007303370786516854,
+     "back_rot_share": 0.43084213858189907,
+     "fwd_rot_share": 0.4171594848199008,
+     "exit": {
+      "right_far": 0,
+      "right_close": 68,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 0,
+      "me_out": 7,
+      "end": 0
+     }
+    },
+    "pole_back_lt30": {
+     "n": 187,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 229.33333333333334,
+     "gd10": -0.5454545454545454,
+     "gf10": 0.03208556149732621,
+     "ga10": 0.5721925133689839,
+     "escaped_3s": 0.6577540106951871,
+     "escaped_5s": 0.8288770053475936,
+     "ga10_before_escape": 0.13368983957219252,
+     "jump_over": 0.016042780748663103,
+     "interlocked_share": 0.0056601152857837355,
+     "back_rot_share": 0.13365825269287557,
+     "fwd_rot_share": 0.6728998856347868,
+     "exit": {
+      "right_far": 0,
+      "right_close": 77,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 12,
+      "me_out": 32,
+      "end": 5
+     }
+    },
+    "share_of_time": 0.1117623152445937
+   },
+   "rotation_all": {
+    "n_steps": 46751,
+    "minutes": 51.94555555555555,
+    "w_back_share": 0.16140831212166584,
+    "w_fwd_share": 0.670081923381318,
+    "w_median": -2.9147000312805176,
+    "back_pass_per_min": 5.525015507689676,
+    "fwd_pass_per_min": 30.108446878141645,
+    "servo_off_share": 0.015807148510192295,
+    "aim_drives_back_share": 0.11627401547422411,
+    "aim_drives_fwd_share": 0.8064635312527166,
+    "aim_holds_share": 0.0772624532730592,
+    "aim_offset_p10_p50_p90": [
+     -157.58486633300782,
+     -101.41480255126953,
+     61.66455383300785
+    ],
+    "aim_back_pass_per_min": 8.066137622724648,
+    "aim_fwd_pass_per_min": 30.30095612928066,
+    "aim_back_half_share": 0.5316656524384943
+   },
+   "rotation_A": {
+    "n_steps": 2627,
+    "minutes": 2.9188888888888886,
+    "w_back_share": 0.2946326608298439,
+    "w_fwd_share": 0.5028549676437001,
+    "w_median": -1.0498000383377075,
+    "back_pass_per_min": 6.851922344880092,
+    "fwd_pass_per_min": 22.95393985534831,
+    "servo_off_share": 0.03616292348686715,
+    "aim_drives_back_share": 0.2626382306477093,
+    "aim_drives_fwd_share": 0.5217219589257504,
+    "aim_holds_share": 0.2156398104265403,
+    "aim_offset_p10_p50_p90": [
+     -120.63058929443358,
+     -33.89490509033203,
+     126.58999023437501
+    ],
+    "aim_back_pass_per_min": 21.926151503616293,
+    "aim_fwd_pass_per_min": 31.518842786448424,
+    "aim_back_half_share": 0.25
+   },
+   "rotation_interlocked": {
+    "n_steps": 552,
+    "minutes": 0.6133333333333333,
+    "w_back_share": 0.2463768115942029,
+    "w_fwd_share": 0.2644927536231884,
+    "w_median": 0.052549999207258224,
+    "back_pass_per_min": 3.2608695652173916,
+    "fwd_pass_per_min": 9.782608695652174,
+    "servo_off_share": 0.0,
+    "aim_drives_back_share": 0.04891304347826087,
+    "aim_drives_fwd_share": 0.9438405797101449,
+    "aim_holds_share": 0.007246376811594203,
+    "aim_offset_p10_p50_p90": [
+     -165.78507080078126,
+     -134.52603149414062,
+     -70.73730926513672
+    ],
+    "aim_back_pass_per_min": 1.6304347826086958,
+    "aim_fwd_pass_per_min": 11.413043478260871,
+    "aim_back_half_share": 0.5797101449275363
+   }
+  },
+  "t20_sim": {
+   "label": "t20 self-play (sim)",
+   "minutes": 1145.8733333333332,
+   "alive_minutes": 1074.7877777777778,
+   "baseline_10s": {
+    "p_gf": 0.1997042054271874,
+    "p_ga": 0.17875637673082695,
+    "gd": 0.020990697475028935
+   },
+   "interlock": {
+    "n": 447,
+    "per_min": 0.7801909460615194,
+    "long_n": 220,
+    "long_per_min": 0.38398659537703417,
+    "share_of_time": 0.10147718479645801,
+    "dur_median_s": 2.933333333333333,
+    "dur_p90_s": 15.760000000000002,
+    "dur_max_s": 271.0,
+    "stacked_share": 0.7874720357941835,
+    "attacker_at_start": {
+     "me": 230,
+     "opp": 216,
+     "none": 1
+    },
+    "top": {
+     "me": 187,
+     "opp": 165,
+     "none": 95
+    },
+    "let_go": {
+     "me": 0,
+     "opp": 1
+    },
+    "attacker_still_good_2s": 0.8856502242152466,
+    "by_role": {
+     "attacker": {
+      "n": 446,
+      "kick_first": 0.2914798206278027,
+      "gf5": 0.2982062780269058,
+      "ga5": 0.017937219730941704,
+      "gf10": 0.4349775784753363,
+      "ga10": 0.07623318385650224
+     },
+     "defender": {
+      "n": 446,
+      "kick_first": 0.3295964125560538,
+      "gf5": 0.017937219730941704,
+      "ga5": 0.2982062780269058,
+      "gf10": 0.07623318385650224,
+      "ga10": 0.4349775784753363
+     },
+     "neutral": {
+      "n": 2,
+      "kick_first": 0.5,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.0,
+      "ga10": 0.0
+     }
+    },
+    "by_top": {
+     "top": {
+      "n": 352,
+      "kick_first": 0.24147727272727273,
+      "gf5": 0.2585227272727273,
+      "ga5": 0.03409090909090909,
+      "gf10": 0.38920454545454547,
+      "ga10": 0.09659090909090909
+     },
+     "bottom": {
+      "n": 352,
+      "kick_first": 0.39204545454545453,
+      "gf5": 0.03409090909090909,
+      "ga5": 0.2585227272727273,
+      "gf10": 0.09659090909090909,
+      "ga10": 0.38920454545454547
+     },
+     "level": {
+      "n": 190,
+      "kick_first": 0.2894736842105263,
+      "gf5": 0.2,
+      "ga5": 0.2,
+      "gf10": 0.3,
+      "ga10": 0.3
+     }
+    },
+    "let_go_vs_not": {
+     "released": {
+      "n": 1,
+      "kick_first": 0.0,
+      "gf5": 1.0,
+      "ga5": 0.0,
+      "gf10": 1.0,
+      "ga10": 0.0
+     },
+     "released_attacker": {
+      "n": 1,
+      "kick_first": 0.0,
+      "gf5": 1.0,
+      "ga5": 0.0,
+      "gf10": 1.0,
+      "ga10": 0.0
+     },
+     "released_top": {
+      "n": 1,
+      "kick_first": 0.0,
+      "gf5": 1.0,
+      "ga5": 0.0,
+      "gf10": 1.0,
+      "ga10": 0.0
+     },
+     "nobody_released": {
+      "n": 892,
+      "kick_first": 0.3116591928251121,
+      "gf5": 0.15695067264573992,
+      "ga5": 0.15695067264573992,
+      "gf10": 0.25448430493273544,
+      "ga10": 0.25448430493273544
+     },
+     "nobody_released_attacker": {
+      "n": 445,
+      "kick_first": 0.29213483146067415,
+      "gf5": 0.2966292134831461,
+      "ga5": 0.017977528089887642,
+      "gf10": 0.4337078651685393,
+      "ga10": 0.07640449438202247
+     },
+     "nobody_released_top": {
+      "n": 351,
+      "kick_first": 0.24216524216524216,
+      "gf5": 0.2564102564102564,
+      "ga5": 0.03418803418803419,
+      "gf10": 0.38746438746438744,
+      "ga10": 0.09686609686609686
+     },
+     "other_released": {
+      "n": 1,
+      "kick_first": 0.0,
+      "gf5": 0.0,
+      "ga5": 1.0,
+      "gf10": 0.0,
+      "ga10": 1.0
+     }
+    },
+    "by_who": {
+     "me": {
+      "let_go": 0,
+      "kick_first": 0.31767337807606266,
+      "gf5": 0.16554809843400448,
+      "ga5": 0.14988814317673377
+     },
+     "opp": {
+      "let_go": 1,
+      "kick_first": 0.3042505592841163,
+      "gf5": 0.14988814317673377,
+      "ga5": 0.16554809843400448
+     }
+    }
+   },
+   "open_goal": {
+    "per_min": 1.6843048388128998,
+    "all": {
+     "n": 1930,
+     "converted": 0.4326424870466321,
+     "gf5": 0.48808290155440415,
+     "gf10": 0.6176165803108808,
+     "ga10": 0.02383419689119171,
+     "time_to_goal_median_s": 2.4,
+     "dur_median_s": 2.0
+    },
+    "dead": {
+     "n": 781,
+     "converted": 0.35979513444302175,
+     "gf5": 0.41357234314980795,
+     "gf10": 0.5403329065300896,
+     "ga10": 0.03585147247119078,
+     "time_to_goal_median_s": 2.6,
+     "dur_median_s": 2.2666666666666666
+    },
+    "out_of_position": {
+     "n": 1149,
+     "converted": 0.4821583986074848,
+     "gf5": 0.5387293298520452,
+     "gf10": 0.6701479547432551,
+     "ga10": 0.015665796344647518,
+     "time_to_goal_median_s": 2.2666666666666666,
+     "dur_median_s": 1.7333333333333334
+    },
+    "by_ball_to_goal": {
+     "<10 m": {
+      "n": 709,
+      "converted": 0.609308885754584,
+      "gf5": 0.6826516220028209,
+      "gf10": 0.7559943582510579,
+      "ga10": 0.007052186177715092,
+      "time_to_goal_median_s": 1.7000000000000002,
+      "dur_median_s": 1.6666666666666667
+     },
+     "10-20 m (middle)": {
+      "n": 638,
+      "converted": 0.49216300940438873,
+      "gf5": 0.5391849529780565,
+      "gf10": 0.6677115987460815,
+      "ga10": 0.0109717868338558,
+      "time_to_goal_median_s": 2.933333333333333,
+      "dur_median_s": 2.4
+     },
+     ">=20 m (my half)": {
+      "n": 583,
+      "converted": 0.15265866209262435,
+      "gf5": 0.1955403087478559,
+      "gf10": 0.39451114922813035,
+      "ga10": 0.058319039451114926,
+      "time_to_goal_median_s": 3.933333333333333,
+      "dur_median_s": 2.1333333333333333
+     }
+    }
+   },
+   "sit_A": {
+    "entries_per_min": 1.7462663121578303,
+    "all": {
+     "n": 2001,
+     "dur_median_s": 1.0,
+     "time_s": 3759.3333333333335,
+     "gd10": -0.5052473763118441,
+     "gf10": 0.0399800099950025,
+     "ga10": 0.543728135932034,
+     "escaped_3s": 0.4947526236881559,
+     "escaped_5s": 0.7371314342828585,
+     "ga10_before_escape": 0.09495252373813093,
+     "jump_over": 0.11744127936031984,
+     "interlocked_share": 0.22974364602608469,
+     "back_rot_share": 0.2491158838285328,
+     "fwd_rot_share": 0.3870738735253178,
+     "exit": {
+      "right_far": 0,
+      "right_close": 13,
+      "B": 1241,
+      "both_wrong": 194,
+      "opp_out": 67,
+      "me_out": 458,
+      "end": 28
+     }
+    },
+    "close": {
+     "n": 1955,
+     "dur_median_s": 1.0,
+     "time_s": 3669.6,
+     "gd10": -0.4971867007672634,
+     "gf10": 0.04092071611253197,
+     "ga10": 0.5365728900255754,
+     "escaped_3s": 0.4971867007672634,
+     "escaped_5s": 0.7365728900255755,
+     "ga10_before_escape": 0.09207161125319693,
+     "jump_over": 0.11867007672634271,
+     "interlocked_share": 0.23514937887375725,
+     "back_rot_share": 0.24987751546520648,
+     "fwd_rot_share": 0.388882282408784,
+     "exit": {
+      "right_far": 0,
+      "right_close": 12,
+      "B": 1220,
+      "both_wrong": 188,
+      "opp_out": 65,
+      "me_out": 443,
+      "end": 27
+     }
+    },
+    "far": {
+     "n": 46,
+     "dur_median_s": 1.4666666666666666,
+     "time_s": 89.73333333333333,
+     "gd10": -0.8478260869565217,
+     "gf10": 0.0,
+     "ga10": 0.8478260869565217,
+     "escaped_3s": 0.391304347826087,
+     "escaped_5s": 0.7608695652173914,
+     "ga10_before_escape": 0.21739130434782608,
+     "jump_over": 0.06521739130434782,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.21674653926990087,
+     "fwd_rot_share": 0.3102164959780072,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1,
+      "B": 21,
+      "both_wrong": 6,
+      "opp_out": 2,
+      "me_out": 15,
+      "end": 1
+     }
+    },
+    "pole_back_ge30": {
+     "n": 711,
+     "dur_median_s": 0.8666666666666667,
+     "time_s": 887.2,
+     "gd10": -0.5133614627285513,
+     "gf10": 0.035161744022503515,
+     "ga10": 0.5485232067510548,
+     "escaped_3s": 0.5639943741209564,
+     "escaped_5s": 0.7946554149085795,
+     "ga10_before_escape": 0.09845288326300984,
+     "jump_over": 0.13642756680731363,
+     "interlocked_share": 0.18581767363577054,
+     "back_rot_share": 0.4380823656522387,
+     "fwd_rot_share": 0.3202331439360488,
+     "exit": {
+      "right_far": 0,
+      "right_close": 3,
+      "B": 418,
+      "both_wrong": 106,
+      "opp_out": 15,
+      "me_out": 162,
+      "end": 7
+     }
+    },
+    "pole_back_lt30": {
+     "n": 1290,
+     "dur_median_s": 1.1333333333333333,
+     "time_s": 2872.133333333333,
+     "gd10": -0.5007751937984496,
+     "gf10": 0.04263565891472868,
+     "ga10": 0.5410852713178295,
+     "escaped_3s": 0.4565891472868217,
+     "escaped_5s": 0.7054263565891473,
+     "ga10_before_escape": 0.09302325581395349,
+     "jump_over": 0.10697674418604651,
+     "interlocked_share": 0.2539540075528392,
+     "back_rot_share": 0.1449645903582577,
+     "fwd_rot_share": 0.42391399657800805,
+     "exit": {
+      "right_far": 0,
+      "right_close": 10,
+      "B": 823,
+      "both_wrong": 88,
+      "opp_out": 52,
+      "me_out": 296,
+      "end": 21
+     }
+    },
+    "share_of_time": 0.05829574624034305
+   },
+   "sit_B": {
+    "entries_per_min": 5.2998877130107465,
+    "all": {
+     "n": 6073,
+     "dur_median_s": 0.8,
+     "time_s": 7363.2,
+     "gd10": -0.29128931335419067,
+     "gf10": 0.0969866622756463,
+     "ga10": 0.3863000164663264,
+     "escaped_3s": 0.7702947472418903,
+     "escaped_5s": 0.8924748888522971,
+     "ga10_before_escape": 0.04874032603326198,
+     "jump_over": 0.039354520006586534,
+     "interlocked_share": 0.05319389514811733,
+     "back_rot_share": 0.2175570344598767,
+     "fwd_rot_share": 0.5109023105188846,
+     "exit": {
+      "right_far": 0,
+      "right_close": 3498,
+      "B": 0,
+      "both_wrong": 12,
+      "opp_out": 244,
+      "me_out": 503,
+      "end": 45
+     }
+    },
+    "close": {
+     "n": 4407,
+     "dur_median_s": 0.8,
+     "time_s": 5555.6,
+     "gd10": -0.27751304742455185,
+     "gf10": 0.10279101429543908,
+     "ga10": 0.37848876786929886,
+     "escaped_3s": 0.7565237122759246,
+     "escaped_5s": 0.8747447243022465,
+     "ga10_before_escape": 0.05196278647606081,
+     "jump_over": 0.04992058089403222,
+     "interlocked_share": 0.07216998563117477,
+     "back_rot_share": 0.21466987356182723,
+     "fwd_rot_share": 0.5039094410377013,
+     "exit": {
+      "right_far": 0,
+      "right_close": 2445,
+      "B": 0,
+      "both_wrong": 9,
+      "opp_out": 162,
+      "me_out": 350,
+      "end": 30
+     }
+    },
+    "far": {
+     "n": 1666,
+     "dur_median_s": 0.8666666666666667,
+     "time_s": 1807.6,
+     "gd10": -0.3277310924369748,
+     "gf10": 0.08163265306122448,
+     "ga10": 0.4069627851140456,
+     "escaped_3s": 0.8067226890756303,
+     "escaped_5s": 0.93937575030012,
+     "ga10_before_escape": 0.040216086434573826,
+     "jump_over": 0.011404561824729893,
+     "interlocked_share": 0.0029972380299695765,
+     "back_rot_share": 0.2251943202208034,
+     "fwd_rot_share": 0.5294002551788931,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1053,
+      "B": 0,
+      "both_wrong": 3,
+      "opp_out": 82,
+      "me_out": 153,
+      "end": 15
+     }
+    },
+    "pole_back_ge30": {
+     "n": 1854,
+     "dur_median_s": 0.9333333333333333,
+     "time_s": 2004.1333333333334,
+     "gd10": -0.30151024811218985,
+     "gf10": 0.0965480043149946,
+     "ga10": 0.3964401294498382,
+     "escaped_3s": 0.7281553398058253,
+     "escaped_5s": 0.8629989212513485,
+     "ga10_before_escape": 0.06796116504854369,
+     "jump_over": 0.030744336569579287,
+     "interlocked_share": 0.045810586395070116,
+     "back_rot_share": 0.42555290066537266,
+     "fwd_rot_share": 0.3769929606261016,
+     "exit": {
+      "right_far": 0,
+      "right_close": 949,
+      "B": 0,
+      "both_wrong": 4,
+      "opp_out": 36,
+      "me_out": 116,
+      "end": 8
+     }
+    },
+    "pole_back_lt30": {
+     "n": 4219,
+     "dur_median_s": 0.8,
+     "time_s": 5359.066666666667,
+     "gd10": -0.2867978193884807,
+     "gf10": 0.09717942640436122,
+     "ga10": 0.38184403887177054,
+     "escaped_3s": 0.788812514813937,
+     "escaped_5s": 0.9054278264991704,
+     "ga10_before_escape": 0.040293908509125384,
+     "jump_over": 0.04313818440388718,
+     "interlocked_share": 0.05643842096659317,
+     "back_rot_share": 0.12615520086305526,
+     "fwd_rot_share": 0.5697475190282991,
+     "exit": {
+      "right_far": 0,
+      "right_close": 2549,
+      "B": 0,
+      "both_wrong": 8,
+      "opp_out": 208,
+      "me_out": 387,
+      "end": 37
+     }
+    },
+    "share_of_time": 0.11418068063049139
+   },
+   "rotation_all": {
+    "n_steps": 967309,
+    "minutes": 1074.7877777777778,
+    "w_back_share": 0.17433622554943665,
+    "w_fwd_share": 0.5730433604980415,
+    "w_median": -2.0216000080108643,
+    "back_pass_per_min": 11.67765419323091,
+    "fwd_pass_per_min": 33.14980011557837,
+    "servo_off_share": 0.014480378038455137,
+    "aim_drives_back_share": 0.18269866212386002,
+    "aim_drives_fwd_share": 0.7180442294257224,
+    "aim_holds_share": 0.0992571084504176,
+    "aim_offset_p10_p50_p90": [
+     -166.4602020263672,
+     -107.53142547607422,
+     163.0274841308594
+    ],
+    "aim_back_pass_per_min": 20.97251240296534,
+    "aim_fwd_pass_per_min": 38.354548546534765,
+    "aim_back_half_share": 0.5246396210225092
+   },
+   "rotation_A": {
+    "n_steps": 57256,
+    "minutes": 63.617777777777775,
+    "w_back_share": 0.2134623445577756,
+    "w_fwd_share": 0.27790973871733965,
+    "w_median": 0.11514999717473984,
+    "back_pass_per_min": 5.878859857482186,
+    "fwd_pass_per_min": 11.003213636998742,
+    "servo_off_share": 0.017675003493083694,
+    "aim_drives_back_share": 0.10466894246497405,
+    "aim_drives_fwd_share": 0.7690064718014366,
+    "aim_holds_share": 0.12632458573358937,
+    "aim_offset_p10_p50_p90": [
+     -144.4701156616211,
+     -112.12354278564453,
+     34.82277679443369
+    ],
+    "aim_back_pass_per_min": 11.333310046108705,
+    "aim_fwd_pass_per_min": 15.294466955428252,
+    "aim_back_half_share": 0.08696038688571225
+   },
+   "rotation_interlocked": {
+    "n_steps": 96906,
+    "minutes": 107.67333333333333,
+    "w_back_share": 0.12039502198006316,
+    "w_fwd_share": 0.10266650155821105,
+    "w_median": 0.09769999980926514,
+    "back_pass_per_min": 2.340412358367903,
+    "fwd_pass_per_min": 4.578663859822921,
+    "servo_off_share": 0.0010525664045569934,
+    "aim_drives_back_share": 0.018294698566174952,
+    "aim_drives_fwd_share": 0.899828519482666,
+    "aim_holds_share": 0.08187678195115904,
+    "aim_offset_p10_p50_p90": [
+     -164.35369262695312,
+     -134.69241333007812,
+     -29.966746520996104
+    ],
+    "aim_back_pass_per_min": 4.4486409510247045,
+    "aim_fwd_pass_per_min": 5.702433285864652,
+    "aim_back_half_share": 0.4892876327424487
+   },
+   "match_minutes": 572.9366666666666,
+   "rates": {
+    "states": {
+     "airborne": 0.5718989485262723,
+     "good_side": 0.8001114431893015,
+     "sit_A": 0.05919101341970353,
+     "sit_B": 0.11978798915341426,
+     "pole_on_opp": 0.1588747752786338,
+     "interlocked": 0.10018101764792843,
+     "open_goal": 0.07311520930747052,
+     "mutual_pole_contact": 0.11568175215985792
+    },
+    "events_per_min": {
+     "takeoff": 29.70747203006732,
+     "back_pass": 10.9532176331299,
+     "fwd_pass": 31.09331456065534,
+     "kill": 1.1641775414385536,
+     "goal_for": 1.1449782116697018
+    }
+   },
+   "contact_runs": {
+    "n": 2024,
+    ">=0.5s": 0.30039525691699603,
+    ">=1s": 0.2208498023715415,
+    ">=2s": 0.13438735177865613,
+    ">=3s": 0.10869565217391304,
+    ">=5s": 0.07905138339920949,
+    ">=10s": 0.04693675889328063
+   },
+   "open_goal_dx_check": {
+    "3.0 m": {
+     "n": 2047,
+     "converted": 0.39863214460185636,
+     "gf5": 0.4230581338544211,
+     "gf10": 0.575476306790425,
+     "ga10": 0.03419638495359062,
+     "time_to_goal_median_s": 2.6666666666666665,
+     "dur_median_s": 1.7333333333333334
+    },
+    "5.5 m": {
+     "n": 1149,
+     "converted": 0.4821583986074848,
+     "gf5": 0.5387293298520452,
+     "gf10": 0.6701479547432551,
+     "ga10": 0.015665796344647518,
+     "time_to_goal_median_s": 2.2666666666666666,
+     "dur_median_s": 1.7333333333333334
+    },
+    "8.0 m": {
+     "n": 609,
+     "converted": 0.5599343185550082,
+     "gf5": 0.7027914614121511,
+     "gf10": 0.8177339901477833,
+     "ga10": 0.0016420361247947454,
+     "time_to_goal_median_s": 1.9333333333333333,
+     "dur_median_s": 1.4666666666666666
+    }
+   }
+  },
+  "farm2_sim": {
+   "label": "farm2 self-play (sim)",
+   "minutes": 1218.122222222222,
+   "alive_minutes": 1107.1166666666666,
+   "baseline_10s": {
+    "p_gf": 0.18311854905914188,
+    "p_ga": 0.15314342429283487,
+    "gd": 0.03017071422403524
+   },
+   "interlock": {
+    "n": 177,
+    "per_min": 0.2906112322244621,
+    "long_n": 69,
+    "long_per_min": 0.11328912442648523,
+    "share_of_time": 0.0183032171557315,
+    "dur_median_s": 2.533333333333333,
+    "dur_p90_s": 6.5600000000000005,
+    "dur_max_s": 34.2,
+    "stacked_share": 0.6440677966101694,
+    "attacker_at_start": {
+     "me": 90,
+     "opp": 87,
+     "none": 0
+    },
+    "top": {
+     "me": 76,
+     "opp": 38,
+     "none": 63
+    },
+    "let_go": {
+     "me": 1,
+     "opp": 0
+    },
+    "attacker_still_good_2s": 0.8192090395480226,
+    "by_role": {
+     "attacker": {
+      "n": 177,
+      "kick_first": 0.327683615819209,
+      "gf5": 0.3446327683615819,
+      "ga5": 0.0,
+      "gf10": 0.4350282485875706,
+      "ga10": 0.04519774011299435
+     },
+     "defender": {
+      "n": 177,
+      "kick_first": 0.15819209039548024,
+      "gf5": 0.0,
+      "ga5": 0.3446327683615819,
+      "gf10": 0.04519774011299435,
+      "ga10": 0.4350282485875706
+     },
+     "neutral": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     }
+    },
+    "by_top": {
+     "top": {
+      "n": 114,
+      "kick_first": 0.2982456140350877,
+      "gf5": 0.2982456140350877,
+      "ga5": 0.05263157894736842,
+      "gf10": 0.35964912280701755,
+      "ga10": 0.12280701754385964
+     },
+     "bottom": {
+      "n": 114,
+      "kick_first": 0.20175438596491227,
+      "gf5": 0.05263157894736842,
+      "ga5": 0.2982456140350877,
+      "gf10": 0.12280701754385964,
+      "ga10": 0.35964912280701755
+     },
+     "level": {
+      "n": 126,
+      "kick_first": 0.23015873015873015,
+      "gf5": 0.16666666666666666,
+      "ga5": 0.16666666666666666,
+      "gf10": 0.23809523809523808,
+      "ga10": 0.23809523809523808
+     }
+    },
+    "let_go_vs_not": {
+     "released": {
+      "n": 1,
+      "kick_first": 0.0,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.0,
+      "ga10": 0.0
+     },
+     "released_attacker": {
+      "n": 1,
+      "kick_first": 0.0,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.0,
+      "ga10": 0.0
+     },
+     "released_top": {
+      "n": 0,
+      "kick_first": null,
+      "gf5": null,
+      "ga5": null,
+      "gf10": null,
+      "ga10": null
+     },
+     "nobody_released": {
+      "n": 352,
+      "kick_first": 0.24431818181818182,
+      "gf5": 0.17329545454545456,
+      "ga5": 0.17329545454545456,
+      "gf10": 0.24147727272727273,
+      "ga10": 0.24147727272727273
+     },
+     "nobody_released_attacker": {
+      "n": 176,
+      "kick_first": 0.32954545454545453,
+      "gf5": 0.3465909090909091,
+      "ga5": 0.0,
+      "gf10": 0.4375,
+      "ga10": 0.045454545454545456
+     },
+     "nobody_released_top": {
+      "n": 114,
+      "kick_first": 0.2982456140350877,
+      "gf5": 0.2982456140350877,
+      "ga5": 0.05263157894736842,
+      "gf10": 0.35964912280701755,
+      "ga10": 0.12280701754385964
+     },
+     "other_released": {
+      "n": 1,
+      "kick_first": 0.0,
+      "gf5": 0.0,
+      "ga5": 0.0,
+      "gf10": 0.0,
+      "ga10": 0.0
+     }
+    },
+    "by_who": {
+     "me": {
+      "let_go": 1,
+      "kick_first": 0.2711864406779661,
+      "gf5": 0.1751412429378531,
+      "ga5": 0.1694915254237288
+     },
+     "opp": {
+      "let_go": 0,
+      "kick_first": 0.21468926553672316,
+      "gf5": 0.1694915254237288,
+      "ga5": 0.1751412429378531
+     }
+    }
+   },
+   "open_goal": {
+    "per_min": 2.4110881046419355,
+    "all": {
+     "n": 2937,
+     "converted": 0.27817500851208715,
+     "gf5": 0.31903302689819546,
+     "gf10": 0.4838270343888321,
+     "ga10": 0.02247191011235955,
+     "time_to_goal_median_s": 2.933333333333333,
+     "dur_median_s": 2.1333333333333333
+    },
+    "dead": {
+     "n": 1319,
+     "converted": 0.1561789234268385,
+     "gf5": 0.18574677786201668,
+     "gf10": 0.3457164518574678,
+     "ga10": 0.021986353297952996,
+     "time_to_goal_median_s": 2.933333333333333,
+     "dur_median_s": 2.533333333333333
+    },
+    "out_of_position": {
+     "n": 1618,
+     "converted": 0.37762669962917184,
+     "gf5": 0.4276885043263288,
+     "gf10": 0.5964153275648949,
+     "ga10": 0.022867737948084055,
+     "time_to_goal_median_s": 2.933333333333333,
+     "dur_median_s": 1.8666666666666667
+    },
+    "by_ball_to_goal": {
+     "<10 m": {
+      "n": 899,
+      "converted": 0.5361512791991101,
+      "gf5": 0.6329254727474972,
+      "gf10": 0.7474972191323693,
+      "ga10": 0.004449388209121246,
+      "time_to_goal_median_s": 2.3333333333333335,
+      "dur_median_s": 2.0
+     },
+     "10-20 m (middle)": {
+      "n": 927,
+      "converted": 0.2815533980582524,
+      "gf5": 0.33225458468176916,
+      "gf10": 0.5555555555555556,
+      "ga10": 0.010787486515641856,
+      "time_to_goal_median_s": 3.4,
+      "dur_median_s": 2.6
+     },
+     ">=20 m (my half)": {
+      "n": 1111,
+      "converted": 0.0666066606660666,
+      "gf5": 0.054005400540054004,
+      "gf10": 0.21062106210621062,
+      "ga10": 0.046804680468046804,
+      "time_to_goal_median_s": 4.9,
+      "dur_median_s": 2.0
+     }
+    }
+   },
+   "sit_A": {
+    "entries_per_min": 1.274092181955834,
+    "all": {
+     "n": 1552,
+     "dur_median_s": 1.1333333333333333,
+     "time_s": 2479.5333333333333,
+     "gd10": -0.5373711340206185,
+     "gf10": 0.05283505154639175,
+     "ga10": 0.5882731958762887,
+     "escaped_3s": 0.48711340206185566,
+     "escaped_5s": 0.7880154639175257,
+     "ga10_before_escape": 0.1333762886597938,
+     "jump_over": 0.057345360824742266,
+     "interlocked_share": 0.08034551806033462,
+     "back_rot_share": 0.2859792394136622,
+     "fwd_rot_share": 0.4927555641324129,
+     "exit": {
+      "right_far": 0,
+      "right_close": 2,
+      "B": 699,
+      "both_wrong": 272,
+      "opp_out": 79,
+      "me_out": 475,
+      "end": 25
+     }
+    },
+    "close": {
+     "n": 1418,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 2228.3333333333335,
+     "gd10": -0.5253878702397743,
+     "gf10": 0.054301833568406205,
+     "ga10": 0.5782792665726375,
+     "escaped_3s": 0.5091678420310296,
+     "escaped_5s": 0.7933709449929478,
+     "ga10_before_escape": 0.12905500705218617,
+     "jump_over": 0.05782792665726375,
+     "interlocked_share": 0.08793811285588105,
+     "back_rot_share": 0.28484382568133887,
+     "fwd_rot_share": 0.4906540923329141,
+     "exit": {
+      "right_far": 0,
+      "right_close": 2,
+      "B": 660,
+      "both_wrong": 233,
+      "opp_out": 64,
+      "me_out": 436,
+      "end": 23
+     }
+    },
+    "far": {
+     "n": 134,
+     "dur_median_s": 1.6666666666666667,
+     "time_s": 251.2,
+     "gd10": -0.664179104477612,
+     "gf10": 0.03731343283582089,
+     "ga10": 0.6940298507462687,
+     "escaped_3s": 0.2537313432835821,
+     "escaped_5s": 0.7313432835820896,
+     "ga10_before_escape": 0.1791044776119403,
+     "jump_over": 0.05223880597014925,
+     "interlocked_share": 0.0,
+     "back_rot_share": 0.29799428920795,
+     "fwd_rot_share": 0.5149935269062131,
+     "exit": {
+      "right_far": 0,
+      "right_close": 0,
+      "B": 39,
+      "both_wrong": 39,
+      "opp_out": 15,
+      "me_out": 39,
+      "end": 2
+     }
+    },
+    "pole_back_ge30": {
+     "n": 725,
+     "dur_median_s": 1.1333333333333333,
+     "time_s": 1130.5333333333333,
+     "gd10": -0.5834482758620689,
+     "gf10": 0.04551724137931035,
+     "ga10": 0.6275862068965518,
+     "escaped_3s": 0.46482758620689657,
+     "escaped_5s": 0.7848275862068965,
+     "ga10_before_escape": 0.1406896551724138,
+     "jump_over": 0.060689655172413794,
+     "interlocked_share": 0.09729300912614548,
+     "back_rot_share": 0.4407065827241415,
+     "fwd_rot_share": 0.35905731376408145,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1,
+      "B": 317,
+      "both_wrong": 156,
+      "opp_out": 41,
+      "me_out": 205,
+      "end": 5
+     }
+    },
+    "pole_back_lt30": {
+     "n": 827,
+     "dur_median_s": 1.1333333333333333,
+     "time_s": 1349.0,
+     "gd10": -0.4969770253929867,
+     "gf10": 0.0592503022974607,
+     "ga10": 0.5538089480048367,
+     "escaped_3s": 0.5066505441354293,
+     "escaped_5s": 0.7908101571946796,
+     "ga10_before_escape": 0.12696493349455865,
+     "jump_over": 0.05441354292623942,
+     "interlocked_share": 0.06548828586842062,
+     "back_rot_share": 0.15033555876058183,
+     "fwd_rot_share": 0.6099638247334288,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1,
+      "B": 382,
+      "both_wrong": 116,
+      "opp_out": 38,
+      "me_out": 270,
+      "end": 20
+     }
+    },
+    "share_of_time": 0.03732719125255293
+   },
+   "sit_B": {
+    "entries_per_min": 3.7327945562842633,
+    "all": {
+     "n": 4547,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 5596.533333333334,
+     "gd10": -0.3793710138552892,
+     "gf10": 0.058060259511766,
+     "ga10": 0.43435232021112824,
+     "escaped_3s": 0.6773696943039367,
+     "escaped_5s": 0.884539256652738,
+     "ga10_before_escape": 0.06949637123378051,
+     "jump_over": 0.025291400923685946,
+     "interlocked_share": 0.015161951073895839,
+     "back_rot_share": 0.21131529288574655,
+     "fwd_rot_share": 0.5818119323384633,
+     "exit": {
+      "right_far": 0,
+      "right_close": 2158,
+      "B": 0,
+      "both_wrong": 7,
+      "opp_out": 451,
+      "me_out": 685,
+      "end": 32
+     }
+    },
+    "close": {
+     "n": 2586,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 3233.866666666667,
+     "gd10": -0.38553750966744005,
+     "gf10": 0.065738592420727,
+     "ga10": 0.44779582366589327,
+     "escaped_3s": 0.7196442382057231,
+     "escaped_5s": 0.8704563031709204,
+     "ga10_before_escape": 0.07849961330239752,
+     "jump_over": 0.03905645784996133,
+     "interlocked_share": 0.02451079259529874,
+     "back_rot_share": 0.22588035497275677,
+     "fwd_rot_share": 0.5421799157683393,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1234,
+      "B": 0,
+      "both_wrong": 7,
+      "opp_out": 161,
+      "me_out": 325,
+      "end": 22
+     }
+    },
+    "far": {
+     "n": 1961,
+     "dur_median_s": 1.0,
+     "time_s": 2362.6666666666665,
+     "gd10": -0.3712391636919939,
+     "gf10": 0.0479347271800102,
+     "ga10": 0.4166241713411525,
+     "escaped_3s": 0.6216216216216216,
+     "escaped_5s": 0.903110657827639,
+     "ga10_before_escape": 0.057623661397246305,
+     "jump_over": 0.0071392146863844975,
+     "interlocked_share": 0.002833494075248254,
+     "back_rot_share": 0.1921081278898218,
+     "fwd_rot_share": 0.6340752647455719,
+     "exit": {
+      "right_far": 0,
+      "right_close": 924,
+      "B": 0,
+      "both_wrong": 0,
+      "opp_out": 290,
+      "me_out": 360,
+      "end": 10
+     }
+    },
+    "pole_back_ge30": {
+     "n": 1275,
+     "dur_median_s": 1.0666666666666667,
+     "time_s": 1523.4666666666667,
+     "gd10": -0.3803921568627451,
+     "gf10": 0.06352941176470588,
+     "ga10": 0.4407843137254902,
+     "escaped_3s": 0.8007843137254902,
+     "escaped_5s": 0.8964705882352941,
+     "ga10_before_escape": 0.06196078431372549,
+     "jump_over": 0.03137254901960784,
+     "interlocked_share": 0.012872620108807338,
+     "back_rot_share": 0.42256741935919434,
+     "fwd_rot_share": 0.38907376982771064,
+     "exit": {
+      "right_far": 0,
+      "right_close": 718,
+      "B": 0,
+      "both_wrong": 5,
+      "opp_out": 29,
+      "me_out": 158,
+      "end": 5
+     }
+    },
+    "pole_back_lt30": {
+     "n": 3272,
+     "dur_median_s": 1.0,
+     "time_s": 4073.0666666666666,
+     "gd10": -0.37897310513447435,
+     "gf10": 0.05592909535452323,
+     "ga10": 0.43184596577017115,
+     "escaped_3s": 0.6292787286063569,
+     "escaped_5s": 0.8798899755501223,
+     "ga10_before_escape": 0.07243276283618581,
+     "jump_over": 0.022921760391198046,
+     "interlocked_share": 0.016054034503140285,
+     "back_rot_share": 0.12899669225810415,
+     "fwd_rot_share": 0.6569161979867547,
+     "exit": {
+      "right_far": 0,
+      "right_close": 1440,
+      "B": 0,
+      "both_wrong": 2,
+      "opp_out": 422,
+      "me_out": 527,
+      "end": 27
+     }
+    },
+    "share_of_time": 0.08425088192050421
+   },
+   "rotation_all": {
+    "n_steps": 996405,
+    "minutes": 1107.1166666666666,
+    "w_back_share": 0.12809851415839946,
+    "w_fwd_share": 0.6841756113227051,
+    "w_median": -2.885200023651123,
+    "back_pass_per_min": 3.924608969244434,
+    "fwd_pass_per_min": 29.37992081533112,
+    "servo_off_share": 0.012916434582323453,
+    "aim_drives_back_share": 0.1013212544545949,
+    "aim_drives_fwd_share": 0.8254032647541776,
+    "aim_holds_share": 0.07327548079122756,
+    "aim_offset_p10_p50_p90": [
+     -160.14135131835937,
+     -111.71755981445312,
+     32.73786010742176
+    ],
+    "aim_back_pass_per_min": 6.938744787511103,
+    "aim_fwd_pass_per_min": 33.03084589097807,
+    "aim_back_half_share": 0.5176511257860676
+   },
+   "rotation_A": {
+    "n_steps": 38467,
+    "minutes": 42.74111111111111,
+    "w_back_share": 0.284971534042166,
+    "w_fwd_share": 0.48958847843606207,
+    "w_median": -0.8888000249862671,
+    "back_pass_per_min": 8.680167416226896,
+    "fwd_pass_per_min": 21.94608365612083,
+    "servo_off_share": 0.03434112356045441,
+    "aim_drives_back_share": 0.23194960426425457,
+    "aim_drives_fwd_share": 0.5515533301028375,
+    "aim_holds_share": 0.216497065632908,
+    "aim_offset_p10_p50_p90": [
+     -128.90154266357422,
+     -39.062889099121094,
+     110.11250305175781
+    ],
+    "aim_back_pass_per_min": 20.02755608703564,
+    "aim_fwd_pass_per_min": 31.632308212233863,
+    "aim_back_half_share": 0.22993054433855598
+   },
+   "rotation_interlocked": {
+    "n_steps": 16897,
+    "minutes": 18.774444444444445,
+    "w_back_share": 0.15653666331301413,
+    "w_fwd_share": 0.20358643546191632,
+    "w_median": 0.004100000020116568,
+    "back_pass_per_min": 5.486180978871989,
+    "fwd_pass_per_min": 13.315973249689295,
+    "servo_off_share": 0.0027223767532698114,
+    "aim_drives_back_share": 0.03821731647973414,
+    "aim_drives_fwd_share": 0.9152572547623287,
+    "aim_holds_share": 0.046525428757937214,
+    "aim_offset_p10_p50_p90": [
+     -163.27883911132812,
+     -120.67852783203125,
+     -33.90498352050781
+    ],
+    "aim_back_pass_per_min": 14.061667751671894,
+    "aim_fwd_pass_per_min": 18.48257087056874,
+    "aim_back_half_share": 0.4908314046644116
+   },
+   "match_minutes": 609.061111111111,
+   "rates": {
+    "states": {
+     "airborne": 0.7251499139406166,
+     "good_side": 0.8404193074101395,
+     "sit_A": 0.038605787807166767,
+     "sit_B": 0.08794717007642475,
+     "pole_on_opp": 0.04964647909233695,
+     "interlocked": 0.016957963880149137,
+     "open_goal": 0.10416246405828955,
+     "mutual_pole_contact": 0.02476904471575313
+    },
+    "events_per_min": {
+     "takeoff": 27.424998403736172,
+     "back_pass": 3.566965548065785,
+     "fwd_pass": 26.70257500159627,
+     "kill": 1.6459760469210354,
+     "goal_for": 1.0105718273116182
+    }
+   },
+   "contact_runs": {
+    "n": 1098,
+    ">=0.5s": 0.2795992714025501,
+    ">=1s": 0.16120218579234974,
+    ">=2s": 0.09380692167577413,
+    ">=3s": 0.06284153005464481,
+    ">=5s": 0.030054644808743168,
+    ">=10s": 0.01092896174863388
+   },
+   "open_goal_dx_check": {
+    "3.0 m": {
+     "n": 2279,
+     "converted": 0.3286529179464677,
+     "gf5": 0.3462044756472137,
+     "gf10": 0.5182097411145239,
+     "ga10": 0.040368582711715666,
+     "time_to_goal_median_s": 3.2666666666666666,
+     "dur_median_s": 2.0
+    },
+    "5.5 m": {
+     "n": 1618,
+     "converted": 0.37762669962917184,
+     "gf5": 0.4276885043263288,
+     "gf10": 0.5964153275648949,
+     "ga10": 0.022867737948084055,
+     "time_to_goal_median_s": 2.933333333333333,
+     "dur_median_s": 1.8666666666666667
+    },
+    "8.0 m": {
+     "n": 1107,
+     "converted": 0.39656729900632337,
+     "gf5": 0.5103884372177055,
+     "gf10": 0.6621499548328816,
+     "ga10": 0.018066847335140017,
+     "time_to_goal_median_s": 2.533333333333333,
+     "dur_median_s": 1.6666666666666667
+    }
+   }
+  }
+ },
+ "comparison": [
+  {
+   "kind": "state",
+   "name": "good_side",
+   "user_vs_t20": 0.7623336949280546,
+   "user_vs_earlier": 0.81985144698296,
+   "t_user": -3.5881765641675765,
+   "t20_bot": 0.8449401867499914,
+   "farm2_bot": 0.8124501479701106,
+   "t_bot": 1.5495345387835335,
+   "per_match_user_t20": [
+    0.7510452299505891,
+    0.7556399374581193,
+    0.7803159173754557
+   ],
+   "per_match_t20": [
+    0.8818532818532818,
+    0.8306471609223903,
+    0.8223201174743024
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "near_ball",
+   "user_vs_t20": 0.33857199389916204,
+   "user_vs_earlier": 0.3029446111942901,
+   "t_user": 1.0082192765919917,
+   "t20_bot": 0.3409415067459767,
+   "farm2_bot": 0.2686037089178748,
+   "t_bot": 2.8334764824320717,
+   "per_match_user_t20": [
+    0.2702394526795895,
+    0.3656466383739111,
+    0.3798298906439854
+   ],
+   "per_match_t20": [
+    0.3088803088803089,
+    0.3240763699479296,
+    0.3898678414096916
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "tip_behind_ball",
+   "user_vs_t20": 0.1946920078170219,
+   "user_vs_earlier": 0.1859971175594991,
+   "t_user": 0.4380983786354443,
+   "t20_bot": 0.2063208848885606,
+   "farm2_bot": 0.12999242780229373,
+   "t_bot": 10.883638978439386,
+   "per_match_user_t20": [
+    0.16001520334473585,
+    0.22649095376368103,
+    0.19756986634264884
+   ],
+   "per_match_t20": [
+    0.20772200772200772,
+    0.1948921398462683,
+    0.21634850709740577
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "tip_past_ball",
+   "user_vs_t20": 0.14387998608214012,
+   "user_vs_earlier": 0.11694749363479102,
+   "t_user": 1.2068760189640455,
+   "t20_bot": 0.1346206218574161,
+   "farm2_bot": 0.13861128111558105,
+   "t_bot": -0.18048155568338914,
+   "per_match_user_t20": [
+    0.11022424933485367,
+    0.13915568461023006,
+    0.1822600243013366
+   ],
+   "per_match_t20": [
+    0.10115830115830116,
+    0.1291842301016613,
+    0.17351933431228586
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "sit_right_far",
+   "user_vs_t20": 0.4932881132157634,
+   "user_vs_earlier": 0.5596534786558094,
+   "t_user": -3.8939788821744097,
+   "t20_bot": 0.5427293628118104,
+   "farm2_bot": 0.5872359826291884,
+   "t_bot": -1.56801800397211,
+   "per_match_user_t20": [
+    0.5112124667426834,
+    0.48894348894348894,
+    0.47970838396111787
+   ],
+   "per_match_t20": [
+    0.561003861003861,
+    0.5757500619885941,
+    0.491434165442976
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "sit_right_close",
+   "user_vs_t20": 0.20180313181953968,
+   "user_vs_earlier": 0.20274860855628496,
+   "t_user": -0.03409251549458416,
+   "t20_bot": 0.25888788540851754,
+   "farm2_bot": 0.19311388101333543,
+   "t_bot": 5.33231608748919,
+   "per_match_user_t20": [
+    0.15431394906879514,
+    0.20370784007147644,
+    0.2473876063183475
+   ],
+   "per_match_t20": [
+    0.2413127413127413,
+    0.2536573270518225,
+    0.28169358786098875
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "sit_A",
+   "user_vs_t20": 0.06305475038343095,
+   "user_vs_earlier": 0.03692155015155461,
+   "t_user": 2.8809754899764006,
+   "t20_bot": 0.049198284028336974,
+   "farm2_bot": 0.055173477007821076,
+   "t_bot": -0.5040185923742244,
+   "per_match_user_t20": [
+    0.06841505131128849,
+    0.07214652669198124,
+    0.04860267314702309
+   ],
+   "per_match_t20": [
+    0.04980694980694981,
+    0.06719563600297546,
+    0.03059226627508566
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "sit_B",
+   "user_vs_t20": 0.1489324573548089,
+   "user_vs_earlier": 0.11704877552595944,
+   "t_user": 2.111155136792254,
+   "t20_bot": 0.09592328918198861,
+   "farm2_bot": 0.10925886064348747,
+   "t_bot": -0.673125123204641,
+   "per_match_user_t20": [
+    0.17065754465982516,
+    0.1262005807460353,
+    0.14993924665856623
+   ],
+   "per_match_t20": [
+    0.0667953667953668,
+    0.09248698239523928,
+    0.12848751835535976
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "sit_both_wrong",
+   "user_vs_t20": 0.004523819281358219,
+   "user_vs_earlier": 0.008251613133320502,
+   "t_user": -1.2331333427353617,
+   "t20_bot": 0.004854994427802899,
+   "farm2_bot": 0.010626689348937034,
+   "t_bot": -1.686247147150083,
+   "per_match_user_t20": [
+    0.0,
+    0.008711190529372347,
+    0.004860267314702308
+   ],
+   "per_match_t20": [
+    0.0,
+    0.009670220679394992,
+    0.004894762604013705
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "opp_out",
+   "user_vs_t20": 0.08839772794509887,
+   "user_vs_earlier": 0.07537597397707102,
+   "t_user": 0.9611648982055336,
+   "t20_bot": 0.048406184141543636,
+   "farm2_bot": 0.0445911093572306,
+   "t_bot": 0.14489563190788834,
+   "per_match_user_t20": [
+    0.09540098821740783,
+    0.10029037301764575,
+    0.06950182260024301
+   ],
+   "per_match_t20": [
+    0.08108108108108109,
+    0.001239771881973717,
+    0.06289769946157611
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "opp_wrong_side",
+   "user_vs_t20": 0.14338724133067113,
+   "user_vs_earlier": 0.17656057631086602,
+   "t_user": -1.8650847745117496,
+   "t20_bot": 0.22585222158434784,
+   "farm2_bot": 0.18397229214412514,
+   "t_bot": 2.2024455724862793,
+   "per_match_user_t20": [
+    0.11478525275560623,
+    0.15255751619387983,
+    0.16281895504252733
+   ],
+   "per_match_t20": [
+    0.24285714285714285,
+    0.22985370691792711,
+    0.20484581497797358
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "airborne",
+   "user_vs_t20": 0.6754969858395133,
+   "user_vs_earlier": 0.6445618323531801,
+   "t_user": 1.7775875120440818,
+   "t20_bot": 0.5668362862316708,
+   "farm2_bot": 0.7223810992045163,
+   "t_bot": -10.084265327323854,
+   "per_match_user_t20": [
+    0.701634359559103,
+    0.6497654679472862,
+    0.6750911300121507
+   ],
+   "per_match_t20": [
+    0.5945945945945946,
+    0.5616166625340937,
+    0.544297601566324
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "pole_planted",
+   "user_vs_t20": 0.20922609993016483,
+   "user_vs_earlier": 0.2618412245425195,
+   "t_user": -5.609752384195455,
+   "t20_bot": 0.21315226346952496,
+   "farm2_bot": 0.2293994379105015,
+   "t_bot": -2.480554540098321,
+   "per_match_user_t20": [
+    0.22310908399847967,
+    0.20772838954657136,
+    0.1968408262454435
+   ],
+   "per_match_t20": [
+    0.20656370656370657,
+    0.22266303000247956,
+    0.21023005384238863
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "in_pit",
+   "user_vs_t20": 0.024357647805276186,
+   "user_vs_earlier": 0.017237613515899218,
+   "t_user": 1.4438906156861016,
+   "t20_bot": 0.00392918943620152,
+   "farm2_bot": 0.02764733882324371,
+   "t_bot": -5.360758195278723,
+   "per_match_user_t20": [
+    0.015583428354237932,
+    0.028813937904846997,
+    0.028675577156743622
+   ],
+   "per_match_t20": [
+    0.0019305019305019305,
+    0.005207041904289611,
+    0.00465002447381302
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "pole_fwd_down",
+   "user_vs_t20": 0.36286611544966596,
+   "user_vs_earlier": 0.3845573334930488,
+   "t_user": -1.40569266447154,
+   "t20_bot": 0.32009977252268,
+   "farm2_bot": 0.32797630106833947,
+   "t_bot": -1.1218156041299954,
+   "per_match_user_t20": [
+    0.37856328392246297,
+    0.33482242573151666,
+    0.37521263669501825
+   ],
+   "per_match_t20": [
+    0.3138996138996139,
+    0.32432432432432434,
+    0.3220753793441018
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "pole_fwd_up",
+   "user_vs_t20": 0.2529591504562287,
+   "user_vs_earlier": 0.24038167319552273,
+   "t_user": 1.4114558386475207,
+   "t20_bot": 0.35065699413999946,
+   "farm2_bot": 0.3999284740021132,
+   "t_bot": -4.625193159246609,
+   "per_match_user_t20": [
+    0.24325351577347015,
+    0.2519544337726156,
+    0.26366950182260024
+   ],
+   "per_match_t20": [
+    0.35405405405405405,
+    0.3337465906273246,
+    0.3641703377386197
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "pole_back_up",
+   "user_vs_t20": 0.1887127115518241,
+   "user_vs_earlier": 0.19798196337606028,
+   "t_user": -1.5211024733336156,
+   "t20_bot": 0.24367425895534858,
+   "farm2_bot": 0.16285796728310203,
+   "t_bot": 9.494161006481534,
+   "per_match_user_t20": [
+    0.18510072215887496,
+    0.18516863971409425,
+    0.19586877278250303
+   ],
+   "per_match_t20": [
+    0.24555984555984556,
+    0.2566327795685594,
+    0.22883015173764074
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "pole_back_down",
+   "user_vs_t20": 0.19546202254228132,
+   "user_vs_earlier": 0.17707902993536814,
+   "t_user": 0.9694922430615383,
+   "t20_bot": 0.08556897438197202,
+   "farm2_bot": 0.10923725764644529,
+   "t_bot": -11.887310672804432,
+   "per_match_user_t20": [
+    0.19308247814519194,
+    0.2280545007817735,
+    0.1652490886998785
+   ],
+   "per_match_t20": [
+    0.08648648648648649,
+    0.08529630547979172,
+    0.08492413117963779
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "backswing_in_flight",
+   "user_vs_t20": 0.11869530681901415,
+   "user_vs_earlier": 0.11094833439763185,
+   "t_user": 1.0768829982151173,
+   "t20_bot": 0.07470597947096351,
+   "farm2_bot": 0.05819296917730887,
+   "t_bot": 3.062606709834209,
+   "per_match_user_t20": [
+    0.12694792854427975,
+    0.11905293723475542,
+    0.11008505467800729
+   ],
+   "per_match_t20": [
+    0.07567567567567568,
+    0.06669972725018597,
+    0.08174253548702888
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "pole_on_opp",
+   "user_vs_t20": 0.11968371344834365,
+   "user_vs_earlier": 0.056393155607246774,
+   "t_user": 5.918284604756886,
+   "t20_bot": 0.11318931647509427,
+   "farm2_bot": 0.04414681643355697,
+   "t_bot": 4.918255583607035,
+   "per_match_user_t20": [
+    0.11820600532117066,
+    0.10475765021219567,
+    0.13608748481166463
+   ],
+   "per_match_t20": [
+    0.11544401544401545,
+    0.09000743863129185,
+    0.13411649534997552
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "opp_pole_on_me",
+   "user_vs_t20": 0.1092991358014475,
+   "user_vs_earlier": 0.04323202094167679,
+   "t_user": 4.1871573418891765,
+   "t20_bot": 0.12447372517291282,
+   "farm2_bot": 0.0586656809722481,
+   "t_bot": 7.307573578820844,
+   "per_match_user_t20": [
+    0.1136450019004181,
+    0.08108108108108109,
+    0.13317132442284327
+   ],
+   "per_match_t20": [
+    0.12007722007722008,
+    0.11629060252913465,
+    0.13705335291238374
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "pole_over_opp_head",
+   "user_vs_t20": 0.04534400805514749,
+   "user_vs_earlier": 0.02845468618919688,
+   "t_user": 1.1232716142778978,
+   "t20_bot": 0.03910320849657228,
+   "farm2_bot": 0.02537473511640503,
+   "t_bot": 1.3752954279422005,
+   "per_match_user_t20": [
+    0.03078677309007982,
+    0.030154121063211973,
+    0.07509113001215066
+   ],
+   "per_match_t20": [
+    0.04555984555984556,
+    0.02206793949913216,
+    0.04968184043073911
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "opp_on_my_pole",
+   "user_vs_t20": 0.021584191628379656,
+   "user_vs_earlier": 0.01936215676507491,
+   "t_user": 0.613533786675952,
+   "t20_bot": 0.04671867495696458,
+   "farm2_bot": 0.009723995832989732,
+   "t_bot": 5.659021162204221,
+   "per_match_user_t20": [
+    0.02242493348536678,
+    0.016082197900379718,
+    0.026245443499392465
+   ],
+   "per_match_t20": [
+    0.04247104247104247,
+    0.05926109595834367,
+    0.038423886441507585
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "on_opp_pole",
+   "user_vs_t20": 0.04444875297294996,
+   "user_vs_earlier": 0.009925382948963687,
+   "t_user": 7.163990007450905,
+   "t20_bot": 0.022354785314006104,
+   "farm2_bot": 0.020912782124245962,
+   "t_bot": 0.4270666687399814,
+   "per_match_user_t20": [
+    0.04180919802356518,
+    0.053383962474871566,
+    0.038153098420413124
+   ],
+   "per_match_t20": [
+    0.02277992277992278,
+    0.017852715100421523,
+    0.02643171806167401
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "tip_peek",
+   "user_vs_t20": 0.07283459488443668,
+   "user_vs_earlier": 0.08655117555588333,
+   "t_user": -1.7446839904933984,
+   "t20_bot": 0.08393520627283713,
+   "farm2_bot": 0.09522607497042494,
+   "t_bot": -1.1704053201536413,
+   "per_match_user_t20": [
+    0.06499429874572406,
+    0.06991288809470628,
+    0.0835965978128797
+   ],
+   "per_match_t20": [
+    0.06756756756756757,
+    0.09050334738408133,
+    0.09373470386686246
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "rhythmic_pressing",
+   "user_vs_t20": 0.014163456283312732,
+   "user_vs_earlier": 0.004482510858634615,
+   "t_user": 1.2908366924299313,
+   "t20_bot": 0.02075953240322961,
+   "farm2_bot": 0.0011302997224841075,
+   "t_bot": 3.5963322619580156,
+   "per_match_user_t20": [
+    0.028506271379703536,
+    0.0040205494750949295,
+    0.009963547995139732
+   ],
+   "per_match_t20": [
+    0.01583011583011583,
+    0.014877262583684603,
+    0.0315712187958884
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "committed",
+   "user_vs_t20": 0.453263689170268,
+   "user_vs_earlier": 0.4426454835192622,
+   "t_user": 0.6497132826217157,
+   "t20_bot": 0.3611099919267886,
+   "farm2_bot": 0.48537695609568554,
+   "t_bot": -7.6353477249914175,
+   "per_match_user_t20": [
+    0.48004561003420754,
+    0.4498548134911771,
+    0.4298906439854192
+   ],
+   "per_match_t20": [
+    0.3872586872586873,
+    0.3612695264071411,
+    0.33480176211453744
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "at_mercy",
+   "user_vs_t20": 0.09426501116172015,
+   "user_vs_earlier": 0.05929713547133468,
+   "t_user": 7.188805744897862,
+   "t20_bot": 0.06133737793197034,
+   "farm2_bot": 0.0901617495421729,
+   "t_bot": -3.9921451635294543,
+   "per_match_user_t20": [
+    0.09426073736221968,
+    0.08889881617154344,
+    0.09963547995139732
+   ],
+   "per_match_t20": [
+    0.05019305019305019,
+    0.0714108604016861,
+    0.06240822320117474
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "high_energy",
+   "user_vs_t20": 0.2743848785585267,
+   "user_vs_earlier": 0.26907326291682143,
+   "t_user": 0.2549213359954002,
+   "t20_bot": 0.2202775075466342,
+   "farm2_bot": 0.2649694892443313,
+   "t_bot": -3.464980324299784,
+   "per_match_user_t20": [
+    0.3128088179399468,
+    0.2622291713200804,
+    0.24811664641555287
+   ],
+   "per_match_t20": [
+    0.24092664092664093,
+    0.22142325812050584,
+    0.19848262359275576
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "mutual_pole_contact",
+   "user_vs_t20": 0.07693579819624331,
+   "user_vs_earlier": 0.018171841315851447,
+   "t_user": 5.9180337591407355,
+   "t20_bot": 0.07974978286581569,
+   "farm2_bot": 0.017388161331152074,
+   "t_bot": 6.918785425477306,
+   "per_match_user_t20": [
+    0.0862789813759027,
+    0.058744695108331475,
+    0.08578371810449575
+   ],
+   "per_match_t20": [
+    0.08764478764478764,
+    0.06521200099181751,
+    0.0863925599608419
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "interlocked",
+   "user_vs_t20": 0.06600448104576649,
+   "user_vs_earlier": 0.011008320381674928,
+   "t_user": 7.2418963095300075,
+   "t20_bot": 0.06914959948141051,
+   "farm2_bot": 0.009943053835937347,
+   "t_bot": 8.081710567710536,
+   "per_match_user_t20": [
+    0.07411630558722919,
+    0.052937234755416576,
+    0.07095990279465371
+   ],
+   "per_match_t20": [
+    0.07722007722007722,
+    0.05876518720555418,
+    0.0714635340186001
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "interlock_let_go",
+   "user_vs_t20": 0.0028164057575048042,
+   "user_vs_earlier": 0.0006808103057027773,
+   "t_user": 1.4685709368836593,
+   "t20_bot": 0.0007939972697681947,
+   "farm2_bot": 0.0,
+   "t_bot": 1.9977430546413337,
+   "per_match_user_t20": [
+    0.004561003420752566,
+    0.0,
+    0.003888213851761847
+   ],
+   "per_match_t20": [
+    0.0011583011583011582,
+    0.0,
+    0.0012236906510034262
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "open_goal",
+   "user_vs_t20": 0.09750003301516304,
+   "user_vs_earlier": 0.10972769341363854,
+   "t_user": -1.2375188573022537,
+   "t20_bot": 0.08503085622675004,
+   "farm2_bot": 0.0786469247889296,
+   "t_bot": 0.3160780871970083,
+   "per_match_user_t20": [
+    0.10946408209806158,
+    0.085101630556176,
+    0.09793438639125152
+   ],
+   "per_match_t20": [
+    0.11853281853281854,
+    0.05628564344160675,
+    0.08027410670582477
+   ]
+  },
+  {
+   "kind": "state",
+   "name": "still",
+   "user_vs_t20": 0.1006466603080286,
+   "user_vs_earlier": 0.09406427116575646,
+   "t_user": 0.7452238139980247,
+   "t20_bot": 0.0781209769650945,
+   "farm2_bot": 0.03234555822897047,
+   "t_bot": 9.053677036751068,
+   "per_match_user_t20": [
+    0.08513873052071455,
+    0.11011838284565557,
+    0.10668286755771568
+   ],
+   "per_match_t20": [
+    0.07374517374517374,
+    0.08083312670468634,
+    0.0797846304454234
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "kill",
+   "user_vs_t20": 1.65690614964955,
+   "user_vs_earlier": 1.4776477993560655,
+   "t_user": 0.540831934985817,
+   "t20_bot": 0.928429328457497,
+   "farm2_bot": 0.8361139422327276,
+   "t_bot": 0.17751052396642666,
+   "per_match_user_t20": [
+    1.5646731571627261,
+    2.185430463576159,
+    1.2206148282097649
+   ],
+   "per_match_t20": [
+    1.5646731571627261,
+    0.0,
+    1.2206148282097649
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "death",
+   "user_vs_t20": 0.928429328457497,
+   "user_vs_earlier": 0.8838512693152679,
+   "t_user": 0.08869484106669932,
+   "t20_bot": 1.65690614964955,
+   "farm2_bot": 1.3856547856227277,
+   "t_bot": 0.7981935337526588,
+   "per_match_user_t20": [
+    1.5646731571627261,
+    0.0,
+    1.2206148282097649
+   ],
+   "per_match_t20": [
+    1.5646731571627261,
+    2.185430463576159,
+    1.2206148282097649
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "back_pass",
+   "user_vs_t20": 5.999858807634555,
+   "user_vs_earlier": 5.722188159797316,
+   "t_user": 0.7121779917847926,
+   "t20_bot": 11.901870364955032,
+   "farm2_bot": 4.043263175483477,
+   "t_bot": 6.632986804163733,
+   "per_match_user_t20": [
+    5.945757997218359,
+    6.357615894039736,
+    5.69620253164557
+   ],
+   "per_match_t20": [
+    13.76912378303199,
+    9.933774834437086,
+    12.002712477396022
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "fwd_pass",
+   "user_vs_t20": 20.85298610193762,
+   "user_vs_earlier": 21.902486289827234,
+   "t_user": -1.2730069401810937,
+   "t20_bot": 30.311918910844394,
+   "farm2_bot": 27.3360137577794,
+   "t_bot": 2.49739087511248,
+   "per_match_user_t20": [
+    20.96662030598053,
+    21.655629139072847,
+    19.93670886075949
+   ],
+   "per_match_t20": [
+    32.232267037552155,
+    29.205298013245034,
+    29.498191681735985
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "vault",
+   "user_vs_t20": 19.709703824654174,
+   "user_vs_earlier": 21.022283526033,
+   "t_user": -1.1569456661616058,
+   "t20_bot": 19.4871056576099,
+   "farm2_bot": 23.207531847075927,
+   "t_bot": -4.998310187718172,
+   "per_match_user_t20": [
+    20.96662030598053,
+    20.4635761589404,
+    17.698915009041592
+   ],
+   "per_match_t20": [
+    18.46314325452017,
+    20.264900662251655,
+    19.733273056057865
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "pogo_vault",
+   "user_vs_t20": 3.4010924411583687,
+   "user_vs_earlier": 2.676692747990361,
+   "t_user": 1.5418740310784766,
+   "t20_bot": 0.7166327021605431,
+   "farm2_bot": 2.749103261583109,
+   "t_bot": -6.44008408326202,
+   "per_match_user_t20": [
+    3.7552155771905427,
+    2.5827814569536423,
+    3.865280289330922
+   ],
+   "per_match_t20": [
+    0.9388038942976357,
+    0.3973509933774835,
+    0.8137432188065099
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "jump_over_ball",
+   "user_vs_t20": 1.2262290860370177,
+   "user_vs_earlier": 0.5110214742922328,
+   "t_user": 1.960542883805985,
+   "t20_bot": 0.1340371004634564,
+   "farm2_bot": 0.20363083777515825,
+   "t_bot": -0.7530651413869707,
+   "per_match_user_t20": [
+    1.2517385257301807,
+    0.5960264900662252,
+    1.8309222423146474
+   ],
+   "per_match_t20": [
+    0.0,
+    0.19867549668874174,
+    0.20343580470162748
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "pushed_opp_wrong_side",
+   "user_vs_t20": 0.30774734851247587,
+   "user_vs_earlier": 0.4488726122769766,
+   "t_user": -0.7358105443855347,
+   "t20_bot": 0.7447714894755224,
+   "farm2_bot": 0.5806742211473007,
+   "t_bot": 1.5691891760050736,
+   "per_match_user_t20": [
+    0.3129346314325452,
+    0.0,
+    0.6103074141048824
+   ],
+   "per_match_t20": [
+    0.6258692628650904,
+    0.794701986754967,
+    0.8137432188065099
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "tip_got_behind_ball",
+   "user_vs_t20": 2.6067002131643284,
+   "user_vs_earlier": 1.927154949727369,
+   "t_user": 2.1785086519814914,
+   "t20_bot": 3.7218437031327998,
+   "farm2_bot": 1.6429343248368358,
+   "t_bot": 2.6760886956502055,
+   "per_match_user_t20": [
+    2.1905424200278163,
+    2.781456953642384,
+    2.848101265822785
+   ],
+   "per_match_t20": [
+    2.5034770514603615,
+    3.576158940397351,
+    5.085895117540687
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "catapult",
+   "user_vs_t20": 0.600786798079111,
+   "user_vs_earlier": 0.79883133729415,
+   "t_user": -0.5559956466703978,
+   "t20_bot": 0.3342993664898268,
+   "farm2_bot": 0.35754080311609826,
+   "t_bot": -0.12387651819847885,
+   "per_match_user_t20": [
+    0.0,
+    1.1920529801324504,
+    0.6103074141048824
+   ],
+   "per_match_t20": [
+    0.0,
+    0.5960264900662252,
+    0.40687160940325495
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "peek_touch",
+   "user_vs_t20": 0.6685987329796536,
+   "user_vs_earlier": 0.46444745431813145,
+   "t_user": 0.5450568132971796,
+   "t20_bot": 0.8157569630513221,
+   "farm2_bot": 0.5857193443942995,
+   "t_bot": 0.6759072770626655,
+   "per_match_user_t20": [
+    0.0,
+    1.1920529801324504,
+    0.8137432188065099
+   ],
+   "per_match_t20": [
+    0.6258692628650904,
+    0.3973509933774835,
+    1.4240506329113924
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "takeoff",
+   "user_vs_t20": 24.141715936450748,
+   "user_vs_earlier": 23.70624051364603,
+   "t_user": 0.2665814847152447,
+   "t20_bot": 27.52535000075035,
+   "farm2_bot": 28.15007367618441,
+   "t_bot": -0.48119530422398776,
+   "per_match_user_t20": [
+    22.21835883171071,
+    27.218543046357617,
+    22.988245931283906
+   ],
+   "per_match_t20": [
+    25.660639777468706,
+    27.41721854304636,
+    29.498191681735985
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "fast_takeoff",
+   "user_vs_t20": 11.273564297082794,
+   "user_vs_earlier": 12.368517460621202,
+   "t_user": -0.8841013840665229,
+   "t20_bot": 7.957738253538882,
+   "farm2_bot": 7.88459936871709,
+   "t_bot": 0.12214820081383577,
+   "per_match_user_t20": [
+    10.952712100139083,
+    13.509933774834437,
+    9.358047016274865
+   ],
+   "per_match_t20": [
+    7.19749652294854,
+    8.741721854304636,
+    7.933996383363472
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "lunge_at_opp",
+   "user_vs_t20": 0.7431847201378939,
+   "user_vs_earlier": 0.17602165101099174,
+   "t_user": 4.061762438693862,
+   "t20_bot": 0.06781193490054249,
+   "farm2_bot": 0.2367625711939916,
+   "t_bot": -1.3801973557590776,
+   "per_match_user_t20": [
+    0.6258692628650904,
+    0.9933774834437087,
+    0.6103074141048824
+   ],
+   "per_match_t20": [
+    0.0,
+    0.0,
+    0.20343580470162748
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "lunge_from_pit",
+   "user_vs_t20": 0.06622516556291391,
+   "user_vs_earlier": 0.03542002334803037,
+   "t_user": 0.4373163762721806,
+   "t20_bot": 0.0,
+   "farm2_bot": 0.023223409196470042,
+   "t_bot": -1.0,
+   "per_match_user_t20": [
+    0.0,
+    0.19867549668874174,
+    0.0
+   ],
+   "per_match_t20": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "overcommit",
+   "user_vs_t20": 0.5429224541115235,
+   "user_vs_earlier": 0.038884932821524984,
+   "t_user": 6.860823317975552,
+   "t20_bot": 0.0,
+   "farm2_bot": 0.11924880964196342,
+   "t_bot": -1.485001070806261,
+   "per_match_user_t20": [
+    0.6258692628650904,
+    0.5960264900662252,
+    0.40687160940325495
+   ],
+   "per_match_t20": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "overcommit_opp_still",
+   "user_vs_t20": 0.0,
+   "user_vs_earlier": 0.0,
+   "t_user": null,
+   "t20_bot": 0.0,
+   "farm2_bot": 0.0,
+   "t_bot": null,
+   "per_match_user_t20": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "per_match_t20": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "got_flung",
+   "user_vs_t20": 0.3342993664898268,
+   "user_vs_earlier": 0.3808308529597077,
+   "t_user": -0.24850305545692034,
+   "t20_bot": 0.600786798079111,
+   "farm2_bot": 0.7423698531587695,
+   "t_bot": -0.3907131940021505,
+   "per_match_user_t20": [
+    0.0,
+    0.5960264900662252,
+    0.40687160940325495
+   ],
+   "per_match_t20": [
+    0.0,
+    1.1920529801324504,
+    0.6103074141048824
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "flung_own_goal",
+   "user_vs_t20": 0.0,
+   "user_vs_earlier": 0.0,
+   "t_user": null,
+   "t20_bot": 0.0,
+   "farm2_bot": 0.0,
+   "t_bot": null,
+   "per_match_user_t20": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "per_match_t20": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "second_touch",
+   "user_vs_t20": 6.0636432540454726,
+   "user_vs_earlier": 4.364658130318524,
+   "t_user": 1.7021550401892778,
+   "t20_bot": 4.1030172443730715,
+   "farm2_bot": 7.628353127875239,
+   "t_bot": -9.417892418920035,
+   "per_match_user_t20": [
+    4.694019471488178,
+    5.562913907284768,
+    7.933996383363472
+   ],
+   "per_match_t20": [
+    4.068150208623088,
+    4.172185430463577,
+    4.06871609403255
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "second_kick",
+   "user_vs_t20": 3.290433819997006,
+   "user_vs_earlier": 2.929170816714425,
+   "t_user": 1.1001026658927964,
+   "t20_bot": 2.0606042203775474,
+   "farm2_bot": 3.8971276141699978,
+   "t_bot": -4.470499775274286,
+   "per_match_user_t20": [
+    3.4422809457579975,
+    3.377483443708609,
+    3.0515370705244123
+   ],
+   "per_match_t20": [
+    1.5646731571627261,
+    2.5827814569536423,
+    2.034358047016275
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "impale_plant",
+   "user_vs_t20": 0.7431847201378939,
+   "user_vs_earlier": 0.7777191201343201,
+   "t_user": -0.20527181177564455,
+   "t20_bot": 0.0,
+   "farm2_bot": 0.07252250414431533,
+   "t_bot": -1.9988075414561641,
+   "per_match_user_t20": [
+    0.6258692628650904,
+    0.9933774834437087,
+    0.6103074141048824
+   ],
+   "per_match_t20": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "impale_brake",
+   "user_vs_t20": 0.504836075863589,
+   "user_vs_earlier": 0.43559154856830606,
+   "t_user": 0.42667927505648706,
+   "t20_bot": 0.0,
+   "farm2_bot": 0.04929909494784527,
+   "t_bot": -1.5118266558766558,
+   "per_match_user_t20": [
+    0.3129346314325452,
+    0.794701986754967,
+    0.40687160940325495
+   ],
+   "per_match_t20": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "pole_interlock",
+   "user_vs_t20": 0.994654494020411,
+   "user_vs_earlier": 0.1866276154096482,
+   "t_user": 1.9541950823035084,
+   "t20_bot": 0.994654494020411,
+   "farm2_bot": 0.14749140939546804,
+   "t_bot": 2.04871746486313,
+   "per_match_user_t20": [
+    1.5646731571627261,
+    0.19867549668874174,
+    1.2206148282097649
+   ],
+   "per_match_t20": [
+    1.5646731571627261,
+    0.19867549668874174,
+    1.2206148282097649
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "let_go_escape",
+   "user_vs_t20": 0.37555928341301836,
+   "user_vs_earlier": 0.0358442243524198,
+   "t_user": 1.4258447818393014,
+   "t20_bot": 0.06781193490054249,
+   "farm2_bot": 0.0,
+   "t_bot": 1.0,
+   "per_match_user_t20": [
+    0.3129346314325452,
+    0.0,
+    0.8137432188065099
+   ],
+   "per_match_t20": [
+    0.0,
+    0.0,
+    0.20343580470162748
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "open_goal_conversion",
+   "user_vs_t20": 0.7066851112275879,
+   "user_vs_earlier": 1.2393023181487526,
+   "t_user": -2.4399172599255925,
+   "t20_bot": 1.0957924991560022,
+   "farm2_bot": 0.3897058669349154,
+   "t_bot": 1.7408433762609608,
+   "per_match_user_t20": [
+    0.3129346314325452,
+    0.9933774834437087,
+    0.8137432188065099
+   ],
+   "per_match_t20": [
+    1.8776077885952713,
+    0.5960264900662252,
+    0.8137432188065099
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "aim_back_pass",
+   "user_vs_t20": 2.607127188071512,
+   "user_vs_earlier": 1.7373149027831376,
+   "t_user": 1.4834823914604274,
+   "t20_bot": 19.166471611781724,
+   "farm2_bot": 6.859508764325083,
+   "t_bot": 8.182170949920126,
+   "per_match_user_t20": [
+    2.8164116828929067,
+    3.377483443708609,
+    1.6274864376130198
+   ],
+   "per_match_t20": [
+    21.905424200278166,
+    17.28476821192053,
+    18.309222423146473
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "ball_kick",
+   "user_vs_t20": 14.136494592142526,
+   "user_vs_earlier": 16.718545834239286,
+   "t_user": -3.7510860628469747,
+   "t20_bot": 14.797276694580296,
+   "farm2_bot": 13.325388605035341,
+   "t_bot": 1.3171842539146672,
+   "per_match_user_t20": [
+    14.082058414464534,
+    14.90066225165563,
+    13.426763110307414
+   ],
+   "per_match_t20": [
+    16.27260083449235,
+    15.099337748344372,
+    13.019891500904158
+   ]
+  },
+  {
+   "kind": "event",
+   "name": "ball_touch",
+   "user_vs_t20": 21.747972144013815,
+   "user_vs_earlier": 22.9939785361914,
+   "t_user": -1.1034686351039171,
+   "t20_bot": 23.951518477503583,
+   "farm2_bot": 21.39524128635567,
+   "t_bot": 2.8057879965075325,
+   "per_match_user_t20": [
+    20.027816411682892,
+    23.24503311258278,
+    21.971066907775768
+   ],
+   "per_match_t20": [
+    25.03477051460362,
+    24.23841059602649,
+    22.581374321880652
+   ]
+  }
+ ],
+ "user_lunges": {
+  "lunges": 10,
+  "overcommits": 7,
+  "lunges_earlier": 10,
+  "overcommits_earlier": 2
+ },
+ "calibration": {
+  "sim": {
+   "tp": 2173,
+   "fp": 99,
+   "fn": 267,
+   "true_il": 41,
+   "true_il_found": 39,
+   "concept_il": 39,
+   "concept_il_true": 39
+  },
+  "real": {
+   "tp": 1627,
+   "fp": 110,
+   "fn": 445,
+   "true_il": 38,
+   "true_il_found": 31,
+   "concept_il": 31,
+   "concept_il_true": 30
+  },
+  "real_t20": {
+   "tp": 817,
+   "fp": 26,
+   "fn": 131,
+   "true_il": 16,
+   "true_il_found": 14,
+   "concept_il": 14,
+   "concept_il_true": 14
+  },
+  "contact_runs_real": {
+   "n": 140,
+   ">=0.5s": 0.25,
+   ">=1s": 0.16428571428571428,
+   ">=2s": 0.12857142857142856,
+   ">=3s": 0.08571428571428572,
+   ">=5s": 0.04285714285714286,
+   ">=10s": 0.007142857142857143
+  }
+ },
+ "servo_demo": [
+  {
+   "aim": 120,
+   "start": -0.0,
+   "angles": [
+    5.0,
+    36.0,
+    112.0
+   ],
+   "short_way": "backward (CCW)",
+   "went": "backward (CCW)"
+  },
+  {
+   "aim": 150,
+   "start": -0.0,
+   "angles": [
+    7.0,
+    47.0,
+    134.0
+   ],
+   "short_way": "backward (CCW)",
+   "went": "backward (CCW)"
+  },
+  {
+   "aim": 170,
+   "start": -0.0,
+   "angles": [
+    8.0,
+    52.0,
+    147.0
+   ],
+   "short_way": "backward (CCW)",
+   "went": "backward (CCW)"
+  },
+  {
+   "aim": 190,
+   "start": -0.0,
+   "angles": [
+    -12.0,
+    -21.0,
+    -72.0
+   ],
+   "short_way": "forward (CW)",
+   "went": "forward (CW)"
+  },
+  {
+   "aim": 210,
+   "start": -0.0,
+   "angles": [
+    -10.0,
+    -19.0,
+    -55.0
+   ],
+   "short_way": "forward (CW)",
+   "went": "forward (CW)"
+  },
+  {
+   "aim": 240,
+   "start": -0.0,
+   "angles": [
+    -8.0,
+    -14.0,
+    -36.0
+   ],
+   "short_way": "forward (CW)",
+   "went": "forward (CW)"
+  }
+ ],
+ "t20_real_interlocks": [
+  {
+   "log": "20261003-032948_m1.jsonl",
+   "t_s": 40.8,
+   "dur_s": 1.0666666666666667,
+   "stacked": false,
+   "top": "-",
+   "attacker": "t20",
+   "user_let_go": false,
+   "t20_let_go": false,
+   "first_kick_3s": "user",
+   "goal_5s": "-",
+   "user_sit": "right_close"
+  },
+  {
+   "log": "20261003-032948_m1.jsonl",
+   "t_s": 104.66666666666667,
+   "dur_s": 2.3333333333333335,
+   "stacked": false,
+   "top": "-",
+   "attacker": "t20",
+   "user_let_go": false,
+   "t20_let_go": false,
+   "first_kick_3s": "none",
+   "goal_5s": "-",
+   "user_sit": "B"
+  },
+  {
+   "log": "20261003-032948_m1.jsonl",
+   "t_s": 128.2,
+   "dur_s": 3.2666666666666666,
+   "stacked": false,
+   "top": "-",
+   "attacker": "user",
+   "user_let_go": false,
+   "t20_let_go": false,
+   "first_kick_3s": "t20",
+   "goal_5s": "t20",
+   "user_sit": "right_close"
+  },
+  {
+   "log": "20261003-032948_m1.jsonl",
+   "t_s": 136.93333333333334,
+   "dur_s": 2.1333333333333333,
+   "stacked": false,
+   "top": "-",
+   "attacker": "t20",
+   "user_let_go": false,
+   "t20_let_go": false,
+   "first_kick_3s": "user",
+   "goal_5s": "-",
+   "user_sit": "B"
+  },
+  {
+   "log": "20261003-032948_m1.jsonl",
+   "t_s": 139.93333333333334,
+   "dur_s": 7.533333333333333,
+   "stacked": true,
+   "top": "user",
+   "attacker": "user",
+   "user_let_go": true,
+   "t20_let_go": false,
+   "first_kick_3s": "user",
+   "goal_5s": "-",
+   "user_sit": "right_far"
+  },
+  {
+   "log": "20261003-033315_m2.jsonl",
+   "t_s": 12.333333333333334,
+   "dur_s": 16.333333333333332,
+   "stacked": true,
+   "top": "user",
+   "attacker": "user",
+   "user_let_go": false,
+   "t20_let_go": false,
+   "first_kick_3s": "t20",
+   "goal_5s": "-",
+   "user_sit": "right_far"
+  },
+  {
+   "log": "20261003-033847_m3.jsonl",
+   "t_s": 2.6666666666666665,
+   "dur_s": 9.733333333333333,
+   "stacked": false,
+   "top": "-",
+   "attacker": "t20",
+   "user_let_go": true,
+   "t20_let_go": false,
+   "first_kick_3s": "t20",
+   "goal_5s": "t20",
+   "user_sit": "B"
+  },
+  {
+   "log": "20261003-033847_m3.jsonl",
+   "t_s": 69.86666666666666,
+   "dur_s": 1.8,
+   "stacked": false,
+   "top": "-",
+   "attacker": "user",
+   "user_let_go": true,
+   "t20_let_go": false,
+   "first_kick_3s": "user",
+   "goal_5s": "-",
+   "user_sit": "right_close"
+  },
+  {
+   "log": "20261003-033847_m3.jsonl",
+   "t_s": 124.6,
+   "dur_s": 1.1333333333333333,
+   "stacked": true,
+   "top": "user",
+   "attacker": "user",
+   "user_let_go": false,
+   "t20_let_go": true,
+   "first_kick_3s": "user",
+   "goal_5s": "-",
+   "user_sit": "right_far"
+  },
+  {
+   "log": "20261003-033847_m3.jsonl",
+   "t_s": 133.73333333333332,
+   "dur_s": 5.666666666666667,
+   "stacked": true,
+   "top": "user",
+   "attacker": "user",
+   "user_let_go": true,
+   "t20_let_go": false,
+   "first_kick_3s": "user",
+   "goal_5s": "-",
+   "user_sit": "right_close"
+  },
+  {
+   "log": "20261003-033847_m3.jsonl",
+   "t_s": 198.06666666666666,
+   "dur_s": 3.8,
+   "stacked": false,
+   "top": "-",
+   "attacker": "user",
+   "user_let_go": false,
+   "t20_let_go": false,
+   "first_kick_3s": "none",
+   "goal_5s": "-",
+   "user_sit": "right_far"
+  },
+  {
+   "log": "20261003-033847_m3.jsonl",
+   "t_s": 242.53333333333333,
+   "dur_s": 1.0,
+   "stacked": false,
+   "top": "-",
+   "attacker": "t20",
+   "user_let_go": true,
+   "t20_let_go": false,
+   "first_kick_3s": "t20",
+   "goal_5s": "-",
+   "user_sit": "B"
+  }
+ ],
+ "matches": [
+  {
+   "log": "20261002-152412_m1.jsonl",
+   "opp": "farm2",
+   "group": "farm2-family",
+   "result": [
+    7,
+    3
+   ],
+   "contact_check": {
+    "tp": 11,
+    "fp": 4,
+    "fn": 16,
+    "true_il": 0,
+    "true_il_found": 0,
+    "concept_il": 0,
+    "concept_il_true": 0
+   }
+  },
+  {
+   "log": "20261002-153549_m1.jsonl",
+   "opp": "farm2@200M",
+   "group": "farm2-family",
+   "result": [
+    7,
+    2
+   ],
+   "contact_check": {
+    "tp": 12,
+    "fp": 2,
+    "fn": 14,
+    "true_il": 0,
+    "true_il_found": 0,
+    "concept_il": 0,
+    "concept_il_true": 0
+   }
+  },
+  {
+   "log": "20261002-153926_m2.jsonl",
+   "opp": "farm2",
+   "group": "farm2-family",
+   "result": [
+    7,
+    5
+   ],
+   "contact_check": {
+    "tp": 193,
+    "fp": 3,
+    "fn": 35,
+    "true_il": 3,
+    "true_il_found": 3,
+    "concept_il": 3,
+    "concept_il_true": 3
+   }
+  },
+  {
+   "log": "20261002-154414_m3.jsonl",
+   "opp": "farm2@200M",
+   "group": "farm2-family",
+   "result": [
+    7,
+    1
+   ],
+   "contact_check": {
+    "tp": 83,
+    "fp": 4,
+    "fn": 31,
+    "true_il": 3,
+    "true_il_found": 1,
+    "concept_il": 1,
+    "concept_il_true": 1
+   }
+  },
+  {
+   "log": "20261002-154927_m4.jsonl",
+   "opp": "farm2",
+   "group": "farm2-family",
+   "result": [
+    7,
+    2
+   ],
+   "contact_check": {
+    "tp": 16,
+    "fp": 2,
+    "fn": 6,
+    "true_il": 0,
+    "true_il_found": 0,
+    "concept_il": 0,
+    "concept_il_true": 0
+   }
+  },
+  {
+   "log": "20261002-155357_m5.jsonl",
+   "opp": "farm2@200M",
+   "group": "farm2-family",
+   "result": [
+    7,
+    1
+   ],
+   "contact_check": {
+    "tp": 45,
+    "fp": 5,
+    "fn": 31,
+    "true_il": 2,
+    "true_il_found": 2,
+    "concept_il": 2,
+    "concept_il_true": 2
+   }
+  },
+  {
+   "log": "20261002-155830_m6.jsonl",
+   "opp": "farm2",
+   "group": "farm2-family",
+   "result": [
+    7,
+    5
+   ],
+   "contact_check": {
+    "tp": 95,
+    "fp": 10,
+    "fn": 32,
+    "true_il": 4,
+    "true_il_found": 3,
+    "concept_il": 3,
+    "concept_il_true": 3
+   }
+  },
+  {
+   "log": "20261002-160256_m7.jsonl",
+   "opp": "farm2@200M",
+   "group": "farm2-family",
+   "result": [
+    6,
+    4
+   ],
+   "contact_check": {
+    "tp": 59,
+    "fp": 8,
+    "fn": 21,
+    "true_il": 1,
+    "true_il_found": 1,
+    "concept_il": 1,
+    "concept_il_true": 1
+   }
+  },
+  {
+   "log": "20261002-160814_m8.jsonl",
+   "opp": "farm2",
+   "group": "farm2-family",
+   "result": [
+    7,
+    6
+   ],
+   "contact_check": {
+    "tp": 17,
+    "fp": 10,
+    "fn": 38,
+    "true_il": 1,
+    "true_il_found": 0,
+    "concept_il": 0,
+    "concept_il_true": 0
+   }
+  },
+  {
+   "log": "20261002-175801_m1.jsonl",
+   "opp": "t27 (21M steps)",
+   "group": "search",
+   "result": [
+    7,
+    2
+   ],
+   "contact_check": {
+    "tp": 56,
+    "fp": 16,
+    "fn": 26,
+    "true_il": 1,
+    "true_il_found": 1,
+    "concept_il": 2,
+    "concept_il_true": 1
+   }
+  },
+  {
+   "log": "20261002-180238_m2.jsonl",
+   "opp": "t2 (21M steps)",
+   "group": "search",
+   "result": [
+    6,
+    3
+   ],
+   "contact_check": {
+    "tp": 146,
+    "fp": 9,
+    "fn": 46,
+    "true_il": 5,
+    "true_il_found": 4,
+    "concept_il": 3,
+    "concept_il_true": 3
+   }
+  },
+  {
+   "log": "20261002-180755_m3.jsonl",
+   "opp": "t7 (20M steps)",
+   "group": "search",
+   "result": [
+    7,
+    0
+   ],
+   "contact_check": {
+    "tp": 64,
+    "fp": 8,
+    "fn": 9,
+    "true_il": 1,
+    "true_il_found": 1,
+    "concept_il": 1,
+    "concept_il_true": 1
+   }
+  },
+  {
+   "log": "20261002-181156_m4.jsonl",
+   "opp": "t24 (20M steps)",
+   "group": "search",
+   "result": [
+    7,
+    1
+   ],
+   "contact_check": {
+    "tp": 13,
+    "fp": 3,
+    "fn": 9,
+    "true_il": 1,
+    "true_il_found": 1,
+    "concept_il": 1,
+    "concept_il_true": 1
+   }
+  },
+  {
+   "log": "20261003-032948_m1.jsonl",
+   "opp": "t20_300M (300M steps)",
+   "group": "t20@300M",
+   "result": [
+    1,
+    7
+   ],
+   "contact_check": {
+    "tp": 222,
+    "fp": 5,
+    "fn": 39,
+    "true_il": 5,
+    "true_il_found": 5,
+    "concept_il": 5,
+    "concept_il_true": 5
+   }
+  },
+  {
+   "log": "20261003-033315_m2.jsonl",
+   "opp": "t20_300M (300M steps)",
+   "group": "t20@300M",
+   "result": [
+    5,
+    5
+   ],
+   "contact_check": {
+    "tp": 254,
+    "fp": 9,
+    "fn": 35,
+    "true_il": 3,
+    "true_il_found": 2,
+    "concept_il": 2,
+    "concept_il_true": 2
+   }
+  },
+  {
+   "log": "20261003-033847_m3.jsonl",
+   "opp": "t20_300M (300M steps)",
+   "group": "t20@300M",
+   "result": [
+    4,
+    7
+   ],
+   "contact_check": {
+    "tp": 341,
+    "fp": 12,
+    "fn": 57,
+    "true_il": 8,
+    "true_il_found": 7,
+    "concept_il": 7,
+    "concept_il_true": 7
+   }
+  }
+ ],
+ "params": {
+  "INTERLOCK_MIN_s": 1.0,
+  "INTERLOCK_GAP_s": 0.3333333333333333,
+  "INTERLOCK_LONG_s": 3.0,
+  "LETGO_W_s": 0.4666666666666667,
+  "OPEN_DX_m": 5.5,
+  "OPEN_GRACE_s": 1.0,
+  "SERVO_DZ": 0.1,
+  "SERVO_MIN": 0.2
+ }
+}

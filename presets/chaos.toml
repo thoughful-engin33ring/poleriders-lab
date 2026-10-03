@@ -1,0 +1,19 @@
+# Superball + trampoline ground + monster knockback, faster respawns.
+[gameplay]
+kick_ball_strength = 2600
+kick_player_strength = 1600
+pole_swing_torque = 700
+death_delay = 1.0
+[ball]
+restitution = 1.05
+density = 2.0
+[level1]
+ground_restitution = 0.8
+[level2]
+ground_restitution = 0.8
+[level3]
+ground_restitution = 0.8
+[level4]
+ground_restitution = 0.8
+[level5]
+ground_restitution = 0.8
